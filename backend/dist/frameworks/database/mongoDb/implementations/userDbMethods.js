@@ -9,21 +9,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userController = void 0;
-const userCases_1 = require("../application/usecases/userCases");
-const userController = (dbInterface, dbImplements) => {
-    const dbRepositoryuser = dbInterface(dbImplements());
-    const addUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        const user = req.body;
-        const newuser = yield (0, userCases_1.userCases)(dbRepositoryuser).addUser(user);
-        res.status(201).json({ message: 'user added successfully', newuser });
+exports.userDbMethods = void 0;
+const userSchema_1 = require("../model/userSchema");
+const userDbMethods = () => {
+    const addUser = (user) => __awaiter(void 0, void 0, void 0, function* () {
+        yield userSchema_1.User.create(user);
     });
-    // const findById = async(req:Request,res:Response) => {
-    //     const {email} = req.body as string
-    //     await 
-    // }
+    const findById = (email) => __awaiter(void 0, void 0, void 0, function* () {
+        yield userSchema_1.User.findById(email);
+    });
     return {
-        addUser
+        addUser,
+        findById
     };
 };
-exports.userController = userController;
+exports.userDbMethods = userDbMethods;

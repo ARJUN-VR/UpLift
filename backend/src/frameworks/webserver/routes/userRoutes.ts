@@ -1,9 +1,12 @@
 import express from 'express'
 import { userController } from '../../../controllers/userController'
+import { userDbInterface } from '../../../application/repository/userDbrepository'
+import { userDbMethods } from '../../database/mongoDb/implementations/userDbMethods'
 
 const router=express.Router()
-const controller=userController()
+const controller=userController(userDbInterface,userDbMethods)
     
-router.get('/',controller.loadPage)
+router.post('/register',controller.addUser)
+
 
  export default router
