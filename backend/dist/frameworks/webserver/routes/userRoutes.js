@@ -10,4 +10,5 @@ const userDbMethods_1 = require("../../database/mongoDb/implementations/userDbMe
 const router = express_1.default.Router();
 const controller = (0, userController_1.userController)(userDbrepository_1.userDbInterface, userDbMethods_1.userDbMethods);
 router.post('/register', controller.addUser);
+router.post('/', controller.userSignIn);
 exports.default = router;

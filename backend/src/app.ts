@@ -1,28 +1,18 @@
-import express,{ Application } from "express";
-import http from 'http'
+import express, { Application } from "express";
+import http from "http";
 import { connectDb } from "./frameworks/database/connection";
 import expressConfig from "./frameworks/webserver/express";
-import {serverConfig} from "./frameworks/webserver/server";
+import { serverConfig } from "./frameworks/webserver/server";
 import { routes } from "./frameworks/webserver/routes";
 
+const app: Application = express();
 
-
-const app:Application=express()
-
-const server=http.createServer(app)
+const server = http.createServer(app);
 
 connectDb();
 
-expressConfig(app)
+expressConfig(app);
 
-routes(app)
+routes(app);
 
-
-serverConfig(server).startServer()
-
-
-
-
-
-
-
+serverConfig(server).startServer();

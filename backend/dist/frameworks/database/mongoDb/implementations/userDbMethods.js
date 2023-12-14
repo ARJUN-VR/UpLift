@@ -12,15 +12,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.userDbMethods = void 0;
 const userSchema_1 = require("../model/userSchema");
 const userDbMethods = () => {
-    const addUser = (user) => __awaiter(void 0, void 0, void 0, function* () {
-        yield userSchema_1.User.create(user);
-    });
-    const findById = (email) => __awaiter(void 0, void 0, void 0, function* () {
-        yield userSchema_1.User.findById(email);
+    const addUser = (user) => __awaiter(void 0, void 0, void 0, function* () { return yield userSchema_1.User.create(user); });
+    const findByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () {
+        const user = yield userSchema_1.User.findOne({ email: email });
+        return user;
     });
     return {
         addUser,
-        findById
+        findByEmail
     };
 };
 exports.userDbMethods = userDbMethods;

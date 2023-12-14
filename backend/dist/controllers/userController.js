@@ -14,16 +14,37 @@ const userCases_1 = require("../application/usecases/userCases");
 const userController = (dbInterface, dbImplements) => {
     const dbRepositoryuser = dbInterface(dbImplements());
     const addUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        const user = req.body;
-        const newuser = yield (0, userCases_1.userCases)(dbRepositoryuser).addUser(user);
-        res.status(201).json({ message: 'user added successfully', newuser });
+        try {
+            const user = req.body;
+            yield (0, userCases_1.userCases)(dbRepositoryuser).addUser(user);
+            res.status(201).json({ message: 'user added successfully' });
+        }
+        catch (error) {
+            console.log(error);
+        }
     });
-    // const findById = async(req:Request,res:Response) => {
-    //     const {email} = req.body as string
-    //     await 
-    // }
+    const userSignIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const { email, password } = req.body;
+        try {
+            const result = yield (0, userCases_1.userCases)(dbRepositoryuser).userSignIn(email, password);
+            if (result.success) {
+                res.status(200).json({ message: 'user signed in successfully' });
+            }
+            else if (result.error === 'Incorrect password') {
+                res.status(400).json({ message: "Incorrect password" });
+            }
+            else {
+                res.status(400).json({ message: 'authentication failed' });
+            }
+        }
+        catch (error) {
+            console.log(error);
+            res.status(500);
+        }
+    });
     return {
-        addUser
+        addUser,
+        userSignIn
     };
 };
 exports.userController = userController;

@@ -12,10 +12,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.userCases = void 0;
 const userCases = (repository) => {
     const addUser = (user) => __awaiter(void 0, void 0, void 0, function* () { return yield repository.adduser(user); });
-    const findById = (email) => __awaiter(void 0, void 0, void 0, function* () { return yield repository.findById(email); });
+    const userSignIn = (email, password) => __awaiter(void 0, void 0, void 0, function* () {
+        const user = yield repository.findByEmail(email);
+        if (!user) {
+            return { success: false, error: 'no user found' };
+        }
+        if (user && typeof user.matchPassword === 'function') {
+            if (yield user.matchPassword(password)) {
+                return { success: true, user };
+            }
+            else {
+                return { success: false, error: 'Incorrect password' };
+            }
+        }
+        else {
+            return { success: false, error: 'Unable to verify password' };
+        }
+    });
     return {
         addUser,
-        findById
+        userSignIn
     };
 };
 exports.userCases = userCases;

@@ -12,10 +12,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.userDbInterface = void 0;
 const userDbInterface = (repository) => {
     const adduser = (user) => __awaiter(void 0, void 0, void 0, function* () { return yield repository.addUser(user); });
-    const findById = (email) => __awaiter(void 0, void 0, void 0, function* () { return yield repository.findById(email); });
+    const findByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () {
+        const user = yield repository.findByEmail(email);
+        return user;
+    });
     return {
         adduser,
-        findById
+        findByEmail
     };
 };
 exports.userDbInterface = userDbInterface;
