@@ -7,7 +7,7 @@ const serverConfig = (server) => {
         server.listen(config_1.configKeys.PORT, () => console.log(`http://localhost:${config_1.configKeys.PORT}`));
     };
     return {
-        startServer
+        startServer,
     };
 };
 exports.serverConfig = serverConfig;

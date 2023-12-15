@@ -1,10 +1,11 @@
 import { UserDbInterFace } from "../repository/userDbrepository";
 import { userInterface } from "../../entities/User";
+import generateToken from "../services/generateJwt";
 
 export const userCases = (repository: ReturnType<UserDbInterFace>) => {
   const addUser = async (user: userInterface) => await repository.adduser(user);
 
-  const userSignIn = async (email: string, password: string) => {
+  const userSignIn = async (email: string, password: string, res: any) => {
     const user: userInterface | null = await repository.findByEmail(email);
 
     if (!user) {
@@ -12,6 +13,7 @@ export const userCases = (repository: ReturnType<UserDbInterFace>) => {
     }
     if (user && typeof user.matchPassword === "function") {
       if (await user.matchPassword(password)) {
+        generateToken(res, user);
         return { success: true, user };
       } else {
         return { success: false, error: "Incorrect password" };
@@ -21,8 +23,16 @@ export const userCases = (repository: ReturnType<UserDbInterFace>) => {
     }
   };
 
+  const userSignout = (res: any) => {
+    res.cookie("jwt", "", {
+      httpOnly: true,
+      expires: new Date(0),
+    });
+  };
+
   return {
     addUser,
     userSignIn,
+    userSignout,
   };
 };

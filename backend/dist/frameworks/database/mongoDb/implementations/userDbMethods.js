@@ -17,9 +17,13 @@ const userDbMethods = () => {
         const user = yield userSchema_1.User.findOne({ email: email });
         return user;
     });
+    const findById = (id) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield userSchema_1.User.findOne({ _id: id });
+    });
     return {
         addUser,
-        findByEmail
+        findByEmail,
+        findById
     };
 };
 exports.userDbMethods = userDbMethods;

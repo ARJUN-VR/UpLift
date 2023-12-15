@@ -8,30 +8,42 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userCases = void 0;
+const generateJwt_1 = __importDefault(require("../services/generateJwt"));
 const userCases = (repository) => {
     const addUser = (user) => __awaiter(void 0, void 0, void 0, function* () { return yield repository.adduser(user); });
-    const userSignIn = (email, password) => __awaiter(void 0, void 0, void 0, function* () {
+    const userSignIn = (email, password, res) => __awaiter(void 0, void 0, void 0, function* () {
         const user = yield repository.findByEmail(email);
         if (!user) {
-            return { success: false, error: 'no user found' };
+            return { success: false, error: "no user found" };
         }
-        if (user && typeof user.matchPassword === 'function') {
+        if (user && typeof user.matchPassword === "function") {
             if (yield user.matchPassword(password)) {
+                (0, generateJwt_1.default)(res, user);
                 return { success: true, user };
             }
             else {
-                return { success: false, error: 'Incorrect password' };
+                return { success: false, error: "Incorrect password" };
             }
         }
         else {
-            return { success: false, error: 'Unable to verify password' };
+            return { success: false, error: "Unable to verify password" };
         }
     });
+    const userSignout = (res) => {
+        res.cookie("jwt", "", {
+            httpOnly: true,
+            expires: new Date(0),
+        });
+    };
     return {
         addUser,
-        userSignIn
+        userSignIn,
+        userSignout,
     };
 };
 exports.userCases = userCases;

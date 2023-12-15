@@ -18,24 +18,24 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const userSchema = new mongoose_1.Schema({
     name: {
         type: String,
-        required: true
+        required: true,
     },
     email: {
         type: String,
-        required: true
+        required: true,
     },
     password: {
         type: String,
-        required: true
+        required: true,
     },
     credentials: {
         type: Object,
-        required: false
-    }
+        required: false,
+    },
 }, { timestamps: true });
-userSchema.pre('save', function (next) {
+userSchema.pre("save", function (next) {
     return __awaiter(this, void 0, void 0, function* () {
-        if (!this.isModified('password')) {
+        if (!this.isModified("password")) {
             next();
         }
         const salt = yield bcrypt_1.default.genSalt(10);
@@ -47,4 +47,4 @@ userSchema.methods.matchPassword = function (enterdPassword) {
         return yield bcrypt_1.default.compare(enterdPassword, this.password);
     });
 };
-exports.User = (0, mongoose_1.model)('user', userSchema);
+exports.User = (0, mongoose_1.model)("user", userSchema);

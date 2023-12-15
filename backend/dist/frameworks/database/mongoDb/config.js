@@ -9,5 +9,7 @@ dotenv_1.default.config();
 exports.configKeys = {
     MONGODB_URI: process.env.URI,
     PORT: process.env.PORT,
-    SALT_ROUNDS: process.env.SALT_ROUNDS
+    SALT_ROUNDS: process.env.SALT_ROUNDS,
+    JWT_KEY: process.env.JWT_CODE,
+    NODE_ENV: process.env.NODE_ENV
 };

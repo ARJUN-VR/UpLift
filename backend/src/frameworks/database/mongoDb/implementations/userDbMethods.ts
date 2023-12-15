@@ -8,10 +8,14 @@ export const userDbMethods = () => {
     const user = await User.findOne({ email: email });
     return user;
   };
+  const findById = async(id:string) =>{
+    return await User.findOne({_id:id})
+  }
 
   return {
     addUser,
     findByEmail,
+    findById
   };
 };
 

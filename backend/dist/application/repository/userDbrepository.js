@@ -14,11 +14,16 @@ const userDbInterface = (repository) => {
     const adduser = (user) => __awaiter(void 0, void 0, void 0, function* () { return yield repository.addUser(user); });
     const findByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () {
         const user = yield repository.findByEmail(email);
+        console.log(user);
         return user;
+    });
+    const findById = (id) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.findById(id);
     });
     return {
         adduser,
-        findByEmail
+        findByEmail,
+        findById
     };
 };
 exports.userDbInterface = userDbInterface;

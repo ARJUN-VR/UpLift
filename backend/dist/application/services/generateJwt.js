@@ -12,17 +12,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.connectDb = void 0;
-const mongoose_1 = __importDefault(require("mongoose"));
-const config_1 = require("./mongoDb/config");
-const connectDb = () => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        yield mongoose_1.default.connect(config_1.configKeys.MONGODB_URI);
-        console.log("db connected successfully");
-    }
-    catch (error) {
-        console.log(error);
-        process.exit(1);
-    }
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const config_1 = require("../../frameworks/database/mongoDb/config");
+const generateToken = (res, user) => __awaiter(void 0, void 0, void 0, function* () {
+    const userId = user._id;
+    const Token = jsonwebtoken_1.default.sign({ userId }, config_1.configKeys.JWT_KEY, {
+        expiresIn: '30d'
+    });
+    res.cookie('jwt', Token, {
+        httponly: true,
+        secure: config_1.configKeys.NODE_ENV !== 'development',
+        samesite: true,
+        maxAge: 30 * 24 * 60 * 60 * 1000
+    });
 });
-exports.connectDb = connectDb;
+exports.default = generateToken;
