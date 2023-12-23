@@ -18,12 +18,22 @@ const express_async_handler_1 = __importDefault(require("express-async-handler")
 const config_1 = require("../../database/mongoDb/config");
 const protect = (userDbInterface, dbImplements) => {
     const dbRepository = userDbInterface(dbImplements());
-    return (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    return (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         const token = req.cookies.jwt;
+        console.log('token: ', token);
         if (token) {
-            const decoded = jsonwebtoken_1.default.verify(token, config_1.configKeys.JWT_KEY);
-            const userdata = yield dbRepository.findById(decoded.userId);
-            console.log(userdata);
+            try {
+                const decoded = jsonwebtoken_1.default.verify(token, config_1.configKeys.JWT_KEY);
+                const userdata = yield dbRepository.findById(decoded.userId);
+                req.user = userdata;
+                next();
+            }
+            catch (error) {
+                console.log(error, 'error during validation');
+            }
+        }
+        else {
+            throw new Error('Not authorized,no Token');
         }
     }));
 };

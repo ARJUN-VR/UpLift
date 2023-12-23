@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.userCases = void 0;
 const generateJwt_1 = __importDefault(require("../services/generateJwt"));
 const userCases = (repository) => {
+    const findByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () { return yield repository.findByEmail(email); });
     const addUser = (user) => __awaiter(void 0, void 0, void 0, function* () { return yield repository.adduser(user); });
     const userSignIn = (email, password, res) => __awaiter(void 0, void 0, void 0, function* () {
         const user = yield repository.findByEmail(email);
@@ -40,10 +41,15 @@ const userCases = (repository) => {
             expires: new Date(0),
         });
     };
+    const updateProfile = (req) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.saveUser(req);
+    });
     return {
+        findByEmail,
         addUser,
         userSignIn,
         userSignout,
+        updateProfile
     };
 };
 exports.userCases = userCases;

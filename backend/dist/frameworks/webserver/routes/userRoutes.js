@@ -10,7 +10,10 @@ const userDbMethods_1 = require("../../database/mongoDb/implementations/userDbMe
 const userAuth_1 = require("../middlewares/userAuth");
 const router = express_1.default.Router();
 const controller = (0, userController_1.userController)(userDbrepository_1.userDbInterface, userDbMethods_1.userDbMethods);
+const auth = (0, userAuth_1.protect)(userDbrepository_1.userDbInterface, userDbMethods_1.userDbMethods);
 router.post("/register", controller.addUser);
-router.post("/", (0, userAuth_1.protect)(userDbrepository_1.userDbInterface, userDbMethods_1.userDbMethods), controller.userSignIn);
+router.post("/login", controller.userSignIn);
 router.post('/logout', controller.userSignout);
+router.get('/profile', auth, controller.getProfile);
+router.patch('/profile', auth, controller.editProfile);
 exports.default = router;

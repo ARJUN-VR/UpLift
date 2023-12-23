@@ -3,6 +3,9 @@ import { userInterface } from "../../entities/User";
 import generateToken from "../services/generateJwt";
 
 export const userCases = (repository: ReturnType<UserDbInterFace>) => {
+  
+  const findByEmail = async (email: string) => await repository.findByEmail(email);
+
   const addUser = async (user: userInterface) => await repository.adduser(user);
 
   const userSignIn = async (email: string, password: string, res: any) => {
@@ -30,9 +33,15 @@ export const userCases = (repository: ReturnType<UserDbInterFace>) => {
     });
   };
 
+  const updateProfile=async(req:any) => {
+   return await repository.saveUser(req)
+  }
+
   return {
+    findByEmail,
     addUser,
     userSignIn,
     userSignout,
+    updateProfile
   };
 };

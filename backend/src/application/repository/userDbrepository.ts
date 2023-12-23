@@ -7,17 +7,20 @@ export const userDbInterface = (repository: ReturnType<UserDbMethods>) => {
 
   const findByEmail = async (email: string) => {
     const user = await repository.findByEmail(email);
-    console.log(user)
     return user;
   };
   const findById = async(id:string) =>{
     return await repository.findById(id)
   }
+  const saveUser = async(req:any) =>{
+  return  await repository.saveUser(req)
+  }
 
   return {
     adduser,
     findByEmail,
-    findById
+    findById,
+    saveUser
   };
 };
 

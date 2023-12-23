@@ -20,10 +20,20 @@ const userDbMethods = () => {
     const findById = (id) => __awaiter(void 0, void 0, void 0, function* () {
         return yield userSchema_1.User.findOne({ _id: id });
     });
+    const saveUser = (req) => __awaiter(void 0, void 0, void 0, function* () {
+        const user = yield userSchema_1.User.findById({ _id: req.user._id });
+        if (user) {
+            user.name = req.body.name || user.name;
+            user.email = req.body.email || user.email;
+            user.password = req.body.password || user.password;
+            return yield user.save();
+        }
+    });
     return {
         addUser,
         findByEmail,
-        findById
+        findById,
+        saveUser
     };
 };
 exports.userDbMethods = userDbMethods;

@@ -11,11 +11,29 @@ export const userDbMethods = () => {
   const findById = async(id:string) =>{
     return await User.findOne({_id:id})
   }
+  const saveUser = async(req:any) =>{
+
+    const user = await  User.findById({_id:req.user._id})
+    if(user){
+      user.name = req.body.name || user.name
+      user.email = req.body.email || user.email
+      user.password = req.body.password || user.password
+
+     return  await user.save()
+
+    }
+    
+  
+
+
+   
+  }
 
   return {
     addUser,
     findByEmail,
-    findById
+    findById,
+    saveUser
   };
 };
 

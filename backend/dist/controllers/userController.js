@@ -30,6 +30,7 @@ const userController = (dbInterface, dbImplements) => {
     //access   public
     const userSignIn = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const { email, password } = req.body;
+        console.log(email);
         const result = yield (0, userCases_1.userCases)(dbRepositoryuser).userSignIn(email, password, res);
         if (result.success) {
             res.status(200).json({ message: "user signed in successfully" });
@@ -51,10 +52,28 @@ const userController = (dbInterface, dbImplements) => {
         (0, userCases_1.userCases)(dbRepositoryuser).userSignout(res);
         res.status(200).json({ message: "user signedOut successfully" });
     }));
+    //desc getUserProfile
+    //route GET /api/user/profile
+    //access private
+    const getProfile = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const email = req.user.email;
+        const userdata = yield (0, userCases_1.userCases)(dbRepositoryuser).findByEmail(email);
+        res.status(200).json({ message: 'fetched user profile successully', userdata });
+    }));
+    //desc edit UserProfile
+    //route PATCH /api/user/profile
+    //access private
+    const editProfile = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        console.log('its me ');
+        const updateduser = yield (0, userCases_1.userCases)(dbRepositoryuser).updateProfile(req);
+        res.status(200).json({ message: 'profile updated successfully' });
+    }));
     return {
         addUser,
         userSignIn,
-        userSignout
+        userSignout,
+        getProfile,
+        editProfile
     };
 };
 exports.userController = userController;
