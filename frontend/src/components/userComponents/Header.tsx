@@ -11,14 +11,14 @@ export const Header = () => {
  
   <div className="w-full h-full flex flex-row  ">
     {/* <!-- Header --> */}
-    <header className="h-16 w-full flex items-center relative  px-1 space-x-10 bg-gray-800 text-white ">
+    <header className="h-16 w-full flex items-center relative  px-1  bg-gray-800 text-white ">
       {/* search */}
-      <div className="flex  space-x-3 items-center ml-24 bg-gray-900">
-    <input type="text" className='rounded-xl bg-gray-500'/>
+      <div className="flex  space-x-3 items-center ml-[280px] bg-gray-800 mt-10 ">
+    <input type="text" className='rounded-xl bg-gray-500 h-[30px] w-[180px]'/>
     <FontAwesomeIcon icon={faSearch} color='white'/>
       </div>
-      {/* create campaign */}
-      <div className='w-36 h-3/4 bg-gray-800 ml-[400px]'>
+      {/* create campaign button*/}
+      <div className='w-36 h-3/4 bg-gray-800 ml-[699px] mt-10'>
         <button className='bg-blue-400 w-full h-full rounded-2xl '>
           Create campaign
         </button>

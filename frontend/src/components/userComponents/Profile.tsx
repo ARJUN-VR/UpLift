@@ -1,9 +1,20 @@
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
+import { RootState } from "../../redux/store"
 
 
 export const Profile = () => {
+
+  const {userInfo} = useSelector((state:RootState)=>state.auth)
+  console.log(userInfo)
+  const name = userInfo.result.user.name
+  const email = userInfo.result.user.email
+  const createdAt = userInfo.result.user.createdAt
+  const date = new Date(createdAt).toDateString()
+
+
   return (
 <div className="bg-gray-700 h-full p-1 rounded-2xl flex"><div className="m-10 w-[45vh]">
   <div className="rounded-lg border bg-[#526D82] px-4 pt-8 pb-10 shadow-lg mt-[60px]">
@@ -12,19 +23,19 @@ export const Profile = () => {
       <img className="mx-auto h-auto w-full rounded-full" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.25&w=256&h=256&q=80" alt="profile pic" />
     </div>
     <span ><FontAwesomeIcon icon={faPenToSquare} /></span>
-    <h1 className="my-1 text-center text-xl font-bold leading-8 text-gray-900">Michael Simbal</h1>
+    <h1 className="my-1 text-center text-xl font-bold leading-8 text-gray-900">{name}</h1>
 
     
     <ul className="mt-3 divide-y rounded bg-gray-100 py-2 px-3 text-gray-600 shadow-sm hover:text-gray-700 hover:shadow">
 
     <li className="flex items-center py-3 text-sm">
         <span>Email</span>
-        <span className="ml-auto">michael@gmail.com</span>
+        <span className="ml-auto">{email}</span>
       </li>
      
       <li className="flex items-center py-3 text-sm">
         <span>Joined On</span>
-        <span className="ml-auto">Apr 08, 2022</span>
+        <span className="ml-auto">{date}</span>
       </li>
     </ul>
   </div>

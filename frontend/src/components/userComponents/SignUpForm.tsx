@@ -31,9 +31,16 @@ export const SignUpForm = () => {
       return toast.error('Passwords do not match')
 
     }
-   const userData = await register({name,email,password}).unwrap()
-   dispatch(setCredentials({...userData}))
-   navigate('/')
+    try {
+      const userData = await register({name,email,password}).unwrap()
+
+      dispatch(setCredentials({...userData}))
+      navigate('/')
+      
+    } catch (err) {
+      toast.error(err?.data?.message || err.error)
+    }
+ 
    
   }
 
