@@ -4,6 +4,7 @@ import { RootState } from "../../redux/store";
 import { useNavigate } from "react-router-dom";
 import { useRegisterMutation } from "../../redux/slices/userApiSlice";
 import { setCredentials } from "../../redux/reducers/userReducers";
+import { toast } from "react-toastify";
 
 
 export const SignUpForm = () => {
@@ -24,9 +25,22 @@ export const SignUpForm = () => {
     }
   })
 
-  const registerHandler = async()=>{
-   const userData = await register({name,email,password})
-   dispatch(setCredentials({...userData}))
+  const registerHandler = async(event:React.FormEvent)=>{
+    event.preventDefault()
+    if(password!==confirmPass){
+      return toast.error('Passwords do not match')
+
+    }
+    try {
+      const userData = await register({name,email,password}).unwrap()
+
+      dispatch(setCredentials({...userData}))
+      navigate('/')
+      
+    } catch (err) {
+      toast.error(err?.data?.message || err.error)
+    }
+ 
    
   }
 
@@ -44,25 +58,25 @@ export const SignUpForm = () => {
       <div className="relative mt-8 flex h-px place-items-center bg-gray-200">
         <div className="absolute left-1/2 h-6 w-14 -translate-x-1/2 bg-white text-center text-sm text-gray-500">or</div>
       </div>
-      <form className="flex flex-col pt-3 md:pt-8">
+      <form className="flex flex-col pt-3 md:pt-8" onSubmit={registerHandler}>
       <div className="flex flex-col pt-4">
           <div className="focus-within:border-b-gray-500 relative flex overflow-hidden border-b-2 transition">
-            <input type="email" id="login-email" className="w-full flex-1 appearance-none border-gray-300 bg-white px-4 py-2 text-base text-gray-700 placeholder-gray-400 focus:outline-none" placeholder="Fullname" />
+            <input type="name" value={name} id="login-email" className="w-full flex-1 appearance-none border-gray-300 bg-white px-4 py-2 text-base text-gray-700 placeholder-gray-400 focus:outline-none" placeholder="Fullname" onChange={(event)=>setName(event.target.value)} />
           </div>
         </div>
         <div className="flex flex-col pt-4">
           <div className="focus-within:border-b-gray-500 relative flex overflow-hidden border-b-2 transition">
-            <input type="email" id="login-email" className="w-full flex-1 appearance-none border-gray-300 bg-white px-4 py-2 text-base text-gray-700 placeholder-gray-400 focus:outline-none" placeholder="Email" />
+            <input type="email" id="login-email" className="w-full flex-1 appearance-none border-gray-300 bg-white px-4 py-2 text-base text-gray-700 placeholder-gray-400 focus:outline-none" placeholder="Email" value={email} onChange={(event)=>setEmail(event.target.value)} />
           </div>
         </div>
         <div className="mb-12 flex flex-col pt-4">
           <div className="focus-within:border-b-gray-500 relative flex overflow-hidden border-b-2 transition">
-            <input type="password" id="login-password" className="w-full flex-1 appearance-none border-gray-300 bg-white px-4 py-2 text-base text-gray-700 placeholder-gray-400 focus:outline-none" placeholder="Password" />
+            <input type="password" id="login-password" className="w-full flex-1 appearance-none border-gray-300 bg-white px-4 py-2 text-base text-gray-700 placeholder-gray-400 focus:outline-none" placeholder="Password" value={password} onChange={(event)=>setPass(event.target.value)} />
           </div>
         </div>
         <div className="mb-12 flex flex-col pt-4">
           <div className="focus-within:border-b-gray-500 relative flex overflow-hidden border-b-2 transition">
-            <input type="password" id="login-password" className="w-full flex-1 appearance-none border-gray-300 bg-white px-4 py-2 text-base text-gray-700 placeholder-gray-400 focus:outline-none" placeholder="ConfirmPassword" />
+            <input type="password" id="login-password" className="w-full flex-1 appearance-none border-gray-300 bg-white px-4 py-2 text-base text-gray-700 placeholder-gray-400 focus:outline-none" placeholder="ConfirmPassword" value={confirmPass} onChange={(event)=>setConfirmPass(event.target.value)}/>
           </div>
         </div>
         

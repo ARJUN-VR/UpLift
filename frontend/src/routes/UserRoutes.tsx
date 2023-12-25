@@ -2,7 +2,9 @@ import { Route,Routes } from "react-router-dom"
 import { SignInPage } from "../pages/userPages/SignInPage"
 import { SignUpPage } from "../pages/userPages/SignUpPage"
 import { HomePage } from "../pages/userPages/HomePage"
-import { UserProfie } from "../pages/userPages/UserProfile"
+import { UserPrivateRoutes } from "./UserPrivateRoutes"
+
+
 
 
 
@@ -13,8 +15,13 @@ export const UserRoutes = () => {
             <Route path="/" element={<HomePage/>}/>
             <Route path="/login" element={<SignInPage/>}/>
             <Route path="/register" element={<SignUpPage/>}/>
-            <Route path="/profile" element={<UserProfie/>}/>
-          
+
+            {/* Private Routes */}
+
+            <Route path="" element={<UserPrivateRoutes/>}>
+            <Route path="/profile" element={<HomePage/>}/>  
+            </Route>
+             
         </Routes>
  
   )
