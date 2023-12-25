@@ -25,12 +25,13 @@ export const userController = (
   //route    POST /api/user
   //access   public
   const userSignIn = asyncHandler(async (req: Request, res: Response) => {
-    const { email, password } = req.body;
+    const { email, pass } = req.body;
     console.log(email)
+    console.log(pass)
 
     const result = await userCases(dbRepositoryuser).userSignIn(
       email,
-      password,
+      pass,
       res
     );
     if (result.success) {

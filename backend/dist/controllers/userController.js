@@ -29,11 +29,12 @@ const userController = (dbInterface, dbImplements) => {
     //route    POST /api/user
     //access   public
     const userSignIn = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        const { email, password } = req.body;
+        const { email, pass } = req.body;
         console.log(email);
-        const result = yield (0, userCases_1.userCases)(dbRepositoryuser).userSignIn(email, password, res);
+        console.log(pass);
+        const result = yield (0, userCases_1.userCases)(dbRepositoryuser).userSignIn(email, pass, res);
         if (result.success) {
-            res.status(200).json({ message: "user signed in successfully" });
+            res.status(200).json({ message: "user signed in successfully", result });
         }
         else if (result.error === "Incorrect password") {
             res.status(401).json({ message: "Incorrect password" });
