@@ -16,7 +16,17 @@ exports.userCases = void 0;
 const generateJwt_1 = __importDefault(require("../services/generateJwt"));
 const userCases = (repository) => {
     const findByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () { return yield repository.findByEmail(email); });
-    const addUser = (user) => __awaiter(void 0, void 0, void 0, function* () { return yield repository.adduser(user); });
+    const addUser = (user) => __awaiter(void 0, void 0, void 0, function* () {
+        const newEmail = user.email;
+        const email = yield repository.findByEmail(newEmail);
+        if (email) {
+            return { success: false, error: 'user already exist' };
+        }
+        else {
+            return yield repository.adduser(user);
+        }
+        ;
+    });
     const userSignIn = (email, password, res) => __awaiter(void 0, void 0, void 0, function* () {
         const user = yield repository.findByEmail(email);
         if (!user) {

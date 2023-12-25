@@ -22,8 +22,9 @@ const userController = (dbInterface, dbImplements) => {
     //access   public
     const addUser = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const user = req.body;
-        yield (0, userCases_1.userCases)(dbRepositoryuser).addUser(user);
-        res.status(201).json({ message: "user added successfully" });
+        const userData = yield (0, userCases_1.userCases)(dbRepositoryuser).addUser(user);
+        console.log(userData);
+        res.status(201).json({ message: "user added successfully", userData });
     }));
     //desc     user login
     //route    POST /api/user

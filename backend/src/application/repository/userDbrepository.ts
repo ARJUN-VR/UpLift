@@ -3,7 +3,7 @@ import { UserDbMethods } from "../../frameworks/database/mongoDb/implementations
 
 export const userDbInterface = (repository: ReturnType<UserDbMethods>) => {
 
-  const adduser = async (user: userInterface) => await repository.addUser(user);
+  const adduser = async (user: userInterface) =>{ return  await repository.addUser(user);}
 
   const findByEmail = async (email: string) => {
     const user = await repository.findByEmail(email);

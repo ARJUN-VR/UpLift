@@ -8,4 +8,6 @@ export interface userInterface {
   password: string;
   credentials?: string;
   matchPassword?(enteredPassword: string): Promise<boolean>;
+
+
 }

@@ -16,9 +16,13 @@ export const userController = (
   //access   public
   const addUser = asyncHandler(async (req: Request, res: Response) => {
     const user: userInterface = req.body;
-    await userCases(dbRepositoryuser).addUser(user);
+   const userData:userInterface | {} =  await userCases(dbRepositoryuser).addUser(user);
+  if(userData==false){
+    res.status(401).json({message:'user already exist'})
+  }else{
+    res.status(201).json({ message: "user added successfully" ,userData});
 
-    res.status(201).json({ message: "user added successfully" });
+  }
   });
 
   //desc     user login
