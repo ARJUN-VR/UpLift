@@ -15,6 +15,9 @@ export const adminController = (
   //access   public
   const adminSignin = asyncHandler(async (req: Request, res: Response) => {
     const { email, password } = req.body;
+    console.log("data");
+    console.log(email);
+    console.log(password);
     const result = await adminCases(dbRepsitoryAdmn).adminSignin(
       email,
       password,
@@ -39,8 +42,25 @@ export const adminController = (
     res.status(200).json({ message: "user signed out successfully" });
   });
 
+  ///desc fetch users
+  //route GET /api/admin/getusers
+  //access private
+  const getUsers = asyncHandler(async (req: Request, res: Response) => {
+    const users = await adminCases(dbRepsitoryAdmn).getUsers();
+
+    res.status(200).json({ message: "users fetched successfully", users });
+  });
+
+  const blockUser = asyncHandler(async (req: Request, res: Response) => {
+    const email: string = req.query.email as string;
+    await adminCases(dbRepsitoryAdmn).blockUser(email);
+    res.status(200).json({ message: "user blocked/unblocked successfully" });
+  });
+
   return {
     adminSignin,
     logout,
+    getUsers,
+    blockUser,
   };
 };

@@ -1,14 +1,25 @@
 import { AdminDbMethods } from "../../frameworks/database/mongoDb/implementations/adminDbMethods";
-import { Admin } from "../../frameworks/database/mongoDb/model/adminSchema";
+
 
 
 export const adminDbInterface = (repository:ReturnType<AdminDbMethods>) =>{
+
    const findByEmail=async(email:string)=>{
-    return await Admin.findOne({email:email})
+    return await repository.findByEmail(email)
+   }
+
+   const getUsers = async()=>{
+      return await repository.getUsers()
+   }
+
+   const blockUser = async(email:string | undefined)=>{
+      return await repository.blockUser(email)
    }
 
    return{
-    findByEmail
+    findByEmail,
+    getUsers,
+    blockUser
    }
 }
 

@@ -1,4 +1,5 @@
 import { Admin } from "../model/adminSchema";
+import { User } from "../model/userSchema";
 
 
 export const adminDbMethods =()=>{
@@ -6,8 +7,30 @@ export const adminDbMethods =()=>{
         return await Admin.findOne({email:email})
     }
 
+    const getUsers = async()=>{
+        return  await User.find().select('-password')
+        
+    }
+
+    const blockUser = async(email:string | undefined)=>{
+        console.log(email)
+       const user = await User.findOne({email:email})
+       console.log(user)
+       
+       if(!user){
+        return {success:false}
+       }else{
+        
+        user.isBlocked = !user.isBlocked
+       return  await user.save()
+       }
+      
+    }
+
     return {
-        findByEmail
+        findByEmail,
+        getUsers,
+        blockUser
     }
 }
 

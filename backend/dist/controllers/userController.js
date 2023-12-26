@@ -35,8 +35,6 @@ const userController = (dbInterface, dbImplements) => {
     //access   public
     const userSignIn = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const { email, pass } = req.body;
-        console.log(email);
-        console.log(pass);
         const result = yield (0, userCases_1.userCases)(dbRepositoryuser).userSignIn(email, pass, res);
         if (result.success) {
             res.status(200).json({ message: "user signed in successfully", result });

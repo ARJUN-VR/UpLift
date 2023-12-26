@@ -10,6 +10,8 @@ const controller = adminController(adminDbInterface,adminDbMethods)
 
 adminRouter.post('/login',controller.adminSignin)
 adminRouter.post('/logout',controller.logout)
+adminRouter.get('/getusers',controller.getUsers)
+adminRouter.patch('/blockuser',controller.blockUser)
 
 export default adminRouter
 

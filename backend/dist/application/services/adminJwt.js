@@ -8,22 +8,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.adminDbInterface = void 0;
-const adminDbInterface = (repository) => {
-    const findByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield repository.findByEmail(email);
-    });
-    const getUsers = () => __awaiter(void 0, void 0, void 0, function* () {
-        return yield repository.getUsers();
-    });
-    const blockUser = (email) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield repository.blockUser(email);
-    });
-    return {
-        findByEmail,
-        getUsers,
-        blockUser
-    };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-exports.adminDbInterface = adminDbInterface;
+Object.defineProperty(exports, "__esModule", { value: true });
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const config_1 = require("../../frameworks/database/mongoDb/config");
+const generateAdminToken = (res, admin) => __awaiter(void 0, void 0, void 0, function* () {
+    const Id = admin._id;
+    const Token = jsonwebtoken_1.default.sign({ Id }, config_1.configKeys.JWT_KEY, {
+        expiresIn: '10d'
+    });
+    res.cookie('adminJwt', Token, {
+        httponly: true,
+        secure: config_1.configKeys.NODE_ENV !== 'development',
+        samesite: true,
+        maxAge: 30 * 24 * 60 * 60 * 1000
+    });
+});
+exports.default = generateAdminToken;

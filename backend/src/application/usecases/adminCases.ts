@@ -26,8 +26,20 @@ export const adminCases = (repository:ReturnType<AdminDbRepository>)=>{
         expires:new Date(0)
     })
    }
+
+   const getUsers = async()=>{
+    return await repository.getUsers()
+   }
+
+   const blockUser = async(email:string | undefined)=>{
+    return await repository.blockUser(email)
+   }
+
+
     return {
         adminSignin,
-        logout
+        logout,
+        getUsers,
+        blockUser
     }
 }
