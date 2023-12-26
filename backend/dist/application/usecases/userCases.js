@@ -20,7 +20,7 @@ const userCases = (repository) => {
         const newEmail = user.email;
         const email = yield repository.findByEmail(newEmail);
         if (email) {
-            return { success: false, error: 'user already exist' };
+            return false;
         }
         else {
             return yield repository.adduser(user);

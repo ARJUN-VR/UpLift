@@ -12,6 +12,7 @@ router.post("/register", controller.addUser);
 router.post("/login",controller.userSignIn);
 router.post('/logout',controller.userSignout)
 router.get('/profile',auth,controller.getProfile)
-router.patch('/profile',auth,controller.editProfile)
+router.patch('/profile',auth,controller.editProfile)  
 
 export default router;
+

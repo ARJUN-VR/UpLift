@@ -30,8 +30,7 @@ export const userController = (
   //access   public
   const userSignIn = asyncHandler(async (req: Request, res: Response) => {
     const { email, pass } = req.body;
-    console.log(email)
-    console.log(pass)
+
 
     const result = await userCases(dbRepositoryuser).userSignIn(
       email,
