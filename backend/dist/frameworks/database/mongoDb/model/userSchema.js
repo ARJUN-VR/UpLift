@@ -34,6 +34,7 @@ const userSchema = new mongoose_1.Schema({
     },
     isBlocked: {
         type: Boolean,
+        default: false,
         required: false
     }
 }, { timestamps: true });

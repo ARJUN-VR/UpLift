@@ -16,4 +16,5 @@ router.post("/login", controller.userSignIn);
 router.post('/logout', controller.userSignout);
 router.get('/profile', auth, controller.getProfile);
 router.patch('/profile', auth, controller.editProfile);
+router.patch('/forgotpassword', controller.forgotPassword);
 exports.default = router;

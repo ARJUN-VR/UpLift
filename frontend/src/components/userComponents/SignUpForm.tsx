@@ -36,6 +36,7 @@ export const SignUpForm = () => {
 
       dispatch(setCredentials({...userData}))
       navigate('/')
+      toast.success('registration success.')
       
     } catch (err) {
       toast.error(err?.data?.message || err.error)

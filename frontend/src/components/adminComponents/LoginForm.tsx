@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom"
 import { RootState } from "../../redux/store"
 import { useAdminloginMutation } from "../../redux/slices/adminApiSlice"
 import { setCredentials } from "../../redux/reducers/adminReducers"
+import { toast } from "react-toastify"
 
 
 export const LoginForm = () => {
@@ -30,8 +31,8 @@ useEffect(()=>{
     event.preventDefault()
     const data = await adminLogin({email,password}).unwrap()
     dispatch(setCredentials({...data}))
-    console.log(data)
     navigate('/admin/home')
+    toast.success('Admin signed in.')
 
 
   }
@@ -69,7 +70,7 @@ useEffect(()=>{
     <div>
       <div className="relative mt-2 w-full">
         <input
-          type="text"
+          type="password"
           name="password"
           value={password}
           className="border-1 peer block w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-2.5 pb-2.5 pt-4 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0"

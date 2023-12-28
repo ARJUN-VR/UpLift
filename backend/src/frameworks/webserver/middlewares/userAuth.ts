@@ -20,6 +20,7 @@ export const protect = (
   const dbRepository = userDbInterface(dbImplements());
 
   return asyncHandler(async (req: Request, res: Response,next:NextFunction) => {
+
     const token = req.cookies.jwt;
     console.log('token: ',token)
 
@@ -30,6 +31,9 @@ export const protect = (
           configKeys.JWT_KEY
         ) as JwtPayload;
         const userdata = await dbRepository.findById(decoded.userId);
+        if(userdata?.isBlocked){
+          throw new Error('user blocked')
+        }
         req.user=userdata
         next()
       }catch(error){

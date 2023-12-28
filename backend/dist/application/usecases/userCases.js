@@ -54,12 +54,16 @@ const userCases = (repository) => {
     const updateProfile = (req) => __awaiter(void 0, void 0, void 0, function* () {
         return yield repository.saveUser(req);
     });
+    const forgotPassword = (email, password) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.forgotPassword(email, password);
+    });
     return {
         findByEmail,
         addUser,
         userSignIn,
         userSignout,
-        updateProfile
+        updateProfile,
+        forgotPassword
     };
 };
 exports.userCases = userCases;

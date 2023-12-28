@@ -53,8 +53,8 @@ export const adminController = (
 
   const blockUser = asyncHandler(async (req: Request, res: Response) => {
     const email: string = req.query.email as string;
-    await adminCases(dbRepsitoryAdmn).blockUser(email);
-    res.status(200).json({ message: "user blocked/unblocked successfully" });
+    const user = await adminCases(dbRepsitoryAdmn).blockUser(email);
+    res.status(200).json({ message: "user blocked/unblocked successfully" ,user});
   });
 
   return {

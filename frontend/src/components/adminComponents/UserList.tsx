@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAdmingetusersMutation, useBlockuserMutation } from "../../redux/slices/adminApiSlice";
+import { toast } from "react-toastify";
 
 export interface User {
   _id?: string;
@@ -13,6 +14,7 @@ export interface User {
 export const UserList = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [state,setState] = useState<boolean>(false)
+
 
 
   
@@ -36,8 +38,17 @@ export const UserList = () => {
   
 
   const blockUser = async(email:string)=>{
-          await block(email)
-          setState(!state)
+        const result =  await block(email)
+        console.log(result)
+        const user :User = result.data?.user
+        console.log(user,'userer')
+        setState(!state)
+          
+          if(user.isBlocked){
+            toast.success('user blocked.')
+          }else{
+            toast.success('user unblocked.')
+          }
   }
  
 

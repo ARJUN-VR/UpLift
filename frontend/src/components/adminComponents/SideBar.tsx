@@ -29,13 +29,13 @@ const SideBar = () => {
       <li className={`${tab=='dashboard' ? 'bg-gray-100':''}`}>
         <a href="#" className={`${tab=='dashboard' ? 'translate-x-4 text-gray-800 ':''}flex flex-row items-center h-12 transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800`} onClick={()=>setTab('dashboard')}>
           <span className="inline-flex items-center justify-center h-12 w-12 text-lg text-gray-400" ><i className="bx bx-home" ></i></span>
-          <span className="text-sm font-medium">Dashboard</span>
+          <span className="text-sm font-medium" onClick={()=>navigate('/admin/home')}>Dashboard</span>
         </a>
       </li>
       <li className={`${tab=='users' ? 'bg-gray-100':''}`}>
         <a href="#" className={`${tab=='users' ? 'translate-x-4 text-gray-800 ':''}flex flex-row items-center h-12 transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800`} onClick={()=>setTab('users')}>
           <span className="inline-flex items-center justify-center h-12 w-12 text-lg text-gray-400"><i className="bx bx-music"></i></span>
-          <span className="text-sm font-medium">Users</span>
+          <span className="text-sm font-medium" onClick={()=>navigate('/admin/users')}>Users</span>
         </a>
       </li>
       <li className={`${tab=='creators' ? 'bg-gray-100':''}`}>

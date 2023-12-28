@@ -7,12 +7,25 @@ import { RootState } from "../../redux/store"
 
 export const Profile = () => {
 
-  const {userInfo} = useSelector((state:RootState)=>state.auth)
-  console.log(userInfo)
-  const name = userInfo.result.user.name
-  const email = userInfo.result.user.email
-  const createdAt = userInfo.result.user.createdAt
-  const date = new Date(createdAt).toDateString()
+  const { userInfo } = useSelector((state: RootState) => state.auth);
+console.log(userInfo);
+
+let name = '';
+let email = '';
+let date = '';
+
+if (userInfo?.result?.user) {
+  name = userInfo.result.user.name || ''; // or provide a default value if name doesn't exist
+  email = userInfo.result.user.email || ''; // or provide a default value if email doesn't exist
+  const createdAt = userInfo.result.user.createdAt || '';
+  date = new Date(createdAt).toDateString();
+} else if (userInfo?.userData) {
+  name = userInfo.userData.name || ''; // or provide a default value if name doesn't exist
+  email = userInfo.userData.email || ''; // or provide a default value if email doesn't exist
+  const createdAt = userInfo.userData.createdAt || '';
+  date = new Date(createdAt).toDateString();
+}
+  console.log(name,'namem')
 
 
   return (
@@ -41,7 +54,7 @@ export const Profile = () => {
   </div>
 </div>
 <div className="w-[700px] h-[500px] bg-violet-200 flex gap-x-3 mt-8 ml-10 rounded-2xl" >
-<div className="bg-gray-600 w-full rounded-2xl flex gap-x-48 pt-4">
+<div className="bg-gray-800 w-full rounded-2xl flex gap-x-48 pt-4">
   <Link to={''} className="pl-44 text-white font-bold">Intersted</Link>
   <Link to={''} className="text-white font-bold">Backed</Link>
 

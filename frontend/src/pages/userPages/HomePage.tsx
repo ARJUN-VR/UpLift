@@ -17,9 +17,9 @@ export const HomePage = () => {
 
    <div className="bg-gray-800 h-screen">
    <Header/>
-<div className="bg-gray-800 flex">
+<div className="bg-gray-800 flex ">
 <SideBar/>
-<div className="bg-gray-800 w-full h-[570px] mt-20 rounded-2xl mr-5">
+<div >
 {path =='/' ? (<Content/>): path =='/profile' ? (<Profile/>):null}
 </div>
 </div>

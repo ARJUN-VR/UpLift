@@ -25,6 +25,9 @@ const protect = (userDbInterface, dbImplements) => {
             try {
                 const decoded = jsonwebtoken_1.default.verify(token, config_1.configKeys.JWT_KEY);
                 const userdata = yield dbRepository.findById(decoded.userId);
+                if (userdata === null || userdata === void 0 ? void 0 : userdata.isBlocked) {
+                    throw new Error('user blocked');
+                }
                 req.user = userdata;
                 next();
             }

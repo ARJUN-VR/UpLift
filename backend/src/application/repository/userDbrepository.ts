@@ -16,11 +16,16 @@ export const userDbInterface = (repository: ReturnType<UserDbMethods>) => {
   return  await repository.saveUser(req)
   }
 
+  const forgotPassword = async(email:string,password:string)=>{
+    return await repository.forgotPassword(email,password)
+  }
+
   return {
     adduser,
     findByEmail,
     findById,
-    saveUser
+    saveUser,
+    forgotPassword
   };
 };
 

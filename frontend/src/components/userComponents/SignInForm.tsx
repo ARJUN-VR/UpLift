@@ -30,7 +30,7 @@ export const SignInForm = () => {
        try{
         const res = await login({email,pass}).unwrap()
         dispatch(setCredentials({...res}))
-        console.log(res)
+        toast.success('signed in successfully.')
 
        }catch(err){
         toast.error(err?.data?.message || err.error)
@@ -69,7 +69,7 @@ export const SignInForm = () => {
       <div>
         <div className="relative mt-2 w-full">
           <input
-            type="text"
+            type="password"
             name="password"
             value={pass}
             className="border-1 peer block w-full appearance-none rounded-lg border border-gray-300 bg-transparent px-2.5 pb-2.5 pt-4 text-sm text-gray-900 focus:border-blue-600 focus:outline-none focus:ring-0"
@@ -84,9 +84,12 @@ export const SignInForm = () => {
             Enter Your Password
           </label>
         </div>
+    
       </div>
   
       <button type="submit" className="rounded-lg bg-blue-600 py-3 mt-4 font-bold text-white ">Login</button>
+      <div>don't have an account? <span className="text-blue-800"><a  href="/register">register account</a></span></div>
+     
      
     </div>
      

@@ -12,4 +12,5 @@ const controller = (0, adminController_1.adminController)(adminDbrepository_1.ad
 adminRouter.post('/login', controller.adminSignin);
 adminRouter.post('/logout', controller.logout);
 adminRouter.get('/getusers', controller.getUsers);
+adminRouter.patch('/blockuser', controller.blockUser);
 exports.default = adminRouter;

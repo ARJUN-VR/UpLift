@@ -47,11 +47,16 @@ export const userCases = (repository: ReturnType<UserDbInterFace>) => {
    return await repository.saveUser(req)
   }
 
+  const forgotPassword =async(email:string,password:string)=>{
+    return await repository.forgotPassword(email,password)
+  }
+
   return {
     findByEmail,
     addUser,
     userSignIn,
     userSignout,
-    updateProfile
+    updateProfile,
+    forgotPassword
   };
 };

@@ -20,10 +20,13 @@ const adminDbMethods = () => {
         return yield userSchema_1.User.find().select('-password');
     });
     const blockUser = (email) => __awaiter(void 0, void 0, void 0, function* () {
-        const user = yield userSchema_1.User.findOne({ email });
-        if (user) {
+        const user = yield userSchema_1.User.findOne({ email: email });
+        if (!user) {
+            return { success: false };
+        }
+        else {
             user.isBlocked = !user.isBlocked;
-            yield user.save();
+            return yield user.save();
         }
     });
     return {

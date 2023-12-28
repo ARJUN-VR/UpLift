@@ -12,7 +12,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.userDbMethods = void 0;
 const userSchema_1 = require("../model/userSchema");
 const userDbMethods = () => {
-    const addUser = (user) => __awaiter(void 0, void 0, void 0, function* () { return yield userSchema_1.User.create(user); });
+    const addUser = (user) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield userSchema_1.User.create(user);
+    });
     const findByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () {
         const user = yield userSchema_1.User.findOne({ email: email });
         return user;
@@ -29,11 +31,24 @@ const userDbMethods = () => {
             return yield user.save();
         }
     });
+    const forgotPassword = (email, password) => __awaiter(void 0, void 0, void 0, function* () {
+        const user = yield userSchema_1.User.findOne({ email: email });
+        if (!user) {
+            return { success: false, error: "user not found" };
+        }
+        else {
+            const userDoc = user;
+            userDoc.password = password;
+            yield userDoc.save();
+            return { success: true, message: "passowrd changed succesfully" };
+        }
+    });
     return {
         addUser,
         findByEmail,
         findById,
-        saveUser
+        saveUser,
+        forgotPassword,
     };
 };
 exports.userDbMethods = userDbMethods;

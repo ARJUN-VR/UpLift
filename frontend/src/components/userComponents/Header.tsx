@@ -4,31 +4,23 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 export const Header = () => {
   return (
     // <!-- component -->
-<div className="h-20 w-full bg-gray-800 relative flex overflow-hidden">
-
-
-  
- 
-  <div className="w-full h-full flex flex-row  ">
-    {/* <!-- Header --> */}
-    <header className="h-16 w-full flex items-center relative  px-1  bg-gray-800 text-white ">
+    <div className="h-16 w-full flex items-center relative  px-1  bg-gray-800 text-white ">
       {/* search */}
-      <div className="flex  space-x-3 items-center ml-[280px] bg-gray-800 mt-10 ">
-    <input type="text" className='rounded-xl bg-gray-500 h-[30px] w-[180px]'/>
+      <div className="flex  space-x-3 items-center ml-[364px] bg-gray-800 mt-1 ">
+    <input type="text" className='rounded-xl bg-gray-500 h-[30px] w-[350px]'/>
     <FontAwesomeIcon icon={faSearch} color='white'/>
       </div>
       {/* create campaign button*/}
-      <div className='w-36 h-3/4 bg-gray-800 ml-[699px] mt-10'>
-        <button className='bg-blue-400 w-full h-full rounded-2xl '>
+      <div className='w-36 h-3/4 bg-gray-800 ml-[599px] mt-1'>
+        <button className='bg-teal-500 w-full h-full rounded-2xl  '>
           Create campaign
         </button>
       </div>
      
-    </header>
+    </div>
 
-   
-  </div>
 
-</div>
+
+
   )
 }

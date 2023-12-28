@@ -13,9 +13,7 @@ export const adminDbMethods =()=>{
     }
 
     const blockUser = async(email:string | undefined)=>{
-        console.log(email)
        const user = await User.findOne({email:email})
-       console.log(user)
        
        if(!user){
         return {success:false}

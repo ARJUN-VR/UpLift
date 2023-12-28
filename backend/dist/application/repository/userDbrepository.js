@@ -22,11 +22,15 @@ const userDbInterface = (repository) => {
     const saveUser = (req) => __awaiter(void 0, void 0, void 0, function* () {
         return yield repository.saveUser(req);
     });
+    const forgotPassword = (email, password) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.forgotPassword(email, password);
+    });
     return {
         adduser,
         findByEmail,
         findById,
-        saveUser
+        saveUser,
+        forgotPassword
     };
 };
 exports.userDbInterface = userDbInterface;

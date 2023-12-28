@@ -24,7 +24,7 @@ const userController = (dbInterface, dbImplements) => {
         const user = req.body;
         const userData = yield (0, userCases_1.userCases)(dbRepositoryuser).addUser(user);
         if (userData == false) {
-            res.status(401).json({ message: 'user already exist' });
+            res.status(401).json({ message: "user already exist" });
         }
         else {
             res.status(201).json({ message: "user added successfully", userData });
@@ -62,22 +62,30 @@ const userController = (dbInterface, dbImplements) => {
     const getProfile = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const email = req.user.email;
         const userdata = yield (0, userCases_1.userCases)(dbRepositoryuser).findByEmail(email);
-        res.status(200).json({ message: 'fetched user profile successully', userdata });
+        res.status(200).json({ message: "fetched user profile successully", userdata });
     }));
     //desc edit UserProfile
     //route PATCH /api/user/profile
     //access private
     const editProfile = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        console.log('its me ');
         const updateduser = yield (0, userCases_1.userCases)(dbRepositoryuser).updateProfile(req);
-        res.status(200).json({ message: 'profile updated successfully' });
+        res.status(200).json({ message: "profile updated successfully" });
+    }));
+    //desc forgot password
+    //route PATCH /api/user/forgotpassword
+    //access public
+    const forgotPassword = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const { email, password } = req.body;
+        yield (0, userCases_1.userCases)(dbRepositoryuser).forgotPassword(email, password);
+        res.status(200).json({ message: "password changed successfully" });
     }));
     return {
         addUser,
         userSignIn,
         userSignout,
         getProfile,
-        editProfile
+        editProfile,
+        forgotPassword,
     };
 };
 exports.userController = userController;

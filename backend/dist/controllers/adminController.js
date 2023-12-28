@@ -22,7 +22,7 @@ const adminController = (dbInterface, dbImplements) => {
     //access   public
     const adminSignin = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const { email, password } = req.body;
-        console.log('data');
+        console.log("data");
         console.log(email);
         console.log(password);
         const result = yield (0, adminCases_1.adminCases)(dbRepsitoryAdmn).adminSignin(email, password, res);
@@ -50,20 +50,19 @@ const adminController = (dbInterface, dbImplements) => {
     //route GET /api/admin/getusers
     //access private
     const getUsers = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        console.log('gettiitigoigjsgjsfklg');
         const users = yield (0, adminCases_1.adminCases)(dbRepsitoryAdmn).getUsers();
-        console.log(users);
-        res.status(200).json({ message: 'users fetched successfully', users });
+        res.status(200).json({ message: "users fetched successfully", users });
     }));
     const blockUser = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        yield (0, adminCases_1.adminCases)(dbRepsitoryAdmn).blockUser(req.body.email);
-        res.status(200).json({ message: 'user blocked/unblocked successfully' });
+        const email = req.query.email;
+        const user = yield (0, adminCases_1.adminCases)(dbRepsitoryAdmn).blockUser(email);
+        res.status(200).json({ message: "user blocked/unblocked successfully", user });
     }));
     return {
         adminSignin,
         logout,
         getUsers,
-        blockUser
+        blockUser,
     };
 };
 exports.adminController = adminController;
