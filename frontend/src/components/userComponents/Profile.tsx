@@ -1,31 +1,79 @@
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { useSelector } from "react-redux"
-import { Link } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
+import { Link, useNavigate } from "react-router-dom"
 import { RootState } from "../../redux/store"
+import { useGetProfileMutation, useLogoutMutation } from "../../redux/slices/userApiSlice"
+import { useEffect, useState } from "react"
+import { toast } from "react-toastify"
+import { logout } from '../../redux/reducers/userReducers';
 
 
 export const Profile = () => {
+  const [name,setName] = useState<string>('')
+  const [email,setEmail] = useState<string>('')
+  const [date,setDate] = useState('')
 
-  const { userInfo } = useSelector((state: RootState) => state.auth);
-console.log(userInfo);
+  const [getProfile] = useGetProfileMutation() 
+  const [logoutCall] = useLogoutMutation()
 
-let name = '';
-let email = '';
-let date = '';
 
-if (userInfo?.result?.user) {
-  name = userInfo.result.user.name || ''; // or provide a default value if name doesn't exist
-  email = userInfo.result.user.email || ''; // or provide a default value if email doesn't exist
-  const createdAt = userInfo.result.user.createdAt || '';
-  date = new Date(createdAt).toDateString();
-} else if (userInfo?.userData) {
-  name = userInfo.userData.name || ''; // or provide a default value if name doesn't exist
-  email = userInfo.userData.email || ''; // or provide a default value if email doesn't exist
-  const createdAt = userInfo.userData.createdAt || '';
-  date = new Date(createdAt).toDateString();
-}
-  console.log(name,'namem')
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const { userInfo } = useSelector((state:RootState) => state.auth);
+// console.log(userInfo);
+
+// let name = '';
+// let email = '';
+// let date = '';
+
+// if (userInfo?.result?.user) {
+//   name = userInfo.result.user.name || ''; 
+//   email = userInfo.result.user.email || ''; 
+//   const createdAt = userInfo.result.user.createdAt || '';
+//   date = new Date(createdAt).toDateString();
+// } else if (userInfo?.userData) {
+//   name = userInfo.userData.name || ''; 
+//   email = userInfo.userData.email || ''; 
+//   const createdAt = userInfo.userData.createdAt || '';
+//   date = new Date(createdAt).toDateString();
+// }
+
+useEffect(()=>{
+  if(!userInfo){
+    navigate('/login')
+  }
+ const getData = async()=>{
+  try{
+    const userData = await getProfile('')
+    console.log(userData)
+   
+    // const data = userData.data.userdata
+   
+    if(userData.error?.data?.message == 'Access denied.'){
+      await logoutCall('').unwrap()
+      dispatch(logout())
+      navigate('/login')
+      toast.error('Access denied.')
+    }else{
+      console.log(name,'name')
+      setName(userData.data.userdata.name)
+      setEmail(userData.data.userdata.email)
+      const date = userData.data.userdata.createdAt
+      const modifiedDate = new Date(date).toDateString()
+ 
+      setDate(modifiedDate)
+    }
+  }catch(err){
+    console.log(err)
+    toast.error(err?.data?.message || err.error)
+  }
+
+ }
+ getData()
+},[])
+ 
 
 
   return (

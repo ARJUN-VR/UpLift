@@ -20,19 +20,21 @@ const protect = (userDbInterface, dbImplements) => {
     const dbRepository = userDbInterface(dbImplements());
     return (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         const token = req.cookies.jwt;
-        console.log('token: ', token);
         if (token) {
             try {
                 const decoded = jsonwebtoken_1.default.verify(token, config_1.configKeys.JWT_KEY);
                 const userdata = yield dbRepository.findById(decoded.userId);
                 if (userdata === null || userdata === void 0 ? void 0 : userdata.isBlocked) {
-                    throw new Error('user blocked');
+                    const error = new Error('Access denied.');
+                    throw error;
                 }
-                req.user = userdata;
-                next();
+                else {
+                    req.user = userdata;
+                    next();
+                }
             }
             catch (error) {
-                console.log(error, 'error during validation');
+                next(error);
             }
         }
         else {

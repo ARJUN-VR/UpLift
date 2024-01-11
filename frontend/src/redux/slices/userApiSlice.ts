@@ -12,9 +12,51 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 body:data
             })
         }),
+        getProfile:builder.mutation({
+            query:()=>({
+                url:`${USER_URL}/profile`,
+                method:'GET'
+            })
+        }),
         register:builder.mutation({
             query:(data)=>({
                 url:`${USER_URL}/register`,
+                method:'POST',
+                body:data
+            })
+        }),
+        getCampaigns:builder.mutation({
+            query:()=>({
+                url:`${USER_URL}/get-campaigns`,
+                method:'GET'
+             
+            })
+        }),
+        sendOTP:builder.mutation({
+            query:(data)=>({
+                url:`${USER_URL}/send-otp`,
+                method:'POST',
+                body:data
+            })
+        }),
+        changePassword:builder.mutation({
+            query:(data)=>({
+                url:`${USER_URL}/forgot-password`,
+                method:'PATCH',
+                body:data
+            })
+        }),
+        verifyOTP:builder.mutation({
+            query:(data)=>({
+                url:`${USER_URL}/verify-otp`,
+                method:'POST',
+                body:data
+            })
+        })
+        ,
+        createCampaign:builder.mutation({
+            query:(data)=>({
+                url:`${USER_URL}/create-campaign`,
                 method:'POST',
                 body:data
             })
@@ -29,4 +71,14 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 })
 
 
-export const {useLoginMutation,useLogoutMutation,useRegisterMutation} = usersApiSlice
+export const {
+    useLoginMutation,
+    useLogoutMutation,
+    useRegisterMutation,
+    useSendOTPMutation,
+    useVerifyOTPMutation,
+    useChangePasswordMutation,
+    useCreateCampaignMutation,
+    useGetProfileMutation,
+    useGetCampaignsMutation
+} = usersApiSlice

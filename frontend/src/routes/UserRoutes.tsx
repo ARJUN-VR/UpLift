@@ -3,6 +3,9 @@ import { SignInPage } from "../pages/userPages/SignInPage"
 import { SignUpPage } from "../pages/userPages/SignUpPage"
 import { HomePage } from "../pages/userPages/HomePage"
 import { UserPrivateRoutes } from "./UserPrivateRoutes"
+import { EmailVerification } from "../components/userComponents/EmailVerification"
+import { OtpVerification } from "../components/userComponents/OtpVerification"
+import { SetNewPassowrd } from "../components/userComponents/SetNewPassowrd"
 
 
 
@@ -15,11 +18,15 @@ export const UserRoutes = () => {
             <Route path="/" element={<HomePage/>}/>
             <Route path="/login" element={<SignInPage/>}/>
             <Route path="/register" element={<SignUpPage/>}/>
+            <Route path="/email-verification" element={<EmailVerification/>}/>
+            <Route path="/otp" element={<OtpVerification/>}/>
+            <Route path="/setpass" element={<SetNewPassowrd/>}/>
 
             {/* Private Routes */}
 
             <Route path="" element={<UserPrivateRoutes/>}>
             <Route path="/profile" element={<HomePage/>}/>  
+            
             </Route>
              
         </Routes>

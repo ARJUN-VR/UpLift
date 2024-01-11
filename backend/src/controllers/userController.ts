@@ -4,6 +4,7 @@ import { UserDbMethods } from "../frameworks/database/mongoDb/implementations/us
 import { UserDbInterFace } from "../application/repository/userDbrepository";
 import { userCases } from "../application/usecases/userCases";
 import asyncHandler from "express-async-handler";
+import { campaignInterface } from "../entities/Campaign";
 
 export const userController = (
   dbInterface: UserDbInterFace,
@@ -42,15 +43,17 @@ export const userController = (
       res.status(401).json({ message: "Incorrect password" });
     } else if (result.error === "no user found") {
       res.status(404).json({ message: "user not found" });
+    }else if(result.error === 'user blocked'){
+      res.status(403).json({message:'Access denied.'})
     } else {
       res.status(400).json({ message: "authentication failed" });
     }
   });
-   
+
   //desc   user Signout
   //route  POST /api/user/signout
   //access public
-  const userSignout = asyncHandler(async (req: Request, res: Response) => {
+  const userSignout = asyncHandler(async (req, res: Response) => {
     userCases(dbRepositoryuser).userSignout(res);
     res.status(200).json({ message: "user signedOut successfully" });
   });
@@ -61,7 +64,9 @@ export const userController = (
   const getProfile = asyncHandler(async (req: Request, res: Response) => {
     const email = req.user.email;
     const userdata = await userCases(dbRepositoryuser).findByEmail(email);
-    res.status(200).json({ message: "fetched user profile successully", userdata });
+    res
+      .status(200)
+      .json({ message: "fetched user profile successully", userdata });
   });
 
   //desc edit UserProfile
@@ -75,13 +80,62 @@ export const userController = (
   //desc forgot password
   //route PATCH /api/user/forgotpassword
   //access public
-
   const forgotPassword = asyncHandler(async (req: Request, res: Response) => {
     const { email, password } = req.body;
+    console.log(email, password, "email apsweorj");
     await userCases(dbRepositoryuser).forgotPassword(email, password);
     res.status(200).json({ message: "password changed successfully" });
   });
 
+  //desc Handling otp service
+  //route POST /api/user/sendotp
+  //access private
+  const SendOTP = asyncHandler(async (req: Request, res: Response) => {
+    const { email } = req.body;
+    console.log(email);
+    console.log("getting call..");
+    const otpResponse = await userCases(dbRepositoryuser).verifyUserAndSendOtp(
+      email
+    );
+    res.status(200).json(otpResponse);
+  });
+
+//desc otp verification
+//route POST /api/user/verify-otp
+//access public
+  const verifyOtp = asyncHandler(async (req: Request, res: Response) => {
+    const { email, newOtp } = req.body;
+    await userCases(dbRepositoryuser).verifyOtp(email, newOtp);
+    res.status(200).json({ message: "otp verified" });
+  });
+  
+//desc campaign creation
+//route POST /api/user/create-campaign
+//access private
+  const createCampaign = asyncHandler(async (req: Request, res: Response) => {
+
+    const { image } = req.body;
+    console.log(image)
+ 
+
+    const imgres = await userCases(dbRepositoryuser).uploadImage(image);
+    const campaign: campaignInterface = req.body;
+    console.log(campaign.userEmail,'emailll')
+    console.log(campaign,'this is campaign')
+    console.log(imgres,'imgressponse')
+ 
+   if(imgres){
+    campaign.image = imgres.secure_url;
+   }
+    
+    await userCases(dbRepositoryuser).createCampaign(campaign);
+    res.status(200).json({ message: "campaign created successfully" });
+  });
+
+  const listCampaigns = asyncHandler(async(req:Request,res:Response)=>{
+    const list = await userCases(dbRepositoryuser).listCampaigns()
+    res.status(200).json({list})
+  })
 
   return {
     addUser,
@@ -90,5 +144,9 @@ export const userController = (
     getProfile,
     editProfile,
     forgotPassword,
+    SendOTP,
+    verifyOtp,
+    createCampaign,
+    listCampaigns
   };
 };

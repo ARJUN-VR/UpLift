@@ -14,6 +14,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userCases = void 0;
 const generateJwt_1 = __importDefault(require("../services/generateJwt"));
+const otpGeneration_1 = __importDefault(require("../services/otpGeneration"));
+const cloudinary_1 = __importDefault(require("cloudinary"));
 const userCases = (repository) => {
     const findByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () { return yield repository.findByEmail(email); });
     const addUser = (user) => __awaiter(void 0, void 0, void 0, function* () {
@@ -25,12 +27,14 @@ const userCases = (repository) => {
         else {
             return yield repository.adduser(user);
         }
-        ;
     });
     const userSignIn = (email, password, res) => __awaiter(void 0, void 0, void 0, function* () {
         const user = yield repository.findByEmail(email);
         if (!user) {
             return { success: false, error: "no user found" };
+        }
+        if ('isBlocked' in user && user.isBlocked) {
+            return { success: false, error: 'user blocked' };
         }
         if (user && typeof user.matchPassword === "function") {
             if (yield user.matchPassword(password)) {
@@ -57,13 +61,66 @@ const userCases = (repository) => {
     const forgotPassword = (email, password) => __awaiter(void 0, void 0, void 0, function* () {
         return yield repository.forgotPassword(email, password);
     });
+    const verifyUserAndSendOtp = (email) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const user = yield repository.findByEmail(email);
+            if (user) {
+                const otp = yield (0, otpGeneration_1.default)(email);
+                yield repository.saveOtp(email, otp);
+                return { success: true, message: "OTP Sent succesfully" };
+            }
+            else {
+                return { success: false, message: "user not found" };
+            }
+        }
+        catch (error) {
+            console.log(error);
+            throw new Error("OTP send failed");
+        }
+    });
+    const verifyOtp = (email, otp) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const storedOtp = yield repository.findOtpUser(email);
+            if (storedOtp) {
+                if (storedOtp === otp) {
+                    return { success: true, message: 'otp verified' };
+                }
+                else {
+                    return { success: false, message: 'invalid otp' };
+                }
+            }
+        }
+        catch (error) {
+            throw new Error('error while otp verification');
+        }
+    });
+    const createCampaign = (campaign) => __awaiter(void 0, void 0, void 0, function* () {
+        yield repository.createCampaign(campaign);
+    });
+    const uploadImage = (imgUrl) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            console.log('image url: ', imgUrl);
+            return yield cloudinary_1.default.v2.uploader.upload(imgUrl);
+        }
+        catch (error) {
+            console.log(error);
+        }
+    });
+    const listCampaigns = () => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.listCampaigns();
+    });
     return {
         findByEmail,
         addUser,
         userSignIn,
         userSignout,
         updateProfile,
-        forgotPassword
+        forgotPassword,
+        verifyUserAndSendOtp,
+        verifyOtp,
+        createCampaign,
+        uploadImage,
+        listCampaigns
     };
 };
 exports.userCases = userCases;

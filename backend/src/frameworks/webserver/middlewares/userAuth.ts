@@ -13,16 +13,19 @@ declare global {
   }
 }
 
+
 export const protect = (
   userDbInterface: UserDbInterFace,
   dbImplements: UserDbMethods
 ) => {
+
   const dbRepository = userDbInterface(dbImplements());
 
   return asyncHandler(async (req: Request, res: Response,next:NextFunction) => {
 
+
     const token = req.cookies.jwt;
-    console.log('token: ',token)
+
 
     if (token) {
       try{
@@ -31,13 +34,18 @@ export const protect = (
           configKeys.JWT_KEY
         ) as JwtPayload;
         const userdata = await dbRepository.findById(decoded.userId);
+
         if(userdata?.isBlocked){
-          throw new Error('user blocked')
+          const error = new Error('Access denied.')
+          throw error
+        }else{
+          req.user=userdata
+          next()
         }
-        req.user=userdata
-        next()
+        
       }catch(error){
-        console.log(error,'error during validation')
+        next(error)
+ 
       }
     
     }else{

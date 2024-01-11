@@ -29,15 +29,17 @@ export const SignInForm = () => {
        event.preventDefault()
        try{
         const res = await login({email,pass}).unwrap()
+        console.log(res)
         dispatch(setCredentials({...res}))
         toast.success('signed in successfully.')
 
        }catch(err){
+        console.log(err)
         toast.error(err?.data?.message || err.error)
        }
   }
   return (
-    <div className="p-40">
+    <div className="mt-40">
       <form onSubmit={submitHandler}>
     <div className="flex w-96 flex-col space-y-5 rounded-lg border py-10 px-5 shadow-xl mx-auto">
       <div className="mx-auto mb-2 space-y-3">
@@ -60,7 +62,7 @@ export const SignInForm = () => {
             htmlFor="email"
             className="absolute top-2 left-1 z-10 origin-[0] -translate-y-4 scale-75 transform cursor-text select-none bg-white px-2 text-sm text-gray-500 duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:px-2 peer-focus:text-blue-600"
           >
-            {" "}
+         
             Enter Your Email{" "}
           </label>
         </div>
@@ -80,9 +82,10 @@ export const SignInForm = () => {
             htmlFor="password"
             className="absolute top-2 left-1 z-10 origin-[0] -translate-y-4 scale-75 transform cursor-text select-none bg-white px-2 text-sm text-gray-500 duration-300 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:scale-100 peer-focus:top-2 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:px-2 peer-focus:text-blue-600"
           >
-            {" "}
+          
             Enter Your Password
           </label>
+         <span className="ml-1 text-blue-600"><a href="/email-verification"> Forgot password?</a></span> 
         </div>
     
       </div>

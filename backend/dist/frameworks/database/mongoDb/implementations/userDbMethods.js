@@ -11,6 +11,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userDbMethods = void 0;
 const userSchema_1 = require("../model/userSchema");
+const otpSchema_1 = require("../model/otpSchema");
+const campaignSchma_1 = require("../model/campaignSchma");
 const userDbMethods = () => {
     const addUser = (user) => __awaiter(void 0, void 0, void 0, function* () {
         return yield userSchema_1.User.create(user);
@@ -38,10 +40,37 @@ const userDbMethods = () => {
         }
         else {
             const userDoc = user;
+            console.log(password, 'before');
             userDoc.password = password;
+            console.log(userDoc.password, 'after');
             yield userDoc.save();
             return { success: true, message: "passowrd changed succesfully" };
         }
+    });
+    const saveOTP = (email, otp) => __awaiter(void 0, void 0, void 0, function* () {
+        const user = yield userSchema_1.User.findOne({ email: email });
+        if (user) {
+            const userEmail = user.email;
+            console.log(userEmail);
+            const newOtp = new otpSchema_1.OTP({ userEmail: userEmail, otp: otp });
+            yield newOtp.save();
+            console.log(newOtp);
+        }
+    });
+    const findOtpUser = (email) => __awaiter(void 0, void 0, void 0, function* () {
+        const user = yield otpSchema_1.OTP.findOne({ userEmail: email });
+        if (user) {
+            return user.otp;
+        }
+        else {
+            throw new Error('user not found');
+        }
+    });
+    const createCampaign = (campaign) => __awaiter(void 0, void 0, void 0, function* () {
+        yield campaignSchma_1.Campaign.create(campaign);
+    });
+    const listCampaigns = () => __awaiter(void 0, void 0, void 0, function* () {
+        return campaignSchma_1.Campaign.find();
     });
     return {
         addUser,
@@ -49,6 +78,10 @@ const userDbMethods = () => {
         findById,
         saveUser,
         forgotPassword,
+        saveOTP,
+        findOtpUser,
+        createCampaign,
+        listCampaigns
     };
 };
 exports.userDbMethods = userDbMethods;

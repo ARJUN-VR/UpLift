@@ -11,7 +11,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userDbInterface = void 0;
 const userDbInterface = (repository) => {
-    const adduser = (user) => __awaiter(void 0, void 0, void 0, function* () { return yield repository.addUser(user); });
+    const adduser = (user) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.addUser(user);
+    });
     const findByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () {
         const user = yield repository.findByEmail(email);
         return user;
@@ -25,12 +27,28 @@ const userDbInterface = (repository) => {
     const forgotPassword = (email, password) => __awaiter(void 0, void 0, void 0, function* () {
         return yield repository.forgotPassword(email, password);
     });
+    const saveOtp = (email, otp) => __awaiter(void 0, void 0, void 0, function* () {
+        yield repository.saveOTP(email, otp);
+    });
+    const findOtpUser = (email) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.findOtpUser(email);
+    });
+    const createCampaign = (campaign) => __awaiter(void 0, void 0, void 0, function* () {
+        yield repository.createCampaign(campaign);
+    });
+    const listCampaigns = () => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.listCampaigns();
+    });
     return {
         adduser,
         findByEmail,
         findById,
         saveUser,
-        forgotPassword
+        forgotPassword,
+        saveOtp,
+        findOtpUser,
+        createCampaign,
+        listCampaigns
     };
 };
 exports.userDbInterface = userDbInterface;
