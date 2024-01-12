@@ -44,7 +44,7 @@ const submitHandler=(e:React.FormEvent)=>{
               represents your project.
             </span>
             <select
-        className="w-80 h-7 rounded-md mt-2"
+        className="w-80 h-7 rounded-md mt-2 text-black"
         value={category}
         onChange={(e) => setCategory(e.target.value)}
       >
