@@ -23,6 +23,7 @@ export const UserRoutes = () => {
             <Route path="/otp" element={<OtpVerification/>}/>
             <Route path="/setpass" element={<SetNewPassowrd/>}/>
             <Route path="/create-campaign" element={<CampaignPage/>}/>
+            <Route path="/create-campaign/advanced" element={<CampaignPage/>}/>
 
             {/* Private Routes */}
 
