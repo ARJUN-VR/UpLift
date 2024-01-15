@@ -21,4 +21,6 @@ router.post('/send-otp', controller.SendOTP);
 router.post('/verify-otp', controller.verifyOtp);
 router.post('/create-campaign', auth, controller.createCampaign);
 router.get('/get-campaigns', controller.listCampaigns);
+router.post('/create_basics', auth, controller.createBasics);
+router.post('/create_advanced', auth, controller.createAdvanced);
 exports.default = router;

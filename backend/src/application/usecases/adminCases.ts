@@ -35,11 +35,27 @@ export const adminCases = (repository:ReturnType<AdminDbRepository>)=>{
     return await repository.blockUser(email)
    }
 
+   const findCampaignById = async(id:string)=>{
+    return await repository.findCampaignById(id)
+   }
+
+   const verifyCampaign = async(id:string)=>{
+    return await repository.verifyCampaign(id)
+   }
+
+   const listCampaigns = async()=>{
+    return await repository.listCampaigns()
+   }
+
 
     return {
         adminSignin,
         logout,
         getUsers,
-        blockUser
+        blockUser,
+        findCampaignById,
+        verifyCampaign,
+        listCampaigns
+        
     }
 }

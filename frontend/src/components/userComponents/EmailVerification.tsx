@@ -2,22 +2,29 @@ import { useState } from "react"
 import { useSendOTPMutation } from "../../redux/slices/userApiSlice"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
+import Loader from "./Loader"
 
 
 export const EmailVerification = () => {
     const [email,setEmail] = useState<string>('')
 
-    const [sendOTP] = useSendOTPMutation()
+    const [sendOTP,{isLoading}] = useSendOTPMutation()
     const navigate = useNavigate()
     console.log(email)
 
     const submitHandler=async(event:React.FormEvent)=>{
       event.preventDefault()
       try{
-         await sendOTP({email}).unwrap()
+       const emailRes =  await sendOTP({email}).unwrap()
+       console.log(emailRes)
+       if(emailRes.success){
         localStorage.setItem('email',email)
         toast.success('OTP sent')
         navigate('/otp')
+       }else{
+        toast.error(emailRes.message)
+       }
+        
       }catch(err){
         toast.error(err.data?.message || err.message)
       }
@@ -38,6 +45,11 @@ export const EmailVerification = () => {
           value={email}
           onChange={(event) => setEmail(event.target.value)}
         />
+        {isLoading?(
+          <Loader/>
+        ):(
+          <div></div>
+        )}
         <button className="bg-blue-500 rounded-sm w-20 ml-2 mt-5" type="submit">
           Send OTP
         </button>

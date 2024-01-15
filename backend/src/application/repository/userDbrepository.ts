@@ -1,6 +1,9 @@
+import { campaign_advanced } from "../../entities/AdvancedInterface";
+import { campaign_Basics } from "../../entities/BaiscsInterface";
 import { campaignInterface } from "../../entities/Campaign";
 import { userInterface } from "../../entities/User";
 import { UserDbMethods } from "../../frameworks/database/mongoDb/implementations/userDbMethods";
+
 
 export const userDbInterface = (repository: ReturnType<UserDbMethods>) => {
   const adduser = async (user: userInterface) => {
@@ -38,6 +41,14 @@ export const userDbInterface = (repository: ReturnType<UserDbMethods>) => {
     return await repository.listCampaigns()
   }
 
+  const createBasics = async(basics:campaign_Basics)=>{
+   return  await repository.createBasics(basics)
+  }
+
+  const campaign_advanced =async(advanced:campaign_advanced)=>{
+    return await repository.createAdvanced(advanced)
+  }
+
   return {
     adduser,
     findByEmail,
@@ -47,7 +58,9 @@ export const userDbInterface = (repository: ReturnType<UserDbMethods>) => {
     saveOtp,
     findOtpUser,
     createCampaign,
-    listCampaigns
+    listCampaigns,
+    createBasics,
+    campaign_advanced
   };
 };
 

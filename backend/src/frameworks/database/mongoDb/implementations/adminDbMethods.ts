@@ -1,4 +1,5 @@
 import { Admin } from "../model/adminSchema";
+import { Basics } from "../model/campaign/basicSchema";
 import { User } from "../model/userSchema";
 
 
@@ -8,8 +9,8 @@ export const adminDbMethods =()=>{
     }
 
     const getUsers = async()=>{
-        return  await User.find().select('-password')
-        
+       return await User.find().select('-password')
+     
     }
 
     const blockUser = async(email:string | undefined)=>{
@@ -24,11 +25,26 @@ export const adminDbMethods =()=>{
        }
       
     }
+    const findCampaignById = async(id:string)=>{
+        return Basics.find({_id:id})
+      }
+
+      const verfyCampaign = async(id:string)=>{
+        return  await Basics.updateOne({ _id: id }, { $set: { isVerified: true } });
+        
+        
+      }
+      const listCampaigns = async()=>{
+        return Basics.find()
+      }
 
     return {
         findByEmail,
         getUsers,
-        blockUser
+        blockUser,
+        findCampaignById,
+        verfyCampaign,
+        listCampaigns
     }
 }
 

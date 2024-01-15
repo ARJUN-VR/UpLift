@@ -2,6 +2,8 @@ import { useLocation } from "react-router-dom"
 import SideBar from "../../components/adminComponents/SideBar"
 import { TableList } from "../../components/adminComponents/TableList"
 import { AdminCard } from "../../components/adminComponents/AdminCard"
+import { CampaignList } from "../../components/adminComponents/CampaignList"
+import { CampaignView } from "../../components/adminComponents/CampaignView"
 
 export const AdminHome = () => {
   const location = useLocation()
@@ -10,7 +12,7 @@ export const AdminHome = () => {
     <div className="bg-blue-100 w-full h-screen flex">
       <SideBar/>
      
-      {path=='/admin/home'? <AdminCard/>:<TableList/>}
+      {path=='/admin/home'? (<AdminCard/>):path=='/admin/users' ? (<TableList/>):path=='/admin/campaigns'?(<CampaignList/>): path.startsWith('/admin/campaignView/')?(<CampaignView/>):null}
       
     </div>
   )

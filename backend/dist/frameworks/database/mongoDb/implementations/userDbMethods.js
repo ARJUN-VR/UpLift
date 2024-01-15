@@ -13,6 +13,8 @@ exports.userDbMethods = void 0;
 const userSchema_1 = require("../model/userSchema");
 const otpSchema_1 = require("../model/otpSchema");
 const campaignSchma_1 = require("../model/campaignSchma");
+const basicSchema_1 = require("../model/campaign/basicSchema");
+const advancedSchema_1 = require("../model/campaign/advancedSchema");
 const userDbMethods = () => {
     const addUser = (user) => __awaiter(void 0, void 0, void 0, function* () {
         return yield userSchema_1.User.create(user);
@@ -70,7 +72,13 @@ const userDbMethods = () => {
         yield campaignSchma_1.Campaign.create(campaign);
     });
     const listCampaigns = () => __awaiter(void 0, void 0, void 0, function* () {
-        return campaignSchma_1.Campaign.find();
+        return basicSchema_1.Basics.find({ isVerified: true });
+    });
+    const createBasics = (basics) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield basicSchema_1.Basics.create(basics);
+    });
+    const createAdvanced = (advanced) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield advancedSchema_1.Advanced.create(advanced);
     });
     return {
         addUser,
@@ -81,7 +89,9 @@ const userDbMethods = () => {
         saveOTP,
         findOtpUser,
         createCampaign,
-        listCampaigns
+        listCampaigns,
+        createBasics,
+        createAdvanced
     };
 };
 exports.userDbMethods = userDbMethods;

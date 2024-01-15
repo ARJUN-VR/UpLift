@@ -45,11 +45,23 @@ const adminCases = (repository) => {
     const blockUser = (email) => __awaiter(void 0, void 0, void 0, function* () {
         return yield repository.blockUser(email);
     });
+    const findCampaignById = (id) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.findCampaignById(id);
+    });
+    const verifyCampaign = (id) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.verifyCampaign(id);
+    });
+    const listCampaigns = () => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.listCampaigns();
+    });
     return {
         adminSignin,
         logout,
         getUsers,
-        blockUser
+        blockUser,
+        findCampaignById,
+        verifyCampaign,
+        listCampaigns
     };
 };
 exports.adminCases = adminCases;

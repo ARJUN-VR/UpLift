@@ -1,7 +1,7 @@
 type InputProps ={
-    type:string,
+    type:string ,
     placeHolder:string,
-    value?:string,
+    value?:string | number,
     setInput?:React.Dispatch<React.SetStateAction<string>>
     
 }

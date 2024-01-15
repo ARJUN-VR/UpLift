@@ -51,6 +51,7 @@ const adminController = (dbInterface, dbImplements) => {
     //access private
     const getUsers = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const users = yield (0, adminCases_1.adminCases)(dbRepsitoryAdmn).getUsers();
+        console.log(users);
         res.status(200).json({ message: "users fetched successfully", users });
     }));
     const blockUser = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -58,11 +59,30 @@ const adminController = (dbInterface, dbImplements) => {
         const user = yield (0, adminCases_1.adminCases)(dbRepsitoryAdmn).blockUser(email);
         res.status(200).json({ message: "user blocked/unblocked successfully", user });
     }));
+    const findCampaignById = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const id = req.params.id;
+        console.log(id, 'this is id');
+        const campaignData = yield (0, adminCases_1.adminCases)(dbRepsitoryAdmn).findCampaignById(id);
+        res.status(200).json({ message: 'campaign fetched succefully', campaignData });
+    }));
+    const verifyCampaign = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const { id } = req.body;
+        const data = yield (0, adminCases_1.adminCases)(dbRepsitoryAdmn).verifyCampaign(id);
+        res.status(200).json({ message: 'verified', data });
+    }));
+    const listCampaigns = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const list = yield (0, adminCases_1.adminCases)(dbRepsitoryAdmn).listCampaigns();
+        console.log(list);
+        res.status(200).json({ list });
+    }));
     return {
         adminSignin,
         logout,
         getUsers,
         blockUser,
+        findCampaignById,
+        verifyCampaign,
+        listCampaigns
     };
 };
 exports.adminController = adminController;

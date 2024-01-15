@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.adminDbMethods = void 0;
 const adminSchema_1 = require("../model/adminSchema");
+const basicSchema_1 = require("../model/campaign/basicSchema");
 const userSchema_1 = require("../model/userSchema");
 const adminDbMethods = () => {
     const findByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () {
@@ -29,10 +30,22 @@ const adminDbMethods = () => {
             return yield user.save();
         }
     });
+    const findCampaignById = (id) => __awaiter(void 0, void 0, void 0, function* () {
+        return basicSchema_1.Basics.find({ _id: id });
+    });
+    const verfyCampaign = (id) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield basicSchema_1.Basics.updateOne({ _id: id }, { $set: { isVerified: true } });
+    });
+    const listCampaigns = () => __awaiter(void 0, void 0, void 0, function* () {
+        return basicSchema_1.Basics.find();
+    });
     return {
         findByEmail,
         getUsers,
-        blockUser
+        blockUser,
+        findCampaignById,
+        verfyCampaign,
+        listCampaigns
     };
 };
 exports.adminDbMethods = adminDbMethods;

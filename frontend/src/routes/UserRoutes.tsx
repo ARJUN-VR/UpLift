@@ -22,13 +22,15 @@ export const UserRoutes = () => {
             <Route path="/email-verification" element={<EmailVerification/>}/>
             <Route path="/otp" element={<OtpVerification/>}/>
             <Route path="/setpass" element={<SetNewPassowrd/>}/>
-            <Route path="/create-campaign" element={<CampaignPage/>}/>
-            <Route path="/create-campaign/advanced" element={<CampaignPage/>}/>
+           
 
             {/* Private Routes */}
 
             <Route path="" element={<UserPrivateRoutes/>}>
             <Route path="/profile" element={<HomePage/>}/>  
+            <Route path="/create-campaign" element={<CampaignPage/>}/>
+            <Route path="/create-campaign/advanced" element={<CampaignPage/>}/>
+
             
             </Route>
              

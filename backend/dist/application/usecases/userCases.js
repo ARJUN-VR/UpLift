@@ -63,7 +63,9 @@ const userCases = (repository) => {
     });
     const verifyUserAndSendOtp = (email) => __awaiter(void 0, void 0, void 0, function* () {
         try {
+            console.log('working');
             const user = yield repository.findByEmail(email);
+            console.log(user);
             if (user) {
                 const otp = yield (0, otpGeneration_1.default)(email);
                 yield repository.saveOtp(email, otp);
@@ -81,11 +83,15 @@ const userCases = (repository) => {
     const verifyOtp = (email, otp) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const storedOtp = yield repository.findOtpUser(email);
+            console.log(storedOtp, 'stored');
+            console.log(otp, 'entered otp');
             if (storedOtp) {
                 if (storedOtp === otp) {
+                    console.log('success');
                     return { success: true, message: 'otp verified' };
                 }
                 else {
+                    console.log('fails');
                     return { success: false, message: 'invalid otp' };
                 }
             }
@@ -99,15 +105,28 @@ const userCases = (repository) => {
     });
     const uploadImage = (imgUrl) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            console.log('image url: ', imgUrl);
             return yield cloudinary_1.default.v2.uploader.upload(imgUrl);
         }
         catch (error) {
-            console.log(error);
+            console.log(error, 'error in image uplaoding usecase');
+        }
+    });
+    const videoUpload = (videoUrl) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            return yield cloudinary_1.default.v2.uploader.upload(videoUrl, { resource_type: 'video' });
+        }
+        catch (error) {
+            console.log(error, 'error in video uploader');
         }
     });
     const listCampaigns = () => __awaiter(void 0, void 0, void 0, function* () {
         return yield repository.listCampaigns();
+    });
+    const createBasics = (basics) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.createBasics(basics);
+    });
+    const createAdvanced = (advanced) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.campaign_advanced(advanced);
     });
     return {
         findByEmail,
@@ -120,7 +139,10 @@ const userCases = (repository) => {
         verifyOtp,
         createCampaign,
         uploadImage,
-        listCampaigns
+        listCampaigns,
+        createBasics,
+        createAdvanced,
+        videoUpload
     };
 };
 exports.userCases = userCases;

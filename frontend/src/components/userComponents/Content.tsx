@@ -3,14 +3,15 @@ import { useGetCampaignsMutation } from "../../redux/slices/userApiSlice";
 import { ExploreCard } from "./ExploreCard";
 
 
-interface Campaign {
+export interface Campaign {
   _id: string;
-  campaignName: string;
+  title: string;
   category: string;
   story: string;
   image: string;
-  goal: number;
-  endDate: string;
+  target: number;
+  duration: string;
+  location:string;
   userEmail: string;
 
 }
@@ -25,7 +26,7 @@ export const Content = () => {
     const list = async()=>{
       try{
     const data  = await getCampaign('')
-    console.log(data,'data')
+
     const list = data.data.list
     setCampaigns(list)
       }catch(error){
@@ -35,7 +36,7 @@ export const Content = () => {
     list()
  
   },[])
-console.log(campaigns)
+
 
   return (
     <div className="bg-gray-800">
@@ -54,7 +55,7 @@ console.log(campaigns)
         <div className="w-72 rounded overflow-hidden shadow-xl bg-white h-[400px] mt-8">
         <img className="w-full" src={campaign.image} alt="Sunset in the mountains"/>
         <div className="px-6 py-4">
-          <div className="font-bold text-xl mb-2" >{campaign.campaignName}</div>
+          <div className="font-bold text-xl mb-2" >{campaign.title}</div>
           <span className="text-gray-500 font-bold">{campaign.category}</span>
           <p className="text-gray-700 text-sm">
             {campaign.story}

@@ -47,6 +47,7 @@ export const adminController = (
   //access private
   const getUsers = asyncHandler(async (req: Request, res: Response) => {
     const users = await adminCases(dbRepsitoryAdmn).getUsers();
+    console.log(users)
 
     res.status(200).json({ message: "users fetched successfully", users });
   });
@@ -57,10 +58,34 @@ export const adminController = (
     res.status(200).json({ message: "user blocked/unblocked successfully" ,user});
   });
 
+  const findCampaignById = asyncHandler(async(req:Request, res:Response)=>{
+    const id = req.params.id
+    console.log(id,'this is id')
+    const campaignData = await adminCases(dbRepsitoryAdmn).findCampaignById(id)
+
+    res.status(200).json({message:'campaign fetched succefully',campaignData})
+  })
+
+  const verifyCampaign = asyncHandler(async(req:Request,res:Response)=>{
+    const id = req.body.id
+    console.log(id)
+    const data = await adminCases(dbRepsitoryAdmn).verifyCampaign(id)
+    res.status(200).json({message:'verified',data})
+  })
+
+
+  const listCampaigns = asyncHandler(async (req: Request, res: Response) => {
+    const list = await adminCases(dbRepsitoryAdmn).listCampaigns();
+    console.log(list)
+    res.status(200).json({ list });
+  });
   return {
     adminSignin,
     logout,
     getUsers,
     blockUser,
+    findCampaignById,
+    verifyCampaign,
+    listCampaigns
   };
 };

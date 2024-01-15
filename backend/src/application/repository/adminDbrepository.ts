@@ -16,10 +16,25 @@ export const adminDbInterface = (repository:ReturnType<AdminDbMethods>) =>{
       return await repository.blockUser(email)
    }
 
+   const findCampaignById = async(id:string)=>{
+      return await repository.findCampaignById(id)
+   }
+
+   const verifyCampaign = async(id:string)=>{
+      return await repository.verfyCampaign(id)
+   }
+
+   const listCampaigns = async()=>{
+      return await repository.listCampaigns()
+   }
+
    return{
     findByEmail,
     getUsers,
-    blockUser
+    blockUser,
+    findCampaignById,
+    verifyCampaign,
+    listCampaigns
    }
 }
 

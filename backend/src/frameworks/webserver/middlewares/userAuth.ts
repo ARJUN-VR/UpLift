@@ -25,10 +25,11 @@ export const protect = (
 
 
     const token = req.cookies.jwt;
-
+console.log(token,'token')
 
     if (token) {
       try{
+        console.log('inside the token')
         const decoded: JwtPayload = jwt.verify(
           token,
           configKeys.JWT_KEY
@@ -37,9 +38,11 @@ export const protect = (
 
         if(userdata?.isBlocked){
           const error = new Error('Access denied.')
+          console.log('blockedddd')
           throw error
         }else{
           req.user=userdata
+          console.log('nooooo')
           next()
         }
         

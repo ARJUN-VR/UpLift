@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useVerifyOTPMutation } from "../../redux/slices/userApiSlice";
 import { useSendOTPMutation } from "../../redux/slices/userApiSlice";
+import Loader from "./Loader";
 
 export const OtpVerification = () => {
   const [otp, setOtp] = useState<string>("");
@@ -14,16 +15,22 @@ export const OtpVerification = () => {
 
 
   const navigate = useNavigate();
-  const [otpVerify] = useVerifyOTPMutation();
+  const [otpVerify,{isLoading}] = useVerifyOTPMutation();
   const [sendOTP] = useSendOTPMutation()
 
   const verify = async () => {
     try {
       const newOtp: number = +otp;
       const email = localStorage.getItem("email");
-      await otpVerify({ email, newOtp }).unwrap();
+    const res =   await otpVerify({ email, newOtp }).unwrap();
+    console.log(res)
+    if(res.message == 'otp verified'){
       toast.success("otp verified");
       navigate("/setpass");
+    }else{
+      toast.error('invalid otp')
+    }
+      
     } catch (err) {
       console.log(err);
     }
@@ -68,6 +75,11 @@ export const OtpVerification = () => {
         value={otp}
         onChange={(event) => setOtp(event.target.value)}
       />
+      {isLoading?(
+          <Loader/>
+        ):(
+          <div></div>
+        )}
       <button className="bg-blue-500 rounded-sm w-20 ml-2" onClick={verify}>
         Verify
       </button>

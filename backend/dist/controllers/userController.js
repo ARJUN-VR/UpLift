@@ -45,8 +45,8 @@ const userController = (dbInterface, dbImplements) => {
         else if (result.error === "no user found") {
             res.status(404).json({ message: "user not found" });
         }
-        else if (result.error === 'user blocked') {
-            res.status(403).json({ message: 'Access denied.' });
+        else if (result.error === "user blocked") {
+            res.status(403).json({ message: "Access denied." });
         }
         else {
             res.status(400).json({ message: "authentication failed" });
@@ -100,8 +100,9 @@ const userController = (dbInterface, dbImplements) => {
     //access public
     const verifyOtp = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const { email, newOtp } = req.body;
-        yield (0, userCases_1.userCases)(dbRepositoryuser).verifyOtp(email, newOtp);
-        res.status(200).json({ message: "otp verified" });
+        const otpRes = yield (0, userCases_1.userCases)(dbRepositoryuser).verifyOtp(email, newOtp);
+        console.log(otpRes);
+        res.status(200).json({ message: otpRes === null || otpRes === void 0 ? void 0 : otpRes.message });
     }));
     //desc campaign creation
     //route POST /api/user/create-campaign
@@ -111,9 +112,6 @@ const userController = (dbInterface, dbImplements) => {
         console.log(image);
         const imgres = yield (0, userCases_1.userCases)(dbRepositoryuser).uploadImage(image);
         const campaign = req.body;
-        console.log(campaign.userEmail, 'emailll');
-        console.log(campaign, 'this is campaign');
-        console.log(imgres, 'imgressponse');
         if (imgres) {
             campaign.image = imgres.secure_url;
         }
@@ -123,6 +121,28 @@ const userController = (dbInterface, dbImplements) => {
     const listCampaigns = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const list = yield (0, userCases_1.userCases)(dbRepositoryuser).listCampaigns();
         res.status(200).json({ list });
+    }));
+    const createBasics = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const basicData = req.body;
+        const imgRes = yield (0, userCases_1.userCases)(dbRepositoryuser).uploadImage(basicData.image);
+        if (imgRes) {
+            basicData.image = imgRes.secure_url;
+        }
+        const data = yield (0, userCases_1.userCases)(dbRepositoryuser).createBasics(basicData);
+        res.status(200).json({ message: "created successfully", data });
+    }));
+    const createAdvanced = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const advancedData = req.body;
+        const imgRes = yield (0, userCases_1.userCases)(dbRepositoryuser).uploadImage(advancedData === null || advancedData === void 0 ? void 0 : advancedData.thumbnail);
+        const videoRes = yield (0, userCases_1.userCases)(dbRepositoryuser).videoUpload(advancedData === null || advancedData === void 0 ? void 0 : advancedData.video);
+        if (imgRes) {
+            advancedData.thumbnail = imgRes.secure_url;
+        }
+        if (videoRes) {
+            advancedData.video = videoRes.secure_url;
+        }
+        const data = yield (0, userCases_1.userCases)(dbRepositoryuser).createAdvanced(advancedData);
+        res.status(200).json({ message: "success", data });
     }));
     return {
         addUser,
@@ -134,7 +154,9 @@ const userController = (dbInterface, dbImplements) => {
         SendOTP,
         verifyOtp,
         createCampaign,
-        listCampaigns
+        listCampaigns,
+        createBasics,
+        createAdvanced,
     };
 };
 exports.userController = userController;

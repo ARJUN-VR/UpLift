@@ -1,13 +1,23 @@
 import React, { useRef, useState } from "react";
+import { useCreateAdvancedMutation } from "../../../redux/slices/userApiSlice";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import Loader from "../Loader";
+
 
 
 export const Advanced = () => {
   const [video,setVideo] = useState<string>('')
-  const [image, setImage] = useState<string>("");
+  const [thumbnail, setThumbnail] = useState<string>("");
   const [story,setStory] = useState<string>('')
 
   const videoInput = useRef<HTMLInputElement>(null);
   const imageInputRef = useRef<HTMLInputElement>(null);
+
+  const navigate = useNavigate()
+
+
+const [createAdvanced,{isLoading}] = useCreateAdvancedMutation()
 
   const handleVideoInput = () => {
     videoInput?.current?.click();
@@ -24,9 +34,9 @@ export const Advanced = () => {
 
   }
 
-  const imageHandler=(e:React.ChangeEvent<HTMLInputElement>)=>{
+  const thumbnailHandler=(e:React.ChangeEvent<HTMLInputElement>)=>{
     const imageFile =e.target?.files?.[0]
-    setFileToBase64(imageFile,setImage)
+    setFileToBase64(imageFile,setThumbnail)
 
   }
 
@@ -40,11 +50,27 @@ export const Advanced = () => {
       reader.readAsDataURL(file);
     }
   };
-  console.log(video)
+ 
+  const submissionHandler =async(e:React.FormEvent)=>{
+    e.preventDefault()
+    if(!video){
+      return toast.error('video is required')
+    }else if(!story){
+      return toast.error('story is required')
+    }else if(!thumbnail){
+      return toast.error('cover image is required')
+    }
+    await createAdvanced({video,thumbnail,story}).unwrap()
+    navigate('/')
+    toast.success('campaign created')
+   
+
+  }
 
   return (
     <div className="text-white">
       {/* video */}
+      <form onSubmit={submissionHandler}>
       <div className="mt-10 flex flex-col">
         <span className="text-2xl">pitch video</span>
         <span className="text-gray-400 text-sm">
@@ -76,15 +102,16 @@ export const Advanced = () => {
       {/* thumbnail */}
       <div className="mt-10 flex flex-col">
         <span className="text-2xl">Video Overlay Image (Optional)</span>
+       
         <span className="text-gray-400 text-sm">
           Choose an image to represent your video before it plays.695 x 460
           recommended resolution.
         </span>
-        {image ? (
+        {thumbnail ? (
           <>
             <div className="w-80 h-48 bg-gray-300 flex justify-center items-center rounded-lg mt-7">
               <img
-                src={image}
+                src={thumbnail}
                 alt="campaign image"
                 style={{ maxWidth: "100%", height: "100%" }}
               />
@@ -98,12 +125,17 @@ export const Advanced = () => {
               ref={imageInputRef}
               accept="image/*"
               style={{ display: "none" }}
-              onChange={imageHandler}
+              onChange={thumbnailHandler}
             />
             <label htmlFor="fileInput" onClick={handleImageInput}>
               Click here to upload image
             </label>
           </div>
+        )}
+         {isLoading?(
+          <Loader/>
+        ):(
+          <div></div>
         )}
       </div>
       {/* story */}
@@ -118,15 +150,18 @@ export const Advanced = () => {
           name=""
           id=""
           className="w-[60%] h-32 text-black rounded-md"
+          value={story}
+          onChange={(e)=>setStory(e.target.value)}
         ></textarea>
       </div>
        {/* footer  */}
        <div className="h-52 w-full  flex items-center justify-end">
             <button className="bg-blue-500 w-36 h-12 mr-20" type="submit">
-              save&continue
+              publish
             </button>
           </div>
       {/*add here */}
+      </form>
     </div>
   );
 };

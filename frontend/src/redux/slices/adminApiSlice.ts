@@ -24,6 +24,20 @@ export const adminApiSlice = apiSlice.injectEndpoints({
                 method:'GET'
             })
         }),
+        verifyCampaign:builder.mutation({
+            query:(id)=>({
+                url:`${ADMIN_URL}/verify-campaign`,
+                method:'PATCH',
+                body:id
+            })
+        }),
+        getCampaignAdmin:builder.mutation({
+            query:()=>({
+                url:`${ADMIN_URL}/get-campaigns`,
+                method:'GET'
+               
+            })
+        }),
         blockuser:builder.mutation({
             query:(email)=>({
                 url:`${ADMIN_URL}/blockuser?email=${email}`,
@@ -33,4 +47,11 @@ export const adminApiSlice = apiSlice.injectEndpoints({
     })
 })
 
-export const {useAdminloginMutation ,useAdminlogoutMutation,useAdmingetusersMutation,useBlockuserMutation} = adminApiSlice
+export const {
+    useAdminloginMutation,
+    useAdminlogoutMutation,
+    useAdmingetusersMutation,
+    useBlockuserMutation,
+    useVerifyCampaignMutation,
+    useGetCampaignAdminMutation
+} = adminApiSlice

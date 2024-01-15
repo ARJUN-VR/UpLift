@@ -4,6 +4,8 @@ import generateToken from "../services/generateJwt";
 import OTPService from "../services/otpGeneration";
 import { campaignInterface } from "../../entities/Campaign";
 import cloudinary from 'cloudinary'
+import { campaign_Basics } from "../../entities/BaiscsInterface";
+import { campaign_advanced } from "../../entities/AdvancedInterface";
 
 
 export const userCases = (repository: ReturnType<UserDbInterFace>) => {
@@ -60,7 +62,9 @@ export const userCases = (repository: ReturnType<UserDbInterFace>) => {
 
   const verifyUserAndSendOtp = async (email: string) => {
     try {
+      console.log('working')
       const user = await repository.findByEmail(email);
+      console.log(user)
       if (user) {
         const otp: number = await OTPService(email);
         await repository.saveOtp(email, otp);
@@ -77,10 +81,14 @@ export const userCases = (repository: ReturnType<UserDbInterFace>) => {
   const verifyOtp = async(email:string,otp:number)=>{
     try{
       const storedOtp = await repository.findOtpUser(email)
+      console.log(storedOtp,'stored')
+      console.log(otp,'entered otp')
       if(storedOtp){
         if(storedOtp===otp){
+          console.log('success')
           return {success:true ,message:'otp verified'}
         }else{
+          console.log('fails')
           return {success:false,message:'invalid otp'}
         }
       }
@@ -96,16 +104,31 @@ export const userCases = (repository: ReturnType<UserDbInterFace>) => {
 
   const uploadImage = async(imgUrl:string)=>{
     try{
-      console.log('image url: ',imgUrl)
       return await cloudinary.v2.uploader.upload(imgUrl)
     }catch(error){
-      console.log(error)
+      console.log(error,'error in image uplaoding usecase')
     }
   
   }
 
+  const videoUpload = async(videoUrl:string)=>{
+    try {
+      return await cloudinary.v2.uploader.upload(videoUrl,{resource_type:'video'})
+    } catch (error) {
+      console.log(error,'error in video uploader')
+    }
+  }
+
   const listCampaigns = async()=>{
     return await repository.listCampaigns()
+  }
+
+  const createBasics = async(basics:campaign_Basics)=>{
+   return await repository.createBasics(basics)
+  }
+
+  const createAdvanced = async(advanced:campaign_advanced)=>{
+    return await repository.campaign_advanced(advanced)
   }
 
   return {
@@ -119,6 +142,9 @@ export const userCases = (repository: ReturnType<UserDbInterFace>) => {
     verifyOtp,
     createCampaign,
     uploadImage,
-    listCampaigns
+    listCampaigns,
+    createBasics,
+    createAdvanced,
+    videoUpload
   };
 };

@@ -14,6 +14,7 @@ export interface User {
 export const UserList = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [state,setState] = useState<boolean>(false)
+  console.log(users)
 
 
 
@@ -27,6 +28,7 @@ export const UserList = () => {
       try {
         console.log("11111");
         const userData = await getUsers("").unwrap();
+        console.log(userData)
         setUsers(userData.users);
        
       } catch (error) {

@@ -1,20 +1,49 @@
 import { useRef, useState } from "react";
 import { Input } from "./Input";
+import { useCreateBasicsMutation } from "../../../redux/slices/userApiSlice";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import Loader from "../Loader";
 
 export const Basics = () => {
-  const [name, setName] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
   const [category, setCategory] = useState<string>("");
   const [image, setImage] = useState<string>('');
   const [location, setLocation] = useState<string>("");
   const [duration, setDuration] = useState<string>("");
+  const [target,setTarget] = useState<number>(10000)
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  console.log(name, "this is name");
+  const navigate = useNavigate()
 
-  const submitHandler = (e: React.FormEvent) => {
-    e.preventDefault();
-  };
+const [ saveBasics,{isLoading} ] = useCreateBasicsMutation()
+
+const submitHandler =async(e:React.FormEvent)=>{
+  e.preventDefault()
+  try {
+if(!title){
+  return toast.error('title is required')
+}else if(!category){
+  return toast.error('category is required')
+}else if(!image){
+  return toast.error('image is required')
+}else if(!location){
+  return toast.error('location is required')
+}else if(!duration){
+  return toast.error('duration is required')
+}else if(!target){
+  return toast.error('target is required')
+}
+  await saveBasics({title,category,target,image,location,duration}).unwrap()
+  navigate('/create-campaign/advanced')
+    
+  } catch (error) {
+    console.log(error)
+  }
+
+
+}
 
   const handleFileClick = () => {
     setImage('')
@@ -59,8 +88,8 @@ export const Basics = () => {
             <Input
               placeHolder="campaign title"
               type="text"
-              setInput={setName}
-              value={name}
+              setInput={setTitle}
+              value={title}
             />
           </div>
           {/* Category */}
@@ -147,6 +176,22 @@ export const Basics = () => {
               setInput={setDuration}
               value={duration}
             />
+          </div>
+          {isLoading?(
+          <Loader/>
+        ):(
+          <div></div>
+        )}
+          {/* Target amount */}
+          <div className="mt-10 flex flex-col">
+            <span className="text-2xl">target amount</span>
+            <span className="text-gray-400 text-sm whitespace-normal max-w-[70%] ">
+              How many days will you be running your campaign for? You can run a
+              campaign for any number of days, with a 60 day duration maximum.
+              Keep in mind that you will be able to extend as many times as you
+              want up until the 60 day duration maximum!
+            </span>
+            <input type="number" className="w-80 h-7 rounded-md mt-5 text-black" value={target} onChange={(e)=>setTarget(Number(e.target.value))} />
           </div>
           {/* footer  */}
           <div className="h-52 w-full  flex items-center justify-end">

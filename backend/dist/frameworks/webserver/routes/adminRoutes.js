@@ -13,4 +13,7 @@ adminRouter.post('/login', controller.adminSignin);
 adminRouter.post('/logout', controller.logout);
 adminRouter.get('/getusers', controller.getUsers);
 adminRouter.patch('/blockuser', controller.blockUser);
+adminRouter.get('/getCampaign/:id', controller.findCampaignById);
+adminRouter.patch('/verify-campaign', controller.verifyCampaign);
+adminRouter.get('/get-campaigns', controller.listCampaigns);
 exports.default = adminRouter;

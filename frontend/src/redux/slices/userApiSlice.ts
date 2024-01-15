@@ -54,6 +54,23 @@ export const usersApiSlice = apiSlice.injectEndpoints({
             })
         })
         ,
+        createAdvanced:builder.mutation({
+            query:(data)=>({
+                url:`${USER_URL}/create_advanced`,
+                method:'POST',
+                body:data
+            })
+        })
+        
+        ,
+        createBasics:builder.mutation({
+            query:(data)=>({
+                url:`${USER_URL}/create_basics`,
+                method:'POST',
+                body:data
+            })
+        })
+        ,
         createCampaign:builder.mutation({
             query:(data)=>({
                 url:`${USER_URL}/create-campaign`,
@@ -80,5 +97,7 @@ export const {
     useChangePasswordMutation,
     useCreateCampaignMutation,
     useGetProfileMutation,
-    useGetCampaignsMutation
+    useGetCampaignsMutation,
+    useCreateBasicsMutation,
+    useCreateAdvancedMutation
 } = usersApiSlice
