@@ -60,20 +60,32 @@ const adminController = (dbInterface, dbImplements) => {
         res.status(200).json({ message: "user blocked/unblocked successfully", user });
     }));
     const findCampaignById = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        const id = req.params.id;
+        const id = req.query.id;
         console.log(id, 'this is id');
-        const campaignData = yield (0, adminCases_1.adminCases)(dbRepsitoryAdmn).findCampaignById(id);
-        res.status(200).json({ message: 'campaign fetched succefully', campaignData });
+        const basicData = yield (0, adminCases_1.adminCases)(dbRepsitoryAdmn).findCampaignById(id);
+        const advancedData = yield (0, adminCases_1.adminCases)(dbRepsitoryAdmn).findAdvanced(id);
+        res.status(200).json({ message: 'success', basicData, advancedData });
     }));
     const verifyCampaign = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        const { id } = req.body;
+        const id = req.body.id;
+        console.log(id);
         const data = yield (0, adminCases_1.adminCases)(dbRepsitoryAdmn).verifyCampaign(id);
         res.status(200).json({ message: 'verified', data });
     }));
-    const listCampaigns = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        const list = yield (0, adminCases_1.adminCases)(dbRepsitoryAdmn).listCampaigns();
+    const listCampaignRequests = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const list = yield (0, adminCases_1.adminCases)(dbRepsitoryAdmn).listCampaignRequests();
         console.log(list);
         res.status(200).json({ list });
+    }));
+    const listLiveCampaigns = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const campaigns = yield (0, adminCases_1.adminCases)(dbRepsitoryAdmn).listLiveCampaigns();
+        res.status(200).json({ campaigns });
+    }));
+    const completeCampaignData = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const { id } = req.body;
+        console.log(id, 'asdfasdfasdf');
+        const data = yield (0, adminCases_1.adminCases)(dbRepsitoryAdmn).completeCampaignData(id);
+        console.log(data);
     }));
     return {
         adminSignin,
@@ -82,7 +94,9 @@ const adminController = (dbInterface, dbImplements) => {
         blockUser,
         findCampaignById,
         verifyCampaign,
-        listCampaigns
+        listCampaignRequests,
+        listLiveCampaigns,
+        completeCampaignData
     };
 };
 exports.adminController = adminController;

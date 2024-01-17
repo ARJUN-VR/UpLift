@@ -159,6 +159,7 @@ export const userController = (
   
   const createAdvanced = asyncHandler(async (req: Request, res: Response) => {
     const advancedData: campaign_advanced = req.body;
+    console.log(advancedData.basicId,'iddddd')
     const imgRes = await userCases(dbRepositoryuser).uploadImage(
       advancedData?.thumbnail
     );

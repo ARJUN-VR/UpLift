@@ -7,6 +7,7 @@ import Loader from "../Loader";
 
 export const Basics = () => {
   const [title, setTitle] = useState<string>("");
+  const [tagline,setTagline] = useState<string>('')
   const [category, setCategory] = useState<string>("");
   const [image, setImage] = useState<string>('');
   const [location, setLocation] = useState<string>("");
@@ -14,6 +15,8 @@ export const Basics = () => {
   const [target,setTarget] = useState<number>(10000)
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  
 
   const navigate = useNavigate()
 
@@ -34,8 +37,16 @@ if(!title){
   return toast.error('duration is required')
 }else if(!target){
   return toast.error('target is required')
+}else if(!tagline){
+  return toast.error('tagline is required')
 }
-  await saveBasics({title,category,target,image,location,duration}).unwrap()
+ const basicRes = await saveBasics({title,tagline,category,target,image,location,duration}).unwrap()
+   const basicId = basicRes?.data?._id
+   console.log(basicRes)
+   console.log(basicId)
+   localStorage.setItem('basicId',basicId)
+   const data = localStorage.getItem('basicId')
+   console.log(data)
   navigate('/create-campaign/advanced')
     
   } catch (error) {
@@ -90,6 +101,19 @@ if(!title){
               type="text"
               setInput={setTitle}
               value={title}
+            />
+          </div>
+          {/* tagline */}
+          <div className="mt-10 flex flex-col">
+            <span className="text-2xl">tagline</span>
+            <span className="text-gray-400 text-sm">
+            Provide a short description that best describes your campaign to your audience.
+            </span>
+            <Input
+              placeHolder="tagline"
+              type="text"
+              setInput={setTagline}
+              value={tagline}
             />
           </div>
           {/* Category */}
@@ -191,7 +215,7 @@ if(!title){
               Keep in mind that you will be able to extend as many times as you
               want up until the 60 day duration maximum!
             </span>
-            <input type="number" className="w-80 h-7 rounded-md mt-5 text-black" value={target} onChange={(e)=>setTarget(Number(e.target.value))} />
+            <input type="number" className="w-80 h-7 rounded-md mt-5 text-black" value={target} onChange={(e)=>setTarget(Number(e.target.value))} max={100000} />
           </div>
           {/* footer  */}
           <div className="h-52 w-full  flex items-center justify-end">

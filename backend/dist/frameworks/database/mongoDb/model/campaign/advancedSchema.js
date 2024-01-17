@@ -7,6 +7,10 @@ const advancedSchema = new mongoose_1.Schema({
         type: String,
         required: true
     },
+    basicId: {
+        type: String,
+        required: true
+    },
     thumbnail: {
         type: String,
         required: true

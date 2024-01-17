@@ -5,6 +5,10 @@ const basicSchama = new Schema({
         type:String,
         required:true
     },
+    tagline:{
+        type:String,
+        required:true
+    },
     category:{
         type:String,
         required:true

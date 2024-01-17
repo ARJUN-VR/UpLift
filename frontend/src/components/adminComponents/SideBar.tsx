@@ -52,17 +52,17 @@ const SideBar = () => {
       </li>
   
  
-      <li className={`${tab=='not' ? 'bg-gray-100':''}`}>
+      <li className={`${tab=='not' ? 'bg-gray-100':''}`} onClick={()=>navigate('/admin/notifications')}>
         <a href="#" className={`${tab=='not' ? 'translate-x-4 text-gray-800 ':''}flex flex-row items-center h-12 transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800`} onClick={()=>setTab('not')}>
           <span className="inline-flex items-center justify-center h-12 w-12 text-lg text-gray-400"><i className="bx bx-bell"></i></span>
           <span className="text-sm font-medium">Notifications</span>
           <span className="ml-auto mr-6 text-sm bg-red-100 rounded-full px-3 py-px text-red-500">5</span>
         </a>
       </li>
-      <li>
+      <li onClick={logoutHandler}>
         <a href="#" className="flex flex-row items-center h-12 transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800">
           <span className="inline-flex items-center justify-center h-12 w-12 text-lg text-gray-400"><i className="bx bx-log-out"></i></span>
-          <span className="text-sm font-medium" onClick={logoutHandler}>Logout</span>
+          <span className="text-sm font-medium" >Logout</span>
         </a>
       </li>
     </ul>

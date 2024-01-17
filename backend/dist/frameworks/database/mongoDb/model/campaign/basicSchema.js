@@ -7,6 +7,10 @@ const basicSchama = new mongoose_1.Schema({
         type: String,
         required: true
     },
+    tagline: {
+        type: String,
+        required: true
+    },
     category: {
         type: String,
         required: true

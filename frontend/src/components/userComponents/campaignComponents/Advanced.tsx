@@ -60,7 +60,10 @@ const [createAdvanced,{isLoading}] = useCreateAdvancedMutation()
     }else if(!thumbnail){
       return toast.error('cover image is required')
     }
-    await createAdvanced({video,thumbnail,story}).unwrap()
+    const basicId = localStorage.getItem('basicId')
+    console.log(basicId)
+    await createAdvanced({video,thumbnail,story,basicId}).unwrap()
+    localStorage.removeItem('basicId')
     navigate('/')
     toast.success('campaign created')
    

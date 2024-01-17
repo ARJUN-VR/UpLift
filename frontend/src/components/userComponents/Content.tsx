@@ -6,6 +6,7 @@ import { ExploreCard } from "./ExploreCard";
 export interface Campaign {
   _id: string;
   title: string;
+  tagline:string;
   category: string;
   story: string;
   image: string;
@@ -58,7 +59,7 @@ export const Content = () => {
           <div className="font-bold text-xl mb-2" >{campaign.title}</div>
           <span className="text-gray-500 font-bold">{campaign.category}</span>
           <p className="text-gray-700 text-sm">
-            {campaign.story}
+            {campaign.tagline}
           </p>
         </div>
         <div className="px-6  pb-2 flex justify-between">

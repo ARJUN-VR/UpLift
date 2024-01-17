@@ -59,11 +59,17 @@ export const adminController = (
   });
 
   const findCampaignById = asyncHandler(async(req:Request, res:Response)=>{
-    const id = req.params.id
+    const id = req.query.id as string
+    
     console.log(id,'this is id')
-    const campaignData = await adminCases(dbRepsitoryAdmn).findCampaignById(id)
+    const basicData = await adminCases(dbRepsitoryAdmn).findCampaignById(id)
+    const advancedData = await adminCases(dbRepsitoryAdmn).findAdvanced(id)
 
-    res.status(200).json({message:'campaign fetched succefully',campaignData})
+
+   res.status(200).json({message:'success',basicData,advancedData})
+
+
+
   })
 
   const verifyCampaign = asyncHandler(async(req:Request,res:Response)=>{
@@ -74,11 +80,26 @@ export const adminController = (
   })
 
 
-  const listCampaigns = asyncHandler(async (req: Request, res: Response) => {
-    const list = await adminCases(dbRepsitoryAdmn).listCampaigns();
+  const listCampaignRequests = asyncHandler(async (req: Request, res: Response) => {
+    const list = await adminCases(dbRepsitoryAdmn).listCampaignRequests();
     console.log(list)
     res.status(200).json({ list });
   });
+
+  const listLiveCampaigns = asyncHandler(async(req:Request,res:Response)=>{
+    const campaigns = await adminCases(dbRepsitoryAdmn).listLiveCampaigns()
+    res.status(200).json({campaigns})
+  })
+
+  const completeCampaignData = asyncHandler(async(req:Request,res:Response)=>{
+    const {id} = req.body
+    console.log(id,'asdfasdfasdf')
+    const data = await adminCases(dbRepsitoryAdmn).completeCampaignData(id)
+    console.log(data)
+  })
+
+
+
   return {
     adminSignin,
     logout,
@@ -86,6 +107,8 @@ export const adminController = (
     blockUser,
     findCampaignById,
     verifyCampaign,
-    listCampaigns
+    listCampaignRequests,
+    listLiveCampaigns,
+    completeCampaignData
   };
 };

@@ -133,6 +133,7 @@ const userController = (dbInterface, dbImplements) => {
     }));
     const createAdvanced = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const advancedData = req.body;
+        console.log(advancedData.basicId, 'iddddd');
         const imgRes = yield (0, userCases_1.userCases)(dbRepositoryuser).uploadImage(advancedData === null || advancedData === void 0 ? void 0 : advancedData.thumbnail);
         const videoRes = yield (0, userCases_1.userCases)(dbRepositoryuser).videoUpload(advancedData === null || advancedData === void 0 ? void 0 : advancedData.video);
         if (imgRes) {

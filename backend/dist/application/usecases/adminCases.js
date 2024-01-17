@@ -51,8 +51,17 @@ const adminCases = (repository) => {
     const verifyCampaign = (id) => __awaiter(void 0, void 0, void 0, function* () {
         return yield repository.verifyCampaign(id);
     });
-    const listCampaigns = () => __awaiter(void 0, void 0, void 0, function* () {
-        return yield repository.listCampaigns();
+    const listCampaignRequests = () => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.listCampaignRequests();
+    });
+    const listLiveCampaigns = () => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.listLiveCampaigns();
+    });
+    const findAdvanced = (id) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.findAdvanced(id);
+    });
+    const completeCampaignData = (id) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.completeCampaignData(id);
     });
     return {
         adminSignin,
@@ -61,7 +70,10 @@ const adminCases = (repository) => {
         blockUser,
         findCampaignById,
         verifyCampaign,
-        listCampaigns
+        listCampaignRequests,
+        listLiveCampaigns,
+        findAdvanced,
+        completeCampaignData
     };
 };
 exports.adminCases = adminCases;

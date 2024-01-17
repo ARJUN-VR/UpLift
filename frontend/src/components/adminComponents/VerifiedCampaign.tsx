@@ -1,27 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import { Campaign } from '../userComponents/Content'
-
 import { useNavigate } from 'react-router-dom'
-import { useGetCampaignAdminMutation, useVerifyCampaignMutation } from '../../redux/slices/adminApiSlice'
-import { toast } from 'react-toastify'
+import { useGetVerifiedCampaignsMutation } from '../../redux/slices/adminApiSlice'
 import Loader from '../userComponents/Loader'
 
-
-export const CampaignList = () => {
-
+export const VerifiedCampaign = () => {
     const [campaigns,setCampaigns] = useState<Array<Campaign>>([])
 
-    const [getCampaign] = useGetCampaignAdminMutation()
-
-    const [verifyCampaign,{isLoading}] = useVerifyCampaignMutation()
-
     const navigate = useNavigate()
+
+    const [getVerifiedCampaigns,{isLoading}] = useGetVerifiedCampaignsMutation()
 
     useEffect(()=>{
         const list = async()=>{
           try{
-        const data  = await getCampaign(' ').unwrap()
-  const list = data.list
+        const data  = await getVerifiedCampaigns('').unwrap()
+        console.log(data)
+        const list = data?.campaigns
       
         setCampaigns(list)
           }catch(error){
@@ -30,25 +25,14 @@ export const CampaignList = () => {
         }
         list()
      
-      },[])
+      },[getVerifiedCampaigns])
 
 
-      const verify=async(id:string)=>{
-        try {
-          console.log(id)
-          await verifyCampaign({id}).unwrap()
-          toast.success('verified')
-        } catch (error) {
-          console.log(error)
-        }
-      }
-    
   return (
- 
-    
+     
     <div className='w-full flex justify-center mt-10'>
       <div className="w-full ml-10 mr-10">
-        <h2 className="text-2xl font-bold mb-4">Campaign Requests</h2>
+        <h2 className="text-2xl font-bold mb-4">Live Campaigns</h2>
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg flex items-center justify-center w-full">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:text-gray-400">
@@ -68,17 +52,15 @@ export const CampaignList = () => {
                 <th scope="col" className="px-6 py-3">
                   Image
                 </th>
-                <th scope="col" className="px-6 py-3">
-                  Verify
-                </th>
+             
               </tr>
             </thead>
             <tbody>
-              {isLoading ? (
-                <Loader />
-              ) : (
+             {isLoading?(
+                <Loader/>
+             ):(
                 <div></div>
-              )}
+             )}
               {campaigns.map((campaign, key) => (
                 <tr key={key} className="bg-gray-50 dark:bg-gray-800 border-b dark:border-gray-700">
                   <td className="px-6 py-4" >
@@ -88,13 +70,9 @@ export const CampaignList = () => {
                   <td className="px-6 py-4">{campaign.target}</td>
                   <td className="px-6 py-4">{campaign.duration}</td>
                   <td className="px-6 py-4" onClick={() => navigate(`/admin/campaignView/:id=${campaign._id}`)}>
-                    <img src={campaign.image} alt="card image" style={{ width: '150px', height: '100px' }} className='rounded-xl' />
+                    <img src={campaign.image} alt="card image" style={{ width: '150px', height: '100px' }} />
                   </td>
-                  <td>
-                    <button className='bg-green-400 w-[70%] h-10 rounded-md text-white' onClick={() => verify(campaign._id)}>
-                      publish
-                    </button>
-                  </td>
+                 
                 </tr>
               ))}
             </tbody>
@@ -103,6 +81,5 @@ export const CampaignList = () => {
       </div>
     </div>
        
-   
   )
 }
