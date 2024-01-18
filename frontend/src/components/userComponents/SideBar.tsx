@@ -28,45 +28,52 @@ export const SideBar = () => {
     }
   }
   return (
-    
-    <div className='ml-10 bg-gray-800 w-1/6  pt-[15px]'>
-          {/* <!-- Sidebar --> */}
-  <aside className="h-[510px] w-16 flex flex-col space-y-7 pb-44  bg-gray-700   mt-20  items-center justify-center relative  text-white rounded-2xl shadow-2xl ">
-    
 
-    {/* <!-- Home --> */}
-    <div className={`${state==='home'?'bg-white text-gray-800 ':''}h-10 w-10 flex items-center justify-center  rounded-lg cursor-pointer hover:text-gray-800 hover:bg-white  hover:duration-300 hover:ease-linear focus:bg-white`} onClick={()=>{navigate('/') ; setState('home')} }>
-      
-
-<FontAwesomeIcon icon={faHouseChimneyCrack} />
-    </div>
-
-    {/* <!-- Rooms --> */}
-    <div className="h-10 w-10 flex items-center justify-center rounded-lg cursor-pointer hover:text-gray-800 hover:bg-white  hover:duration-300 hover:ease-linear focus:bg-white">
-    <FontAwesomeIcon icon={faUsersRectangle} />
-    </div>
-
-    {/* <!-- Profile --> */}
-    <div className={`${state=='profile'?'bg-white text-gray-800 ':''}h-10 w-10 flex items-center justify-center rounded-lg cursor-pointer hover:text-gray-800 hover:bg-white  hover:duration-300 hover:ease-linear focus:bg-white`} onClick={()=>{navigate('/profile');
-    setState('profile')}} title='profile'>
-      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" /></svg>
-    </div>
-
-    {/* <!-- signout--> */}
-    {userInfo ? (
-       <div className="h-10 w-10 flex items-center justify-center rounded-lg cursor-pointer hover:text-gray-800 hover:bg-white  hover:duration-300 hover:ease-linear focus:bg-white" onClick={logoutHandler} title='sign out'>
-       <FontAwesomeIcon icon={faSignOutAlt} title='sign out' />
+    <div
+      className="sidebar pl-2 pr-2 fixed top-24 bottom-0 lg:left-0  w-64 overflow-y-auto text-center bg-[#0c0c0c]"
+    >
    
-       </div>
-    ):(
-      <>
-      <div className="h-10 w-10 flex items-center justify-center rounded-lg cursor-pointer hover:text-gray-800 hover:bg-white  hover:duration-300 hover:ease-linear focus:bg-white" onClick={()=>navigate('/login')} title='sign in'>
-      <FontAwesomeIcon icon={faSignIn} title='sign in'/> 
+      <div
+        className="p-6   flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-white text-white hover:text-black bg-[#141514] shadow-lg"
+      >
+        <i className="bi bi-house-door-fill"></i>
+        <span className="text-[15px] ml-4  font-bold">Home</span>
       </div>
-      </>
-    )}
-   
-  </aside>
+      <div
+        className="p-6 mt-5  flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-white text-white hover:text-black bg-[#141514]"
+      >
+        <i className="bi bi-house-door-fill"></i>
+        <span className="text-[15px] ml-4  font-bold">Explore</span>
+      </div>
+      <div
+        className="p-6 mt-5  flex items-center rounded-md px-4 duration-300 cursor-pointer text-white hover:bg-white hover:text-black bg-[#141514]"
+      >
+        <i className="bi bi-house-door-fill "></i>
+        <span className="text-[15px] ml-4  font-bold ">Community</span>
+      </div>
+      <div
+        className="p-6  mt-5 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-white text-white hover:text-black bg-[#141514]"
+      >
+        <i className="bi bi-house-door-fill"></i>
+        <span className="text-[15px] ml-4  font-bold">Settings</span>
+      </div>
+      <div
+        className="p-6  mt-5 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-white text-white hover:text-black bg-[#141514]"
+      >
+        <i className="bi bi-bookmark-fill"></i>
+        <span className="text-[15px] ml-4  font-bold">Profile</span>
+      </div>
+      <div className="my-4 bg-gray-600 h-[1px]"></div>
+      
+      <div
+        className="p-6 mt-8  flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-white text-white hover:text-black"
+      >
+        <i className="bi bi-box-arrow-in-right"></i>
+        <span className="text-[15px] ml-4  font-bold">Logout</span>
+      </div>
     </div>
+
+   
+
   )
 }
