@@ -91,12 +91,7 @@ export const adminController = (
     res.status(200).json({campaigns})
   })
 
-  const completeCampaignData = asyncHandler(async(req:Request,res:Response)=>{
-    const {id} = req.body
-    console.log(id,'asdfasdfasdf')
-    const data = await adminCases(dbRepsitoryAdmn).completeCampaignData(id)
-    console.log(data)
-  })
+
 
 
 
@@ -108,7 +103,6 @@ export const adminController = (
     findCampaignById,
     verifyCampaign,
     listCampaignRequests,
-    listLiveCampaigns,
-    completeCampaignData
+    listLiveCampaigns
   };
 };

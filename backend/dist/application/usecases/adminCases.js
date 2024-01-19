@@ -60,9 +60,6 @@ const adminCases = (repository) => {
     const findAdvanced = (id) => __awaiter(void 0, void 0, void 0, function* () {
         return yield repository.findAdvanced(id);
     });
-    const completeCampaignData = (id) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield repository.completeCampaignData(id);
-    });
     return {
         adminSignin,
         logout,
@@ -72,8 +69,7 @@ const adminCases = (repository) => {
         verifyCampaign,
         listCampaignRequests,
         listLiveCampaigns,
-        findAdvanced,
-        completeCampaignData
+        findAdvanced
     };
 };
 exports.adminCases = adminCases;

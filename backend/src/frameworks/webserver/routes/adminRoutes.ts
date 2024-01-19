@@ -16,7 +16,7 @@ adminRouter.get('/getCampaign',controller.findCampaignById)
 adminRouter.patch('/verify-campaign',controller.verifyCampaign)
 adminRouter.get('/get-campaigns',controller.listCampaignRequests)
 adminRouter.get('/get-liveCampaigns',controller.listLiveCampaigns)
-adminRouter.get('/getAll',controller.completeCampaignData)
+
 
 export default adminRouter
 

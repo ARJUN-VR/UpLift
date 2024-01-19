@@ -2,12 +2,8 @@ import { userInterface } from "../../../../entities/User";
 import { User } from "../model/userSchema";
 import { Document } from "mongoose";
 import { OTP } from "../model/otpSchema";
-import { Campaign } from "../model/campaignSchma";
-import { campaignInterface } from "../../../../entities/Campaign";
-import { campaign_Basics } from "../../../../entities/BaiscsInterface";
-import { Basics } from "../model/campaign/basicSchema";
-import { Advanced } from "../model/campaign/advancedSchema";
-import { campaign_advanced } from "../../../../entities/AdvancedInterface";
+
+
 export const userDbMethods = () => {
   const addUser = async (user: userInterface) => {
     return await User.create(user);
@@ -71,29 +67,6 @@ export const userDbMethods = () => {
       throw new Error('user not found')
     }
   }
-
-
-  const createCampaign = async(campaign:campaignInterface)=>{
-    await Campaign.create(campaign)
-  }
-
-  const listCampaigns = async()=>{
-    return Basics.find({isVerified:true})
-  }
-
- 
-
-  const createBasics = async(basics:campaign_Basics)=>{
-   return await Basics.create(basics)
-  }
-
-  const createAdvanced = async(advanced:campaign_advanced)=>{
-    return await Advanced.create(advanced)
-  }
-
-
-
-
   return {
     addUser,
     findByEmail,
@@ -101,11 +74,7 @@ export const userDbMethods = () => {
     saveUser,
     forgotPassword,
     saveOTP,
-    findOtpUser,
-    createCampaign,
-    listCampaigns,
-    createBasics,
-    createAdvanced
+    findOtpUser
   };
 };
 

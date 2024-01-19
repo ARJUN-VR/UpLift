@@ -55,11 +55,6 @@ export const adminCases = (repository:ReturnType<AdminDbRepository>)=>{
     return await repository.findAdvanced(id)
    }
 
-   const completeCampaignData = async(id:string)=>{
-    return await repository.completeCampaignData(id)
-   }
-
-
     return {
         adminSignin,
         logout,
@@ -69,7 +64,7 @@ export const adminCases = (repository:ReturnType<AdminDbRepository>)=>{
         verifyCampaign,
         listCampaignRequests,
         listLiveCampaigns,
-        findAdvanced,
-        completeCampaignData
+        findAdvanced
+  
     }
 }

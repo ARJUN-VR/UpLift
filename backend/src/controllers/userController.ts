@@ -4,9 +4,7 @@ import { UserDbMethods } from "../frameworks/database/mongoDb/implementations/us
 import { UserDbInterFace } from "../application/repository/userDbrepository";
 import { userCases } from "../application/usecases/userCases";
 import asyncHandler from "express-async-handler";
-import { campaignInterface } from "../entities/Campaign";
-import { campaign_Basics } from "../entities/BaiscsInterface";
-import { campaign_advanced } from "../entities/AdvancedInterface";
+
 
 export const userController = (
   dbInterface: UserDbInterFace,
@@ -108,86 +106,18 @@ export const userController = (
   const verifyOtp = asyncHandler(async (req: Request, res: Response) => {
     const { email, newOtp } = req.body;
     const otpRes = await userCases(dbRepositoryuser).verifyOtp(email, newOtp);
-    console.log(otpRes)
+    console.log(otpRes);
     res.status(200).json({ message: otpRes?.message });
   });
 
-  //desc campaign creation
-  //route POST /api/user/create-campaign
-  //access private
-  const createCampaign = asyncHandler(async (req: Request, res: Response) => {
-    const { image } = req.body;
-    console.log(image);
-
-    const imgres = await userCases(dbRepositoryuser).uploadImage(image);
-    const campaign: campaignInterface = req.body;
-
-    if (imgres) {
-      campaign.image = imgres.secure_url;
-    }
-
-    await userCases(dbRepositoryuser).createCampaign(campaign);
-    res.status(200).json({ message: "campaign created successfully" });
-  });
-
-
-
-
-
-  const listCampaigns = asyncHandler(async (req: Request, res: Response) => {
-    const list = await userCases(dbRepositoryuser).listCampaigns();
-    res.status(200).json({ list });
-  });
-
-
-
-
-  const createBasics = asyncHandler(async (req: Request, res: Response) => {
-    const basicData: campaign_Basics = req.body;
-    const imgRes = await userCases(dbRepositoryuser).uploadImage(
-      basicData.image
-    );
-    if (imgRes) {
-      basicData.image = imgRes.secure_url;
-    }
-    const data = await userCases(dbRepositoryuser).createBasics(basicData);
-    res.status(200).json({ message: "created successfully", data });
-  });
-
-
-
-  
-  const createAdvanced = asyncHandler(async (req: Request, res: Response) => {
-    const advancedData: campaign_advanced = req.body;
-    console.log(advancedData.basicId,'iddddd')
-    const imgRes = await userCases(dbRepositoryuser).uploadImage(
-      advancedData?.thumbnail
-    );
-    const videoRes = await userCases(dbRepositoryuser).videoUpload(
-      advancedData?.video
-    );
-    if (imgRes) {
-      advancedData.thumbnail = imgRes.secure_url;
-    }
-    if (videoRes) {
-      advancedData.video = videoRes.secure_url;
-    }
-    const data = await userCases(dbRepositoryuser).createAdvanced(advancedData);
-    res.status(200).json({ message: "success", data });
-  });
-
   return {
-    addUser,
+    addUser, 
     userSignIn,
     userSignout,
     getProfile,
     editProfile,
     forgotPassword,
     SendOTP,
-    verifyOtp,
-    createCampaign,
-    listCampaigns,
-    createBasics,
-    createAdvanced,
+    verifyOtp
   };
 };

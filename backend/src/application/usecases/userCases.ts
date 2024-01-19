@@ -2,10 +2,8 @@ import { UserDbInterFace } from "../repository/userDbrepository";
 import { userInterface } from "../../entities/User";
 import generateToken from "../services/generateJwt";
 import OTPService from "../services/otpGeneration";
-import { campaignInterface } from "../../entities/Campaign";
 import cloudinary from 'cloudinary'
-import { campaign_Basics } from "../../entities/BaiscsInterface";
-import { campaign_advanced } from "../../entities/AdvancedInterface";
+
 
 
 export const userCases = (repository: ReturnType<UserDbInterFace>) => {
@@ -62,9 +60,7 @@ export const userCases = (repository: ReturnType<UserDbInterFace>) => {
 
   const verifyUserAndSendOtp = async (email: string) => {
     try {
-      console.log('working')
       const user = await repository.findByEmail(email);
-      console.log(user)
       if (user) {
         const otp: number = await OTPService(email);
         await repository.saveOtp(email, otp);
@@ -98,10 +94,6 @@ export const userCases = (repository: ReturnType<UserDbInterFace>) => {
    
   }
 
-  const createCampaign = async(campaign:campaignInterface)=>{
-    await repository.createCampaign(campaign)
-  }
-
   const uploadImage = async(imgUrl:string)=>{
     try{
       return await cloudinary.v2.uploader.upload(imgUrl)
@@ -119,17 +111,6 @@ export const userCases = (repository: ReturnType<UserDbInterFace>) => {
     }
   }
 
-  const listCampaigns = async()=>{
-    return await repository.listCampaigns()
-  }
-
-  const createBasics = async(basics:campaign_Basics)=>{
-   return await repository.createBasics(basics)
-  }
-
-  const createAdvanced = async(advanced:campaign_advanced)=>{
-    return await repository.campaign_advanced(advanced)
-  }
 
   return {
     findByEmail,
@@ -137,14 +118,10 @@ export const userCases = (repository: ReturnType<UserDbInterFace>) => {
     userSignIn,
     userSignout,
     updateProfile,
-    forgotPassword,
+    forgotPassword, 
     verifyUserAndSendOtp,
     verifyOtp,
-    createCampaign,
     uploadImage,
-    listCampaigns,
-    createBasics,
-    createAdvanced,
     videoUpload
   };
 };

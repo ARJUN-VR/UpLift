@@ -36,9 +36,6 @@ export const adminDbInterface = (repository:ReturnType<AdminDbMethods>) =>{
       return await repository.findAdvanced(id)
    }
 
-   const completeCampaignData = async(id:string)=>{
-      return await repository.completeCampaignData(id)
-   }
 
    return{
     findByEmail,
@@ -48,8 +45,8 @@ export const adminDbInterface = (repository:ReturnType<AdminDbMethods>) =>{
     verifyCampaign,
     listCampaignRequests,
     listLiveCampaigns,
-    findAdvanced,
-    completeCampaignData
+    findAdvanced
+
    }
 }
 

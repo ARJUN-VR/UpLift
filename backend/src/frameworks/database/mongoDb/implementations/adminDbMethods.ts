@@ -46,28 +46,6 @@ export const adminDbMethods =()=>{
         return Basics.find({isVerified:true})
       }
 
-      const completeCampaignData = async(id:string)=>{
-        const result = await Basics.aggregate([
-          {
-            $match: { _id: id } // Match the document with the specified _id
-          },
-          {
-            $lookup: {
-              from: 'Advanced', // The collection to perform the lookup on
-              localField: '_id', // The field from the input documents (basics collection)
-              foreignField: 'basicId', // The field from the documents in the "advanced" collection
-              as: 'advancedData' // The name of the new array field to store the matched data
-            }
-          },
-          {
-            $unwind: '$advancedData' // Unwind the array field to get a single document
-          }
-          
-        ])
-        console.log(result,'result')
-    
-      }
-
     return {
         findByEmail,
         getUsers,
@@ -76,8 +54,7 @@ export const adminDbMethods =()=>{
         verfyCampaign,
         listCampaignRequests,
         listLiveCampaigns,
-        findAdvanced,
-        completeCampaignData
+        findAdvanced
     }
 }
 
