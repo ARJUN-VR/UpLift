@@ -5,9 +5,13 @@ export const UserProfie = () => {
   return (
     <div>
         <Profile/>
-  <div>
-    div for conflict
-  </div>
+<<<<<<< HEAD
+  
+=======
+        <div>
+          this will be a coflict
+        </div>
+>>>>>>> campaign
     </div>
     
   )
