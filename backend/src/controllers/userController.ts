@@ -111,28 +111,10 @@ export const userController = (
     res.status(200).json({ message: otpRes?.message });
   });
 
-  //desc getting basics for the homepage
-  //route POST /api/user/get-campaigns
-  //access public
-  const listCampaigns = asyncHandler(async (req: Request, res: Response) => {
-    const list = await userCases(dbRepositoryuser).listCampaigns();
-    res.status(200).json({ list });
-  });
-
   //desc campaign basic details
   //route POST /api/user/create_basics
   //access private
-  const createBasics = asyncHandler(async (req: Request, res: Response) => {
-    const basicData: campaign_Basics = req.body;
-    const imgRes = await userCases(dbRepositoryuser).uploadImage(
-      basicData.image
-    );
-    if (imgRes) {
-      basicData.image = imgRes.secure_url;
-    }
-    const data = await userCases(dbRepositoryuser).createBasics(basicData);
-    res.status(200).json({ message: "created successfully", data });
-  });
+  
 
   //desc campaign advanced details
   //route POST /api/user/create_advanced
@@ -156,7 +138,7 @@ export const userController = (
   });
 
   return {
-    addUser,
+    addUser, 
     userSignIn,
     userSignout,
     getProfile,

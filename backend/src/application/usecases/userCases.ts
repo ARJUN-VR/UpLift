@@ -3,8 +3,7 @@ import { userInterface } from "../../entities/User";
 import generateToken from "../services/generateJwt";
 import OTPService from "../services/otpGeneration";
 import cloudinary from 'cloudinary'
-import { campaign_Basics } from "../../entities/BaiscsInterface";
-import { campaign_advanced } from "../../entities/AdvancedInterface";
+
 
 
 export const userCases = (repository: ReturnType<UserDbInterFace>) => {
@@ -112,17 +111,6 @@ export const userCases = (repository: ReturnType<UserDbInterFace>) => {
     }
   }
 
-  const listCampaigns = async()=>{
-    return await repository.listCampaigns()
-  }
-
-  const createBasics = async(basics:campaign_Basics)=>{
-   return await repository.createBasics(basics)
-  }
-
-  const createAdvanced = async(advanced:campaign_advanced)=>{
-    return await repository.campaign_advanced(advanced)
-  }
 
   return {
     findByEmail,
@@ -130,13 +118,10 @@ export const userCases = (repository: ReturnType<UserDbInterFace>) => {
     userSignIn,
     userSignout,
     updateProfile,
-    forgotPassword,
+    forgotPassword, 
     verifyUserAndSendOtp,
     verifyOtp,
     uploadImage,
-    listCampaigns,
-    createBasics,
-    createAdvanced,
     videoUpload
   };
 };
