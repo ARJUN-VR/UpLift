@@ -33,18 +33,6 @@ const userDbInterface = (repository) => {
     const findOtpUser = (email) => __awaiter(void 0, void 0, void 0, function* () {
         return yield repository.findOtpUser(email);
     });
-    const createCampaign = (campaign) => __awaiter(void 0, void 0, void 0, function* () {
-        yield repository.createCampaign(campaign);
-    });
-    const listCampaigns = () => __awaiter(void 0, void 0, void 0, function* () {
-        return yield repository.listCampaigns();
-    });
-    const createBasics = (basics) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield repository.createBasics(basics);
-    });
-    const campaign_advanced = (advanced) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield repository.createAdvanced(advanced);
-    });
     return {
         adduser,
         findByEmail,
@@ -52,11 +40,7 @@ const userDbInterface = (repository) => {
         saveUser,
         forgotPassword,
         saveOtp,
-        findOtpUser,
-        createCampaign,
-        listCampaigns,
-        createBasics,
-        campaign_advanced
+        findOtpUser
     };
 };
 exports.userDbInterface = userDbInterface;

@@ -63,9 +63,7 @@ const userCases = (repository) => {
     });
     const verifyUserAndSendOtp = (email) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            console.log('working');
             const user = yield repository.findByEmail(email);
-            console.log(user);
             if (user) {
                 const otp = yield (0, otpGeneration_1.default)(email);
                 yield repository.saveOtp(email, otp);
@@ -100,9 +98,6 @@ const userCases = (repository) => {
             throw new Error('error while otp verification');
         }
     });
-    const createCampaign = (campaign) => __awaiter(void 0, void 0, void 0, function* () {
-        yield repository.createCampaign(campaign);
-    });
     const uploadImage = (imgUrl) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             return yield cloudinary_1.default.v2.uploader.upload(imgUrl);
@@ -119,15 +114,6 @@ const userCases = (repository) => {
             console.log(error, 'error in video uploader');
         }
     });
-    const listCampaigns = () => __awaiter(void 0, void 0, void 0, function* () {
-        return yield repository.listCampaigns();
-    });
-    const createBasics = (basics) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield repository.createBasics(basics);
-    });
-    const createAdvanced = (advanced) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield repository.campaign_advanced(advanced);
-    });
     return {
         findByEmail,
         addUser,
@@ -137,11 +123,7 @@ const userCases = (repository) => {
         forgotPassword,
         verifyUserAndSendOtp,
         verifyOtp,
-        createCampaign,
         uploadImage,
-        listCampaigns,
-        createBasics,
-        createAdvanced,
         videoUpload
     };
 };

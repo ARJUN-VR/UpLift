@@ -35,9 +35,6 @@ const adminDbInterface = (repository) => {
     const findAdvanced = (id) => __awaiter(void 0, void 0, void 0, function* () {
         return yield repository.findAdvanced(id);
     });
-    const completeCampaignData = (id) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield repository.completeCampaignData(id);
-    });
     return {
         findByEmail,
         getUsers,
@@ -46,8 +43,7 @@ const adminDbInterface = (repository) => {
         verifyCampaign,
         listCampaignRequests,
         listLiveCampaigns,
-        findAdvanced,
-        completeCampaignData
+        findAdvanced
     };
 };
 exports.adminDbInterface = adminDbInterface;

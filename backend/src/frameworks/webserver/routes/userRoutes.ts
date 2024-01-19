@@ -3,9 +3,13 @@ import { userController } from "../../../controllers/userController";
 import { userDbInterface } from "../../../application/repository/userDbrepository";
 import { userDbMethods } from "../../database/mongoDb/implementations/userDbMethods";
 import { protect } from "../middlewares/userAuth";
+import { campaignController } from "../../../controllers/campaignController";
+import { campaignDbInterface } from "../../../application/repository/campaignDbRepository";
+import { campaignDbMethods } from "../../database/mongoDb/implementations/campaignDbMethods";
 
 const router = express.Router();
 const controller = userController(userDbInterface, userDbMethods);
+const campaigncontroller = campaignController(campaignDbInterface,campaignDbMethods)
 const auth=protect(userDbInterface,userDbMethods);
 
 router.post("/register", controller.addUser);
@@ -16,9 +20,11 @@ router.patch('/profile',auth,controller.editProfile)
 router.patch('/forgot-password',controller.forgotPassword)
 router.post('/send-otp',controller.SendOTP)
 router.post('/verify-otp',controller.verifyOtp)
-router.get('/get-campaigns',controller.listCampaigns)
-router.post('/create_basics',auth,controller.createBasics)
-router.post('/create_advanced',auth,controller.createAdvanced)
+
+// campaign routes
+router.get('/get-campaigns',campaigncontroller.listCampaigns)
+router.post('/create_basics',auth,campaigncontroller.createBasics)
+router.post('/create_advanced',auth,campaigncontroller.createAdvanced)
 
 export default router;
 

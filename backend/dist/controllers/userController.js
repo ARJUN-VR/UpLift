@@ -104,47 +104,6 @@ const userController = (dbInterface, dbImplements) => {
         console.log(otpRes);
         res.status(200).json({ message: otpRes === null || otpRes === void 0 ? void 0 : otpRes.message });
     }));
-    //desc campaign creation
-    //route POST /api/user/create-campaign
-    //access private
-    const createCampaign = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        const { image } = req.body;
-        console.log(image);
-        const imgres = yield (0, userCases_1.userCases)(dbRepositoryuser).uploadImage(image);
-        const campaign = req.body;
-        if (imgres) {
-            campaign.image = imgres.secure_url;
-        }
-        yield (0, userCases_1.userCases)(dbRepositoryuser).createCampaign(campaign);
-        res.status(200).json({ message: "campaign created successfully" });
-    }));
-    const listCampaigns = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        const list = yield (0, userCases_1.userCases)(dbRepositoryuser).listCampaigns();
-        res.status(200).json({ list });
-    }));
-    const createBasics = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        const basicData = req.body;
-        const imgRes = yield (0, userCases_1.userCases)(dbRepositoryuser).uploadImage(basicData.image);
-        if (imgRes) {
-            basicData.image = imgRes.secure_url;
-        }
-        const data = yield (0, userCases_1.userCases)(dbRepositoryuser).createBasics(basicData);
-        res.status(200).json({ message: "created successfully", data });
-    }));
-    const createAdvanced = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        const advancedData = req.body;
-        console.log(advancedData.basicId, 'iddddd');
-        const imgRes = yield (0, userCases_1.userCases)(dbRepositoryuser).uploadImage(advancedData === null || advancedData === void 0 ? void 0 : advancedData.thumbnail);
-        const videoRes = yield (0, userCases_1.userCases)(dbRepositoryuser).videoUpload(advancedData === null || advancedData === void 0 ? void 0 : advancedData.video);
-        if (imgRes) {
-            advancedData.thumbnail = imgRes.secure_url;
-        }
-        if (videoRes) {
-            advancedData.video = videoRes.secure_url;
-        }
-        const data = yield (0, userCases_1.userCases)(dbRepositoryuser).createAdvanced(advancedData);
-        res.status(200).json({ message: "success", data });
-    }));
     return {
         addUser,
         userSignIn,
@@ -153,11 +112,7 @@ const userController = (dbInterface, dbImplements) => {
         editProfile,
         forgotPassword,
         SendOTP,
-        verifyOtp,
-        createCampaign,
-        listCampaigns,
-        createBasics,
-        createAdvanced,
+        verifyOtp
     };
 };
 exports.userController = userController;

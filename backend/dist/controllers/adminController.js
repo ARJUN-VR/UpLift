@@ -81,12 +81,6 @@ const adminController = (dbInterface, dbImplements) => {
         const campaigns = yield (0, adminCases_1.adminCases)(dbRepsitoryAdmn).listLiveCampaigns();
         res.status(200).json({ campaigns });
     }));
-    const completeCampaignData = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        const { id } = req.body;
-        console.log(id, 'asdfasdfasdf');
-        const data = yield (0, adminCases_1.adminCases)(dbRepsitoryAdmn).completeCampaignData(id);
-        console.log(data);
-    }));
     return {
         adminSignin,
         logout,
@@ -95,8 +89,7 @@ const adminController = (dbInterface, dbImplements) => {
         findCampaignById,
         verifyCampaign,
         listCampaignRequests,
-        listLiveCampaigns,
-        completeCampaignData
+        listLiveCampaigns
     };
 };
 exports.adminController = adminController;

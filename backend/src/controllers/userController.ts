@@ -4,8 +4,7 @@ import { UserDbMethods } from "../frameworks/database/mongoDb/implementations/us
 import { UserDbInterFace } from "../application/repository/userDbrepository";
 import { userCases } from "../application/usecases/userCases";
 import asyncHandler from "express-async-handler";
-import { campaign_Basics } from "../entities/BaiscsInterface";
-import { campaign_advanced } from "../entities/AdvancedInterface";
+
 
 export const userController = (
   dbInterface: UserDbInterFace,
@@ -111,32 +110,6 @@ export const userController = (
     res.status(200).json({ message: otpRes?.message });
   });
 
-  //desc campaign basic details
-  //route POST /api/user/create_basics
-  //access private
-  
-
-  //desc campaign advanced details
-  //route POST /api/user/create_advanced
-  //access private
-  const createAdvanced = asyncHandler(async (req: Request, res: Response) => {
-    const advancedData: campaign_advanced = req.body;
-    const imgRes = await userCases(dbRepositoryuser).uploadImage(
-      advancedData?.thumbnail
-    );
-    const videoRes = await userCases(dbRepositoryuser).videoUpload(
-      advancedData?.video
-    );
-    if (imgRes) {
-      advancedData.thumbnail = imgRes.secure_url;
-    }
-    if (videoRes) {
-      advancedData.video = videoRes.secure_url;
-    }
-    const data = await userCases(dbRepositoryuser).createAdvanced(advancedData);
-    res.status(200).json({ message: "success", data });
-  });
-
   return {
     addUser, 
     userSignIn,
@@ -145,9 +118,6 @@ export const userController = (
     editProfile,
     forgotPassword,
     SendOTP,
-    verifyOtp,
-    listCampaigns,
-    createBasics,
-    createAdvanced
+    verifyOtp
   };
 };

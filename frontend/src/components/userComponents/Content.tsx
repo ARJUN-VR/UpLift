@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useGetCampaignsMutation } from "../../redux/slices/userApiSlice";
-import { ExploreCard } from "./ExploreCard";
+
 
 export interface Campaign {
   _id: string;
@@ -23,9 +23,8 @@ export const Content = () => {
   useEffect(() => {
     const list = async () => {
       try {
-        const data = await getCampaign("");
-
-        const list = data.data.list;
+        const details = await getCampaign("");
+        const list = details.data.basicDetails
         setCampaigns(list);
       } catch (error) {
         console.log(error);
@@ -33,6 +32,7 @@ export const Content = () => {
     };
     list();
   }, []);
+
 
   return (
 
