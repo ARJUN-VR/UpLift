@@ -25,6 +25,7 @@ router.post('/verify-otp',controller.verifyOtp)
 router.get('/get-campaigns',campaigncontroller.listCampaigns)
 router.post('/create_basics',auth,campaigncontroller.createBasics)
 router.post('/create_advanced',auth,campaigncontroller.createAdvanced)
+router.post('/create-reward',campaigncontroller.createReward)
 
 export default router;
 

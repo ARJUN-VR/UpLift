@@ -1,5 +1,6 @@
 import { campaign_advanced } from "../../entities/AdvancedInterface";
 import { campaign_Basics } from "../../entities/BaiscsInterface";
+import { RewardInterface } from "../../entities/RewardInterface";
 import { CampaignDbMethods } from "../../frameworks/database/mongoDb/implementations/campaignDbMethods";
 
 
@@ -19,10 +20,15 @@ export const campaignDbInterface = (
     return await repository.createAdvanced(advanced);
   };
 
+  const createReward = async(reward:RewardInterface)=>{
+    return await repository.createReward(reward)
+  }
+
   return {
     listCampaigns,
     createBasics,
     createAdvanced,
+    createReward
   };
 };
 
