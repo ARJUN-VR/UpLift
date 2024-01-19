@@ -2,8 +2,6 @@ import { userInterface } from "../../../../entities/User";
 import { User } from "../model/userSchema";
 import { Document } from "mongoose";
 import { OTP } from "../model/otpSchema";
-import { Campaign } from "../model/campaignSchma";
-import { campaignInterface } from "../../../../entities/Campaign";
 import { campaign_Basics } from "../../../../entities/BaiscsInterface";
 import { Basics } from "../model/campaign/basicSchema";
 import { Advanced } from "../model/campaign/advancedSchema";
@@ -72,16 +70,9 @@ export const userDbMethods = () => {
     }
   }
 
-
-  const createCampaign = async(campaign:campaignInterface)=>{
-    await Campaign.create(campaign)
-  }
-
   const listCampaigns = async()=>{
     return Basics.find({isVerified:true})
   }
-
- 
 
   const createBasics = async(basics:campaign_Basics)=>{
    return await Basics.create(basics)
@@ -102,7 +93,6 @@ export const userDbMethods = () => {
     forgotPassword,
     saveOTP,
     findOtpUser,
-    createCampaign,
     listCampaigns,
     createBasics,
     createAdvanced

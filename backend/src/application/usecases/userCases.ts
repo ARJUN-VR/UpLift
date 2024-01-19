@@ -2,7 +2,6 @@ import { UserDbInterFace } from "../repository/userDbrepository";
 import { userInterface } from "../../entities/User";
 import generateToken from "../services/generateJwt";
 import OTPService from "../services/otpGeneration";
-import { campaignInterface } from "../../entities/Campaign";
 import cloudinary from 'cloudinary'
 import { campaign_Basics } from "../../entities/BaiscsInterface";
 import { campaign_advanced } from "../../entities/AdvancedInterface";
@@ -62,9 +61,7 @@ export const userCases = (repository: ReturnType<UserDbInterFace>) => {
 
   const verifyUserAndSendOtp = async (email: string) => {
     try {
-      console.log('working')
       const user = await repository.findByEmail(email);
-      console.log(user)
       if (user) {
         const otp: number = await OTPService(email);
         await repository.saveOtp(email, otp);
@@ -96,10 +93,6 @@ export const userCases = (repository: ReturnType<UserDbInterFace>) => {
        throw new Error('error while otp verification')
      }
    
-  }
-
-  const createCampaign = async(campaign:campaignInterface)=>{
-    await repository.createCampaign(campaign)
   }
 
   const uploadImage = async(imgUrl:string)=>{
@@ -140,7 +133,6 @@ export const userCases = (repository: ReturnType<UserDbInterFace>) => {
     forgotPassword,
     verifyUserAndSendOtp,
     verifyOtp,
-    createCampaign,
     uploadImage,
     listCampaigns,
     createBasics,
