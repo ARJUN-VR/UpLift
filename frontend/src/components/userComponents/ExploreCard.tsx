@@ -25,7 +25,7 @@ export const ExploreCard = () => {
         className="p-8  mt-4 flex items-center rounded-lg px-4 duration-300 cursor-pointer hover:bg-white text-gray hover:text-gray bg-[#1a2c3a] shadow-lg"
       >
         <i className="bi bi-house-door-fill"></i>
-        <span className="text-[15px] ml-4  font-bold">New Releases</span>
+        <span className="text-[15px] ml-4  font-bold">Popular</span>
       </div>
       <div
         className="p-8  mt-4 flex items-center rounded-lg px-4 duration-300 cursor-pointer hover:bg-white text-gray hover:text-gray bg-[#e9cec5] shadow-lg"
