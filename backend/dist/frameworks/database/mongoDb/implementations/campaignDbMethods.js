@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.campaignDbMethods = void 0;
 const advancedSchema_1 = require("../model/campaign/advancedSchema");
 const basicSchema_1 = require("../model/campaign/basicSchema");
+const rewardSchema_1 = require("../model/campaign/rewardSchema");
 const campaignDbMethods = () => {
     const listBasics = () => __awaiter(void 0, void 0, void 0, function* () {
         return yield basicSchema_1.Basics.find();
@@ -22,10 +23,14 @@ const campaignDbMethods = () => {
     const createAdvanced = (advanced) => __awaiter(void 0, void 0, void 0, function* () {
         return yield advancedSchema_1.Advanced.create(advanced);
     });
+    const createReward = (reward) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield rewardSchema_1.Reward.create(reward);
+    });
     return {
         listBasics,
         createBasics,
         createAdvanced,
+        createReward
     };
 };
 exports.campaignDbMethods = campaignDbMethods;
