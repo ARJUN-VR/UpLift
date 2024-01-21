@@ -1,5 +1,8 @@
 import React, { useRef, useState } from 'react'
 import { Input } from './Input'
+import { useCreateRewardMutation } from '../../../redux/slices/userApiSlice'
+import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
 
 
 export const Rewards = () => {
@@ -18,6 +21,12 @@ export const Rewards = () => {
     }
 
     console.log(rewardList)
+
+    const [saveReward,{isLoading}] = useCreateRewardMutation()
+
+    const navigate = useNavigate()
+
+
     
 
 
@@ -49,7 +58,19 @@ export const Rewards = () => {
       }
       
 
-    const submitHandler=()=>{
+    const submitHandler=async(e:React.FormEvent)=>{
+      e.preventDefault()
+      try {
+        await saveReward({title,rewardList,pledge,delivary,image}).unwrap()
+      navigate('/createCamapign/draft')
+
+        
+      } catch (error) {
+        toast.error(error?.data?.message)
+        console.log(error)
+      }
+
+
     
     }
   return (
