@@ -13,12 +13,12 @@ const rewardSchema = new Schema({
         type:String,
         required:false
       },
-      pledge:{
+      pledgeAmount:{
         type:Number,
         required:false
       },
-      description:{
-        type:String,
+      rewardList:{
+        type:Array,
         required:true
       },
       claims:{

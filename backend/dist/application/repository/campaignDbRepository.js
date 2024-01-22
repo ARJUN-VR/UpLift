@@ -20,10 +20,14 @@ const campaignDbInterface = (repository) => {
     const createAdvanced = (advanced) => __awaiter(void 0, void 0, void 0, function* () {
         return yield repository.createAdvanced(advanced);
     });
+    const createReward = (reward) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.createReward(reward);
+    });
     return {
         listCampaigns,
         createBasics,
         createAdvanced,
+        createReward
     };
 };
 exports.campaignDbInterface = campaignDbInterface;

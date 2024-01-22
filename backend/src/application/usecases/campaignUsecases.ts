@@ -1,5 +1,6 @@
 import { campaign_advanced } from "../../entities/AdvancedInterface";
 import { campaign_Basics } from "../../entities/BaiscsInterface";
+import { RewardInterface } from "../../entities/RewardInterface";
 import { CampaignDbInterface } from "../repository/campaignDbRepository";
 import cloudinary from "cloudinary";
 
@@ -36,11 +37,16 @@ export const campaignUsecase = (
     }
   };
 
+  const createReward = async(reward:RewardInterface)=>{
+    return await repository.createReward(reward)
+  }
+
   return {
     listCampaigns,
     createBasics,
     createAdvanced,
     uploadImage,
     videoUpload,
+    createReward
   };
 };

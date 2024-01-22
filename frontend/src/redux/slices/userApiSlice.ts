@@ -78,6 +78,13 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 body:data
             })
         }),
+        createReward:builder.mutation({
+            query:(data)=>({
+                url:`${USER_URL}/create-reward`,
+                method:'POST',
+                body:data
+            })
+        }),
         logout:builder.mutation({
             query:()=>({
                 url:`${USER_URL}/logout`,
@@ -99,5 +106,6 @@ export const {
     useGetProfileMutation,
     useGetCampaignsMutation,
     useCreateBasicsMutation,
-    useCreateAdvancedMutation
+    useCreateAdvancedMutation,
+    useCreateRewardMutation
 } = usersApiSlice

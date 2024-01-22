@@ -15,11 +15,11 @@ const rewardSchema = new mongoose_1.Schema({
         type: String,
         required: false
     },
-    pledge: {
+    pledgeAmount: {
         type: Number,
         required: false
     },
-    description: {
+    desc: {
         type: String,
         required: true
     },

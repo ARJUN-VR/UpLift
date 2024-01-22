@@ -5,6 +5,7 @@ import { CampaignDbMethods } from "../frameworks/database/mongoDb/implementation
 import { campaign_Basics } from "../entities/BaiscsInterface";
 import { campaignUsecase } from "../application/usecases/campaignUsecases";
 import { campaign_advanced } from "../entities/AdvancedInterface";
+import { RewardInterface } from "../entities/RewardInterface";
 
 export const campaignController = (
   dbInterface: CampaignDbInterface,
@@ -63,10 +64,20 @@ export const campaignController = (
     res.status(200).json({ message: "success", data });
   });
 
+  //desc create reward
+  //route POST /api/user/create-reward
+  //access private
+  const createReward = asyncHandler(async(req:Request,res:Response)=>{
+    const rewardData:RewardInterface = req.body;
+    const reward = await campaignUsecase(dbRepositoryCampaign).createReward(rewardData)
+    res.status(200).json({reward})
+  })
+
 
   return {
     listCampaigns,
     createBasics,
     createAdvanced,
+    createReward
   };
 };

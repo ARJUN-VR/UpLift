@@ -30,6 +30,9 @@ export const UserRoutes = () => {
             <Route path="/profile" element={<HomePage/>}/>  
             <Route path="/create-campaign" element={<CampaignPage/>}/>
             <Route path="/create-campaign/advanced" element={<CampaignPage/>}/>
+            <Route path='/create-campaign/reward' element={<CampaignPage/>}/>
+            <Route path='/create-campaign/draft' element={<CampaignPage/>}/>
+
 
             
             </Route>

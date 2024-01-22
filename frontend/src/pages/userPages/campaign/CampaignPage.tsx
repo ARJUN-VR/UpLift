@@ -3,6 +3,8 @@ import { CampaignSidbar } from '../../../components/userComponents/campaignCompo
 import { Basics } from '../../../components/userComponents/campaignComponents/Basics'
 import { Advanced } from '../../../components/userComponents/campaignComponents/Advanced'
 import { useLocation } from 'react-router-dom'
+import { Rewards } from '../../../components/userComponents/campaignComponents/Rewards'
+import { Draft } from '../../../components/userComponents/campaignComponents/Draft'
 
 export const CampaignPage = () => {
 
@@ -14,7 +16,7 @@ export const CampaignPage = () => {
       <CampaignSidbar/>
     </div>
     <div className='ml-72 h-screen bg-gray-800 w-full pl-20 pt-10 flex flex-col overflow-y-auto'>
-    {path =='/create-campaign' ? (<Basics/>): path =='/create-campaign/advanced' ? (<Advanced/>):null}
+    {path =='/create-campaign' ? (<Basics/>): path =='/create-campaign/advanced' ? (<Advanced/>):path =='/create-campaign/reward' ?(<Rewards/>):path=='/create-campaign/draft' ?(<Draft/>):null}
     </div>
   </div>
   )
