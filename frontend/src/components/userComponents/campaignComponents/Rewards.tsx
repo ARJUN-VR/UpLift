@@ -3,6 +3,7 @@ import { Input } from './Input'
 import { useCreateRewardMutation } from '../../../redux/slices/userApiSlice'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
+import Loader from '../Loader'
 
 
 export const Rewards = () => {
@@ -22,9 +23,6 @@ export const Rewards = () => {
     const [saveReward,{isLoading}] = useCreateRewardMutation()
 
     const navigate = useNavigate()
-
-
-    
 
 
 
@@ -133,7 +131,11 @@ export const Rewards = () => {
               value={delivary}
             />
           
-           
+           {isLoading ? (
+            <Loader/>
+           ):(
+            <div></div>
+           )}
           
           </div>
      
