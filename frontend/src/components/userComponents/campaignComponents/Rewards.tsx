@@ -19,9 +19,6 @@ export const Rewards = () => {
         setRewardList([...rewardList,reward])
         setReward('')
     }
-
-    console.log(rewardList)
-
     const [saveReward,{isLoading}] = useCreateRewardMutation()
 
     const navigate = useNavigate()
@@ -61,8 +58,9 @@ export const Rewards = () => {
     const submitHandler=async(e:React.FormEvent)=>{
       e.preventDefault()
       try {
-        await saveReward({title,rewardList,pledge,delivary,image}).unwrap()
-      navigate('/createCamapign/draft')
+        const basicId = localStorage.getItem('basicId')
+        await saveReward({title,rewardList,pledge,delivary,image,basicId}).unwrap()
+        navigate('/create-campaign/draft')
 
         
       } catch (error) {
@@ -182,7 +180,8 @@ export const Rewards = () => {
             </span>
             <input type="number" className="w-80 h-7 rounded-md mt-5 text-black" value={pledge} onChange={(e)=>setPledge(Number(e.target.value))} max={100000} />
           </div>
-          {/* footer  */}
+         
+          {/* footer */}
           <div className="h-52 w-full  flex items-center justify-end">
             <button className="bg-blue-500 w-36 h-12 mr-20" type="submit">
               save&continue

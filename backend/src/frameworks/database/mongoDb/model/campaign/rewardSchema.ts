@@ -17,8 +17,8 @@ const rewardSchema = new Schema({
         type:Number,
         required:false
       },
-      desc:{
-        type:String,
+      rewardList:{
+        type:Array,
         required:true
       },
       claims:{

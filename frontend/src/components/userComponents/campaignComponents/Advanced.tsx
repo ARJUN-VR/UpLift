@@ -63,9 +63,8 @@ const [createAdvanced,{isLoading}] = useCreateAdvancedMutation()
     const basicId = localStorage.getItem('basicId')
     console.log(basicId)
     await createAdvanced({video,thumbnail,story,basicId}).unwrap()
-    localStorage.removeItem('basicId')
-    navigate('/')
-    toast.success('campaign created')
+    navigate('/create-campaign/reward')
+    
    
 
   }
@@ -160,7 +159,7 @@ const [createAdvanced,{isLoading}] = useCreateAdvancedMutation()
        {/* footer  */}
        <div className="h-52 w-full  flex items-center justify-end">
             <button className="bg-blue-500 w-36 h-12 mr-20" type="submit">
-              publish
+              save & continue
             </button>
           </div>
       {/*add here */}
