@@ -2,7 +2,7 @@ import mongoose, { Schema, model } from 'mongoose';
 
 const rewardSchema = new Schema({
       basicId:{
-        type:String,
+        type:Schema.Types.ObjectId,
         required : true
       },
       title:{

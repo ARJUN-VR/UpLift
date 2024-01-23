@@ -8,7 +8,7 @@ const advancedSchema = new mongoose_1.Schema({
         required: true
     },
     basicId: {
-        type: String,
+        type: mongoose_1.Schema.Types.ObjectId,
         required: true
     },
     thumbnail: {
@@ -18,6 +18,14 @@ const advancedSchema = new mongoose_1.Schema({
     story: {
         type: String,
         required: true
+    },
+    pledgeAmount: {
+        type: Number,
+        required: false
+    },
+    backers: {
+        type: Number,
+        required: false
     }
 });
 exports.Advanced = (0, mongoose_1.model)('campaign_advanced', advancedSchema);

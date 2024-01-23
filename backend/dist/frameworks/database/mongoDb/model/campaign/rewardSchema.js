@@ -4,7 +4,7 @@ exports.Reward = void 0;
 const mongoose_1 = require("mongoose");
 const rewardSchema = new mongoose_1.Schema({
     basicId: {
-        type: String,
+        type: mongoose_1.Schema.Types.ObjectId,
         required: true
     },
     title: {

@@ -17,12 +17,12 @@ export const campaignController = (
   //route POST /api/user/get-campaigns
   //access public
   const listCampaigns = asyncHandler(async (req: Request, res: Response) => {
-    console.log('getting the call')
     const basicDetails = await campaignUsecase(
       dbRepositoryCampaign
     ).listCampaigns();
     res.status(200).json({ basicDetails });
   });
+
 
   //desc campaign basic details
   //route POST /api/user/create_basics
@@ -69,8 +69,22 @@ export const campaignController = (
   //access private
   const createReward = asyncHandler(async(req:Request,res:Response)=>{
     const rewardData:RewardInterface = req.body;
+    const imgRes = await campaignUsecase(dbRepositoryCampaign).uploadImage(rewardData.image)
+    if(imgRes){
+      rewardData.image = imgRes.secure_url
+    }
     const reward = await campaignUsecase(dbRepositoryCampaign).createReward(rewardData)
     res.status(200).json({reward})
+  })
+ 
+  //desc   fetching full campaign informations
+  //route  GET  /api/user/getCampaign
+  //access public   
+  const getCampaign = asyncHandler(async(req:Request,res:Response)=>{
+    const Id = req.params.basicId
+    console.log(Id)
+    const campaign = await campaignUsecase(dbRepositoryCampaign).getCampaign(Id)
+    res.status(200).json({campaign})
   })
 
 
@@ -78,6 +92,7 @@ export const campaignController = (
     listCampaigns,
     createBasics,
     createAdvanced,
-    createReward
+    createReward,
+    getCampaign
   };
 };

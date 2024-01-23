@@ -1,6 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
+import { useGetCampaignMutation } from "../../../redux/slices/userApiSlice";
 
 export const CampiagnMenu = () => {
+
+  
+  const [title,setTitle] = useState<string>('')
+  const [tagline,setTagline] = useState<string>('')
+  const [video,setVideo] = useState<string>('')
+  const [thumbnail,setThumbnail] = useState<string>('')
+  const [goal,setGoal] = useState<number>(100000)
+  const [backers,setBackers] =useState<number>(0)
+  const [currentAmount,setCurrentAmount] = useState<number>(0)
+  const [date,setDate] = useState<string>('')
+
+
+  const [campaign,{isLoading}] = useGetCampaignMutation()
+
+
+  const getCampaign = async()=>{
+    await campaign()
+    //continue
+  }
+
+
+
+
+
+
+
   return (
     <>
       <div className="w-full bg-gray-800 flex flex-col items-center font-bold text-white pr-5">

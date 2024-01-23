@@ -16,7 +16,6 @@ export const Draft = () => {
       icon: 'success',
       confirmButtonText: 'OK',
     }).then((result)=>{
-
       if(result.isConfirmed){
         navigate('/')
       }
@@ -47,6 +46,7 @@ export const Draft = () => {
 <p className="text-white font-medium">
   As you await approval, consider sharing a sneak peek of your project with friends and followers on social media. Building early excitement can be a powerful way to garner support when your campaign officially goes live. We appreciate your dedication to creating something extraordinary, and we can't wait to see your vision come to life on our platform. Thank you for choosing us to be a part of your crowdfunding journey.<br/><br/>
 </p>
+
 
             </div>
             <button className="w-96 rounded-sm font-bold text-white bg-green-500 h-10" onClick={openModal}>publish</button>

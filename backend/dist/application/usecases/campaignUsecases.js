@@ -45,13 +45,17 @@ const campaignUsecase = (repository) => {
     const createReward = (reward) => __awaiter(void 0, void 0, void 0, function* () {
         return yield repository.createReward(reward);
     });
+    const getCampaign = (id) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.getCampaign(id);
+    });
     return {
         listCampaigns,
         createBasics,
         createAdvanced,
         uploadImage,
         videoUpload,
-        createReward
+        createReward,
+        getCampaign
     };
 };
 exports.campaignUsecase = campaignUsecase;

@@ -12,7 +12,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.campaignDbInterface = void 0;
 const campaignDbInterface = (repository) => {
     const listCampaigns = () => __awaiter(void 0, void 0, void 0, function* () {
-        return yield repository.listBasics();
+        return yield repository.getAllBasics();
+    });
+    const getCampaign = (id) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.getCampaign(id);
     });
     const createBasics = (basics) => __awaiter(void 0, void 0, void 0, function* () {
         return yield repository.createBasics(basics);
@@ -27,7 +30,8 @@ const campaignDbInterface = (repository) => {
         listCampaigns,
         createBasics,
         createAdvanced,
-        createReward
+        createReward,
+        getCampaign
     };
 };
 exports.campaignDbInterface = campaignDbInterface;

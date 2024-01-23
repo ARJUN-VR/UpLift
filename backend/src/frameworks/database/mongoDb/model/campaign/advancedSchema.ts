@@ -6,7 +6,7 @@ const advancedSchema = new Schema({
         required:true
     },
     basicId:{
-        type:String,
+        type:Schema.Types.ObjectId,
         required:true
     },
     thumbnail:{
@@ -16,6 +16,14 @@ const advancedSchema = new Schema({
     story:{
         type:String,
         required:true
+    },
+    pledgeAmount:{
+        type:Number,
+        required:false
+    },
+    backers:{
+        type:Number,
+        required:false
     }
 })
 
