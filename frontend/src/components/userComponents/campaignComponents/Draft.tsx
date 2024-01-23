@@ -1,7 +1,30 @@
 import { CampiagnMenu } from "./CampiagnMenu";
 import { RewardCard } from "../RewardCard";
+import Swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
+import { useNavigate } from "react-router-dom";
+
 
 export const Draft = () => {
+
+  const navigate = useNavigate()
+
+  const openModal = () => {
+    Swal.fire({
+      title: 'Congratulations!',
+      text: 'Your request has been sent. Our admin team will review and verify it shortly.',
+      icon: 'success',
+      confirmButtonText: 'OK',
+    }).then((result)=>{
+
+      if(result.isConfirmed){
+        navigate('/')
+      }
+
+    })
+  };
+
+
   return (
 
     <div>
@@ -26,7 +49,7 @@ export const Draft = () => {
 </p>
 
             </div>
-            <button className="w-96 rounded-sm font-bold text-white bg-green-500 h-10">publish</button>
+            <button className="w-96 rounded-sm font-bold text-white bg-green-500 h-10" onClick={openModal}>publish</button>
             
         </div>
     </div>

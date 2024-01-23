@@ -19,8 +19,8 @@ const rewardSchema = new mongoose_1.Schema({
         type: Number,
         required: false
     },
-    desc: {
-        type: String,
+    rewardList: {
+        type: Array,
         required: true
     },
     claims: {

@@ -39,7 +39,7 @@ export const Content = () => {
   
       <div className=" flex  mr-7 l bg-[#0c0c0c] ml-3 text-white">
         {/* campaign lists */}
-        <div className="w-full flex bg-[#0c0c0c] mt-5  flex-wrap justify-between">
+        <div className="w-full flex bg-[#0c0c0c] mt-5  flex-wrap space-x-4">
           {campaigns.map((campaign) => (
             <div className="w-56  rounded overflow-hidden shadow-xl bg-[#16141c] h-[340px] mt-8">
               <img

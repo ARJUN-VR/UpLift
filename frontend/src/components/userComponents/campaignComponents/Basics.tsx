@@ -110,7 +110,7 @@ if(!title){
             Provide a short description that best describes your campaign to your audience.
             </span>
             <Input
-              placeHolder="tagline"
+              placeHolder="tags"
               type="text"
               setInput={setTagline}
               value={tagline}
