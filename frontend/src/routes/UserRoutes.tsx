@@ -7,6 +7,7 @@ import { EmailVerification } from "../components/userComponents/EmailVerificatio
 import { OtpVerification } from "../components/userComponents/OtpVerification"
 import { SetNewPassowrd } from "../components/userComponents/SetNewPassowrd"
 import { CampaignPage } from "../pages/userPages/campaign/CampaignPage"
+import { SinglePageView } from "../pages/userPages/SinglePageView"
 
 
 
@@ -22,6 +23,7 @@ export const UserRoutes = () => {
             <Route path="/email-verification" element={<EmailVerification/>}/>
             <Route path="/otp" element={<OtpVerification/>}/>
             <Route path="/setpass" element={<SetNewPassowrd/>}/>
+            <Route path="/campaign/:id" element={<SinglePageView/>}/>
            
 
             {/* Private Routes */}

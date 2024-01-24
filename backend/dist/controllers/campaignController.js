@@ -57,6 +57,10 @@ const campaignController = (dbInterface, dbImplements) => {
     //access private
     const createReward = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const rewardData = req.body;
+        const imgRes = yield (0, campaignUsecases_1.campaignUsecase)(dbRepositoryCampaign).uploadImage(rewardData.image);
+        if (imgRes) {
+            rewardData.image = imgRes.secure_url;
+        }
         const reward = yield (0, campaignUsecases_1.campaignUsecase)(dbRepositoryCampaign).createReward(rewardData);
         res.status(200).json({ reward });
     }));

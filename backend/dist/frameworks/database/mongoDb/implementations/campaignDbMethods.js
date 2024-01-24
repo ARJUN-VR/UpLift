@@ -21,13 +21,13 @@ const campaignDbMethods = () => {
     const getCampaign = (id) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const campaignid = new mongodb_1.ObjectId(id);
-            const data = yield basicSchema_1.Basics.aggregate([
+            return yield basicSchema_1.Basics.aggregate([
                 {
                     $match: { _id: campaignid }
                 },
                 {
                     $lookup: {
-                        from: 'Advanced',
+                        from: 'campaign_advanceds',
                         localField: '_id',
                         foreignField: 'basicId',
                         as: 'advancedData'
@@ -35,16 +35,13 @@ const campaignDbMethods = () => {
                 },
                 {
                     $lookup: {
-                        from: 'Reward',
+                        from: 'rewards',
                         localField: '_id',
                         foreignField: 'basicId',
                         as: 'rewardData'
                     }
                 }
             ]);
-            console.log(data);
-            console.log(data[0].advancedData);
-            return data;
         }
         catch (error) {
             console.error('Error in getCampaign:', error);
@@ -55,13 +52,9 @@ const campaignDbMethods = () => {
         return yield basicSchema_1.Basics.create(basics);
     });
     const createAdvanced = (advanced) => __awaiter(void 0, void 0, void 0, function* () {
-        const objId = new mongodb_1.ObjectId(advanced.basicId);
-        advanced.basicId = objId;
         return yield advancedSchema_1.Advanced.create(advanced);
     });
     const createReward = (reward) => __awaiter(void 0, void 0, void 0, function* () {
-        const objId = new mongodb_1.ObjectId(reward.basicId);
-        reward.basicId = objId;
         return yield rewardSchema_1.Reward.create(reward);
     });
     return {

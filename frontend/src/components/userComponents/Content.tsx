@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useGetCampaignsMutation } from "../../redux/slices/userApiSlice";
+import { useNavigate } from "react-router-dom";
 
 
 export interface Campaign {
@@ -19,6 +20,7 @@ export const Content = () => {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
 
   const [getCampaign] = useGetCampaignsMutation();
+  const navigate = useNavigate()
 
   useEffect(() => {
     const list = async () => {
@@ -41,7 +43,7 @@ export const Content = () => {
         {/* campaign lists */}
         <div className="w-full flex bg-[#0c0c0c] mt-5  flex-wrap space-x-4">
           {campaigns.map((campaign) => (
-            <div className="w-56  rounded overflow-hidden shadow-xl bg-[#16141c] h-[340px] mt-8">
+            <div className="w-56  rounded overflow-hidden shadow-xl bg-[#16141c] h-[340px] mt-8" onClick={()=>navigate(`campaign/:${campaign._id}`)}>
               <img
                 className="w-full"
                 src={campaign.image}

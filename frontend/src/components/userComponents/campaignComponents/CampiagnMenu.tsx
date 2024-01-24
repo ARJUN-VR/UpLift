@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useGetCampaignMutation } from "../../../redux/slices/userApiSlice";
+import { useParams } from "react-router-dom";
 
 export const CampiagnMenu = () => {
 
@@ -14,32 +15,56 @@ export const CampiagnMenu = () => {
   const [date,setDate] = useState<string>('')
 
 
-  const [campaign,{isLoading}] = useGetCampaignMutation()
+  const [GetCampaign,{isLoading}] = useGetCampaignMutation()
+
+  const { id } = useParams();
+  const campaignId = id?.slice(1)
+  console.log(campaignId)
 
 
+useEffect(()=>{
   const getCampaign = async()=>{
-    await campaign()
-    //continue
-  }
+    const campData = await GetCampaign(campaignId)
+    console.log(campData)
+    const advancedData = campData?.data?.campaign[0].advancedData[0]
+    const rewardData = campData.data.campaign[0].rewardData[0]
+    
+    
+   setTitle(campData?.data?.campaign[0].title)
+   setTagline(campData?.data?.campaign[0].tagline)
+   setGoal(campData?.data?.campaign[0].target)
+   setCurrentAmount(rewardData.pledgeAmount)
+   setBackers(rewardData.claims)
+   setDate(campData?.data?.campaign[0].duration)
+   setVideo(advancedData.video)
+
+
+
+    
+    
+    }
+    getCampaign()
+  
+},[GetCampaign,id])
 
 
 
 
+console.log(video,'saljfhsdjfskf')
 
 
 
   return (
     <>
-      <div className="w-full bg-gray-800 flex flex-col items-center font-bold text-white pr-5">
+      <div className="w-full flex flex-col items-center font-bold text-white pr-5">
         <span className="text-3xl">
-          MakaGiC VS01 Intelligent Electric Vise for DIYer & Maker
+          {title}
         </span>
         <span className="text-xl font-normal pt-2">
-          Smart clamping | Adjustable intensity | Multiple modes | Expandable
-          peripherals | Large capacity battery | All aluminum alloy body
+         {tagline}
         </span>
       </div>
-      <div className="w-full bg-blue-200 flex mt-4">
+      <div className="w-full  flex mt-4">
         <div className="w-2/3">
           <video
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
@@ -47,29 +72,29 @@ export const CampiagnMenu = () => {
             autoPlay
           >
             <source
-              src="https://res.cloudinary.com/dpuzhf0j2/video/upload/v1705373798/o5bemee6mncihn5wz2jv.mp4"
+              src={video}
               type="video/mp4"
             />
           </video>
         </div>
         {/* details area */}
-        <div className="w-1/3 flex  bg-gray-800 flex-col  pl-10 pr-5">
+        <div className="w-1/3 flex  flex-col  pl-10 pr-5">
           {/* funding bar */}
           <div className="bg-gray-300 w-[90%] h-2">
             <div className="bg-green-500 w-[45%] h-full"></div>
           </div>
           {/* goal */}
           <span className="text-2xl font-bold text-green-500 pt-2">
-            ₹RS.19,00,00
+            ₹RS.{currentAmount}
           </span>
           <span className="text-medium font-semibold text-white ">
-            pledged of ₹RS.45,00,000
+            pledged of ₹RS.{goal}
           </span>
           {/* backers */}
-          <span className="text-2xl font-bold text-white  pt-5">456</span>
+          <span className="text-2xl font-bold text-white  pt-5">{backers}</span>
           <span className="text-large font-bold text-white">Backers</span>
           {/* days to go */}
-          <span className="text-2xl font-bold text-white  pt-5">60</span>
+          <span className="text-2xl font-bold text-white  pt-5">{date}</span>
           <span className="text-large font-bold text-white">days to go</span>
           {/* notice */}
           <span className="text-sm font-bold text-gray-200 pt-10">
