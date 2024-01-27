@@ -1,86 +1,110 @@
 import React, { useEffect, useState } from "react";
-import { useGetCampaignMutation } from "../../../redux/slices/userApiSlice";
+import { useGetCampaignMutation, usePostCommentMutation } from "../../../redux/slices/userApiSlice";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/store";
 
 export const CampiagnMenu = () => {
+  const [title, setTitle] = useState<string>("");
+  const [tagline, setTagline] = useState<string>("");
+  const [video, setVideo] = useState<string>("");
+  const [thumbnail, setThumbnail] = useState<string>("");
+  const [goal, setGoal] = useState<number>(100000);
+  const [backers, setBackers] = useState<number>(0);
+  const [currentAmount, setCurrentAmount] = useState<number>(0);
+  const [date, setDate] = useState<string>("");
+  const [story,setStory] = useState<string>('')
 
-  
-  const [title,setTitle] = useState<string>('')
-  const [tagline,setTagline] = useState<string>('')
-  const [video,setVideo] = useState<string>('')
-  const [thumbnail,setThumbnail] = useState<string>('')
-  const [goal,setGoal] = useState<number>(100000)
-  const [backers,setBackers] =useState<number>(0)
-  const [currentAmount,setCurrentAmount] = useState<number>(0)
-  const [date,setDate] = useState<string>('')
+  const [active, setActive] = useState<boolean>(true);
+
+  const [campaignid,setCampaignid] = useState<string>('')
 
 
-  const [GetCampaign,{isLoading}] = useGetCampaignMutation()
+  const [comment,setComment] = useState<string>('')
 
-  let campaignId:string|undefined;
+
+
+  console.log(active);
+
+  const [GetCampaign, { isLoading }] = useGetCampaignMutation();
+
+  const [post] = usePostCommentMutation()
+
+  let campaignId: string | undefined;
 
   const { id } = useParams();
 
-  const basicId = localStorage.getItem('basicId')
+  const basicId = localStorage.getItem("basicId");
 
-  if(id){
-     campaignId = id?.slice(1)
-     console.log(campaignId)
-     console.log('aaa')
-  }else if(basicId){
-     campaignId = basicId
-     console.log('bb')
+  if (id) {
+    campaignId = id?.slice(1);
+  } else if (basicId) {
+    campaignId = basicId;
+    console.log("bb");
   }
 
-useEffect(()=>{
-  const getCampaign = async()=>{
+  useEffect(() => {
+    const getCampaign = async () => {
+      try {
+        console.log(campaignId);
+        const campData = await GetCampaign(campaignId);
+        console.log(campData);
+        localStorage.removeItem("basicId");
+        const advancedData = campData?.data?.campaign[0].advancedData[0];
+        const rewardData = campData.data.campaign[0].rewardData[0];
+
+        setTitle(campData?.data?.campaign[0].title);
+        setTagline(campData?.data?.campaign[0].tagline);
+        setGoal(campData?.data?.campaign[0].target);
+        setCurrentAmount(rewardData.pledgeAmount);
+        setBackers(rewardData.claims);
+        setDate(campData?.data?.campaign[0].duration);
+        setVideo(advancedData?.video);
+        setThumbnail(advancedData?.thumbnail);
+        setStory(advancedData?.story)
+        setCampaignid(campData?.data?.campaign[0]._id)
+      } catch (error) {
+        toast.error("error in campaignmenu");
+        console.log(error);
+      }
+    };
+    getCampaign();
+  }, [GetCampaign, id]);
+
+
+  const Postcomment=async(e:React.FormEvent)=>{
+    e.preventDefault()
+    const {userInfo} = useSelector((state:RootState)=>state.auth)
+    console.log('imwoerkfjoasdf',userInfo)
+    if(!userInfo){
+      return toast.error('you must signin')
+    }
+    const userName = userInfo.name
     try {
-      console.log(campaignId)
-      const campData = await GetCampaign(campaignId)
-      console.log(campData)
-      localStorage.removeItem('basicId')
-      const advancedData = campData?.data?.campaign[0].advancedData[0]
-      const rewardData = campData.data.campaign[0].rewardData[0]
-      
-      
-     setTitle(campData?.data?.campaign[0].title)
-     setTagline(campData?.data?.campaign[0].tagline)
-     setGoal(campData?.data?.campaign[0].target)
-     setCurrentAmount(rewardData.pledgeAmount)
-     setBackers(rewardData.claims)
-     setDate(campData?.data?.campaign[0].duration)
-     setVideo(advancedData?.video)
-     setThumbnail(advancedData?.thumbnail)
-
-
+      await post({comment,userName,campaignid})
     } catch (error) {
-      toast.error('error in campaignmenu')
       console.log(error)
     }
 
-  
+  }
 
-    }
-    getCampaign()
- 
-  
-},[GetCampaign,id])
   return (
     <>
       <div className="w-full flex flex-col items-center font-bold text-white pr-5">
-        <span className="text-3xl">
-          {title}
-        </span>
-        <span className="text-xl font-normal pt-2">
-         {tagline}
-        </span>
+        <span className="text-3xl">{title}</span>
+        <span className="text-xl font-normal pt-2">{tagline}</span>
       </div>
       <div className="w-full  flex mt-4">
         {/* video container */}
         <div className="w-2/3">
-          <video style={{ width: "100%", height: "100%", objectFit: "cover" }} controls src={video} autoPlay>
-            <source  type="video/mp4"  />
+          <video
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            controls
+            src={video}
+            autoPlay
+          >
+            <source type="video/mp4" />
           </video>
         </div>
         {/* details area */}
@@ -114,6 +138,60 @@ useEffect(()=>{
           </button>
         </div>
       </div>
+
+      {/* footer aresa */}
+
+      {active ? (
+        <>
+        <div className="w-full  h-10 mt-10 space-x-10">
+          <button
+            className="border-b text-white font-bold py-2 px-4 rounded"
+            onClick={() => setActive(true)}
+          >
+            story
+          </button>
+
+          <button
+            className=" text-white font-bold py-2 px-4 rounded"
+            onClick={() => setActive(false)}
+          >
+            comments
+          </button>
+        </div>
+           
+           <p className="text-white pt-5 pb-52">{story}</p>
+           </>
+       
+      ) : (
+        <>
+        <div className="w-full  h-10 mt-10 space-x-10">
+          <button
+            className=" text-white font-bold py-2 px-4 rounded"
+            onClick={() => setActive(true)}
+          >
+            story
+          </button>
+
+          <button
+            className="border-b text-white font-bold py-2 px-4 rounded"
+            onClick={() => setActive(false)}
+          >
+            comments
+          </button>
+        </div>
+        <div className="pt-10 pb-32 pl-10 text-white ">
+          <form onSubmit={Postcomment} className="w-full  space-x-5">
+          <input type="text" className="bg-gray-900 w-3/4 rounded-sm pl-5" placeholder="add a comment" onChange={(e)=>setComment(e.target.value)} />
+          <button className="bg-blue-500 w-20 h-10 rounded-md font-semibold text-md" type="submit" >post</button>
+          </form>
+
+        </div>
+        </>
+      )}
+   
+    
     </>
   );
 };
+
+

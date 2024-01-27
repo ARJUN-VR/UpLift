@@ -1,5 +1,6 @@
 import { campaign_advanced } from "../../entities/AdvancedInterface";
 import { campaign_Basics } from "../../entities/BaiscsInterface";
+import { CommentInterface } from "../../entities/CommentInterface";
 import { RewardInterface } from "../../entities/RewardInterface";
 import { CampaignDbMethods } from "../../frameworks/database/mongoDb/implementations/campaignDbMethods";
 
@@ -31,13 +32,18 @@ export const campaignDbInterface = (
     return await repository.getCategory(category)
   }
 
+  const addComment = async(commentData:CommentInterface)=>{
+    return await repository.addComment(commentData)
+  }
+
   return {
     listCampaigns,
     createBasics,
     createAdvanced,
     createReward,
     getCampaign,
-    getCategory
+    getCategory,
+    addComment
    
   };
 };

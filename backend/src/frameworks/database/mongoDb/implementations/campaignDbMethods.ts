@@ -1,8 +1,10 @@
 import { campaign_advanced } from "../../../../entities/AdvancedInterface";
 import { campaign_Basics } from "../../../../entities/BaiscsInterface";
+import { CommentInterface } from "../../../../entities/CommentInterface";
 import { RewardInterface } from "../../../../entities/RewardInterface";
 import { Advanced } from "../model/campaign/advancedSchema";
 import { Basics } from "../model/campaign/basicSchema";
+import { Comment } from "../model/campaign/commentSchema";
 import { Reward } from "../model/campaign/rewardSchema";
 import { ObjectId } from "mongodb";
 
@@ -79,6 +81,10 @@ export const campaignDbMethods = () => {
     return await Basics.find({ category: category });
   };
 
+  const addComment = async(commentData:CommentInterface)=>{
+    return await Comment.create(commentData)
+  }
+
   return {
     getAllBasics,
     createBasics,
@@ -86,6 +92,7 @@ export const campaignDbMethods = () => {
     createReward,
     getCampaign,
     getCategory,
+    addComment
   };
 };
 

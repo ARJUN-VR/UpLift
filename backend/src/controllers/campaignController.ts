@@ -6,6 +6,7 @@ import { campaign_Basics } from "../entities/BaiscsInterface";
 import { campaignUsecase } from "../application/usecases/campaignUsecases";
 import { campaign_advanced } from "../entities/AdvancedInterface";
 import { RewardInterface } from "../entities/RewardInterface";
+import { CommentInterface } from "../entities/CommentInterface";
 
 export const campaignController = (
   dbInterface: CampaignDbInterface,
@@ -98,12 +99,22 @@ export const campaignController = (
   })
 
 
+  const addComment = asyncHandler(async(req:Request,res:Response)=>{
+    const CommentData:CommentInterface = req.body;
+    console.log(CommentData,'gihhihihih')
+    const data = await campaignUsecase(dbRepositoryCampaign).addComment(CommentData)
+    res.status(200).json({data})
+
+  })
+
+
   return {
     listCampaigns,
     createBasics,
     createAdvanced,
     createReward,
     getCampaign,
-    getCategory
+    getCategory,
+    addComment
   };
 };

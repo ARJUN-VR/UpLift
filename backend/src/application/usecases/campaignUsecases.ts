@@ -1,5 +1,6 @@
 import { campaign_advanced } from "../../entities/AdvancedInterface";
 import { campaign_Basics } from "../../entities/BaiscsInterface";
+import { CommentInterface } from "../../entities/CommentInterface";
 import { RewardInterface } from "../../entities/RewardInterface";
 import { CampaignDbInterface } from "../repository/campaignDbRepository";
 import cloudinary from "cloudinary";
@@ -52,6 +53,10 @@ export const campaignUsecase = (
     return await repository.getCategory(category)
   }
 
+  const addComment = async(commentData:CommentInterface)=>{
+    return await repository.addComment(commentData)
+  }
+
   return {
     listCampaigns,
     createBasics,
@@ -60,6 +65,7 @@ export const campaignUsecase = (
     videoUpload,
     createReward,
     getCampaign,
-    getCategory
+    getCategory,
+    addComment
   };
 };
