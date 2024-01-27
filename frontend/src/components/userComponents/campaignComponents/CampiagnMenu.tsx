@@ -26,14 +26,19 @@ export const CampiagnMenu = () => {
 
   if(id){
      campaignId = id?.slice(1)
+     console.log(campaignId)
+     console.log('aaa')
   }else if(basicId){
      campaignId = basicId
+     console.log('bb')
   }
 
 useEffect(()=>{
   const getCampaign = async()=>{
     try {
+      console.log(campaignId)
       const campData = await GetCampaign(campaignId)
+      console.log(campData)
       localStorage.removeItem('basicId')
       const advancedData = campData?.data?.campaign[0].advancedData[0]
       const rewardData = campData.data.campaign[0].rewardData[0]

@@ -43,6 +43,7 @@ export const campaignUsecase = (
   }
 
   const getCampaign = async(id:string)=>{
+    console.log(id,'usecase')
     return await repository.getCampaign(id)
   }
 

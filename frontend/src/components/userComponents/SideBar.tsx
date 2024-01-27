@@ -8,7 +8,6 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 export const SideBar = () => {
   const {userInfo} = useSelector((state:RootState)=>state.auth)
-console.log(userInfo)
   const [logoutCall] = useLogoutMutation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -68,7 +67,7 @@ console.log(userInfo)
    </div>
    ):(
     <div
-    className="p-6 mt-8  flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-white text-white hover:text-black" onClick={()=>navigate('login')}
+    className="p-6 mt-8  flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-white text-white hover:text-black" onClick={()=>navigate('/login')}
     >
     <i className="bi bi-box-arrow-in-right"></i>
     <span className="text-[15px] ml-4  font-bold">Login</span>
