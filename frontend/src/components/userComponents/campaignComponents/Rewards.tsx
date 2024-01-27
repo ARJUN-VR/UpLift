@@ -25,8 +25,6 @@ export const Rewards = () => {
     const navigate = useNavigate()
 
 
-
-
     const fileInputRef = useRef<HTMLInputElement>(null);
     const handleFileClick = () => {
         setImage('')

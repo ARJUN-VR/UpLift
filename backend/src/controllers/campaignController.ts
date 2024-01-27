@@ -82,7 +82,7 @@ export const campaignController = (
   //access public   
   const getCampaign = asyncHandler(async(req:Request,res:Response)=>{
     const Id = req.params.basicId
-    console.log(Id)
+    console.log(Id,'iddddd')
     const campaign = await campaignUsecase(dbRepositoryCampaign).getCampaign(Id)
     res.status(200).json({campaign})
   })

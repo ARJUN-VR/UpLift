@@ -69,7 +69,7 @@ const campaignController = (dbInterface, dbImplements) => {
     //access public   
     const getCampaign = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const Id = req.params.basicId;
-        console.log(Id);
+        console.log(Id, 'iddddd');
         const campaign = yield (0, campaignUsecases_1.campaignUsecase)(dbRepositoryCampaign).getCampaign(Id);
         res.status(200).json({ campaign });
     }));

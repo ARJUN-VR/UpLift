@@ -2,7 +2,7 @@
 
 export const ExploreCard = () => {
   return (
- <div className="flex flex-col ml-3 w-[20%] mr-5 ">
+ <div className="flex flex-col ml-3 w-[20%] mr-5 h-full bg-[#0c0c0c]">
  <div
         className="p-8  flex items-center rounded-lg px-4 duration-300 cursor-pointer hover:bg-white text-gray hover:text-gray bg-[#76c9e6] shadow-lg"
       >

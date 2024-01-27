@@ -39,7 +39,7 @@ export const CampaignView = () => {
 
     console.log(basics)
 
- 
+ console.log(video)
  
 
   return (

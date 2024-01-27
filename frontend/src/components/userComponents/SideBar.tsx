@@ -1,20 +1,14 @@
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSignOutAlt,  faUsersRectangle } from '@fortawesome/free-solid-svg-icons';
-import { faSignIn } from '@fortawesome/free-solid-svg-icons';
 
-import { faHouseChimneyCrack } from '@fortawesome/free-solid-svg-icons';
 import { useLogoutMutation } from '../../redux/slices/userApiSlice';
 import { logout } from '../../redux/reducers/userReducers';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { useState } from 'react';
 export const SideBar = () => {
-  const [state,setState] = useState<string>('home')
   const {userInfo} = useSelector((state:RootState)=>state.auth)
-
+console.log(userInfo)
   const [logoutCall] = useLogoutMutation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -30,11 +24,11 @@ export const SideBar = () => {
   return (
 
     <div
-      className="sidebar pl-2 pr-2 fixed top-24 bottom-0 lg:left-0  w-64 overflow-y-auto text-center bg-[#0c0c0c]"
+      className=" pl-2 pr-2 sticky top-24 bottom-0 lg:left-0  w-64  text-center bg-[#0c0c0c]"
     >
    
       <div
-        className="p-6   flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-white text-white hover:text-black bg-[#141514] shadow-lg"
+        className="p-6   flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-white text-white hover:text-black bg-[#141514] shadow-lg" onClick={()=>navigate('/')}
       >
         <i className="bi bi-house-door-fill"></i>
         <span className="text-[15px] ml-4  font-bold">Home</span>
@@ -58,19 +52,28 @@ export const SideBar = () => {
         <span className="text-[15px] ml-4  font-bold">Settings</span>
       </div>
       <div
-        className="p-6  mt-5 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-white text-white hover:text-black bg-[#141514]"
+        className="p-6  mt-5 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-white text-white hover:text-black bg-[#141514]" onClick={()=>navigate('/profile')}
       >
         <i className="bi bi-bookmark-fill"></i>
         <span className="text-[15px] ml-4  font-bold">Profile</span>
       </div>
       <div className="my-4 bg-gray-600 h-[1px]"></div>
       
-      <div
-        className="p-6 mt-8  flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-white text-white hover:text-black"
-      >
-        <i className="bi bi-box-arrow-in-right"></i>
-        <span className="text-[15px] ml-4  font-bold">Logout</span>
-      </div>
+   {userInfo ? (
+     <div
+     className="p-6 mt-8  flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-white text-white hover:text-black" onClick={logoutHandler}
+   >
+     <i className="bi bi-box-arrow-in-right"></i>
+     <span className="text-[15px] ml-4  font-bold">Logout</span>
+   </div>
+   ):(
+    <div
+    className="p-6 mt-8  flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-white text-white hover:text-black" onClick={()=>navigate('login')}
+    >
+    <i className="bi bi-box-arrow-in-right"></i>
+    <span className="text-[15px] ml-4  font-bold">Login</span>
+    </div>
+   )}
     </div>
 
    

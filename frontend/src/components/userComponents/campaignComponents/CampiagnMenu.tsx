@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useGetCampaignMutation } from "../../../redux/slices/userApiSlice";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export const CampiagnMenu = () => {
 
@@ -17,43 +18,51 @@ export const CampiagnMenu = () => {
 
   const [GetCampaign,{isLoading}] = useGetCampaignMutation()
 
-  const { id } = useParams();
-  const campaignId = id?.slice(1)
-  console.log(campaignId)
+  let campaignId:string|undefined;
 
+  const { id } = useParams();
+
+  const basicId = localStorage.getItem('basicId')
+
+  if(id){
+     campaignId = id?.slice(1)
+  }else if(basicId){
+     campaignId = basicId
+  }
 
 useEffect(()=>{
   const getCampaign = async()=>{
-    const campData = await GetCampaign(campaignId)
-    console.log(campData)
-    const advancedData = campData?.data?.campaign[0].advancedData[0]
-    const rewardData = campData.data.campaign[0].rewardData[0]
-    
-    
-   setTitle(campData?.data?.campaign[0].title)
-   setTagline(campData?.data?.campaign[0].tagline)
-   setGoal(campData?.data?.campaign[0].target)
-   setCurrentAmount(rewardData.pledgeAmount)
-   setBackers(rewardData.claims)
-   setDate(campData?.data?.campaign[0].duration)
-   setVideo(advancedData.video)
+    try {
+      const campData = await GetCampaign(campaignId)
+      console.log(campData)
+      localStorage.removeItem('basicId')
+      const advancedData = campData?.data?.campaign[0].advancedData[0]
+      const rewardData = campData.data.campaign[0].rewardData[0]
+      
+      
+     setTitle(campData?.data?.campaign[0].title)
+     setTagline(campData?.data?.campaign[0].tagline)
+     setGoal(campData?.data?.campaign[0].target)
+     setCurrentAmount(rewardData.pledgeAmount)
+     setBackers(rewardData.claims)
+     setDate(campData?.data?.campaign[0].duration)
+     setVideo(advancedData?.video)
 
 
+    } catch (error) {
+      toast.error('error in campaignmenu')
+      console.log(error)
+    }
 
-    
-    
+  
+
     }
     getCampaign()
+ 
   
 },[GetCampaign,id])
 
-
-
-
-console.log(video,'saljfhsdjfskf')
-
-
-
+console.log(video)
   return (
     <>
       <div className="w-full flex flex-col items-center font-bold text-white pr-5">
@@ -65,16 +74,10 @@ console.log(video,'saljfhsdjfskf')
         </span>
       </div>
       <div className="w-full  flex mt-4">
+        {/* video container */}
         <div className="w-2/3">
-          <video
-            style={{ width: "100%", height: "100%", objectFit: "cover" }}
-            controls
-            autoPlay
-          >
-            <source
-              src={video}
-              type="video/mp4"
-            />
+          <video style={{ width: "100%", height: "100%", objectFit: "cover" }} controls autoPlay>
+            <source src={video} type="video/mp4" />
           </video>
         </div>
         {/* details area */}

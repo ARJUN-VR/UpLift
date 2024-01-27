@@ -17,7 +17,8 @@ const rewardSchema = new mongoose_1.Schema({
     },
     pledgeAmount: {
         type: Number,
-        required: false
+        required: false,
+        default: 0
     },
     rewardList: {
         type: Array,
@@ -25,7 +26,8 @@ const rewardSchema = new mongoose_1.Schema({
     },
     claims: {
         type: Number,
-        required: false
+        required: false,
+        default: 0
     }
 });
 exports.Reward = (0, mongoose_1.model)('Rewards', rewardSchema);
