@@ -28,6 +28,7 @@ router.post('/create_basics',auth,campaigncontroller.createBasics)
 router.post('/create_advanced',auth,campaigncontroller.createAdvanced)
 router.post('/create-reward',campaigncontroller.createReward)
 router.get('/campaign/:basicId',campaigncontroller.getCampaign)
+router.get('/get-category/:category',campaigncontroller.getCategory)
 
 export default router;
 

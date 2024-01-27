@@ -15,8 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.campaignUsecase = void 0;
 const cloudinary_1 = __importDefault(require("cloudinary"));
 const campaignUsecase = (repository) => {
-    const listCampaigns = () => __awaiter(void 0, void 0, void 0, function* () {
-        return yield repository.listCampaigns();
+    const listCampaigns = (category) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.listCampaigns(category);
     });
     const createBasics = (basics) => __awaiter(void 0, void 0, void 0, function* () {
         return yield repository.createBasics(basics);
@@ -48,6 +48,9 @@ const campaignUsecase = (repository) => {
     const getCampaign = (id) => __awaiter(void 0, void 0, void 0, function* () {
         return yield repository.getCampaign(id);
     });
+    const getCategory = (category) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.getCategory(category);
+    });
     return {
         listCampaigns,
         createBasics,
@@ -55,7 +58,8 @@ const campaignUsecase = (repository) => {
         uploadImage,
         videoUpload,
         createReward,
-        getCampaign
+        getCampaign,
+        getCategory
     };
 };
 exports.campaignUsecase = campaignUsecase;

@@ -88,11 +88,22 @@ export const campaignController = (
   })
 
 
+  //desc   fetching campaigns based on category
+  //route  GET  /api/user/get-category
+  //access public
+  const getCategory = asyncHandler(async(req:Request,res:Response)=>{
+    const category = req.params.category
+    const list = await campaignUsecase(dbRepositoryCampaign).getCategory(category)
+    res.status(200).json({list})
+  })
+
+
   return {
     listCampaigns,
     createBasics,
     createAdvanced,
     createReward,
-    getCampaign
+    getCampaign,
+    getCategory
   };
 };
