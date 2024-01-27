@@ -29,6 +29,7 @@ export const Content = () => {
       try {
         const details = await getCampaign("");
         const list = details.data.basicDetails
+        console.log(list)
         setCampaigns(list);
       } catch (error) {
         console.log(error);
