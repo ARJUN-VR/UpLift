@@ -47,6 +47,7 @@ useEffect(()=>{
      setBackers(rewardData.claims)
      setDate(campData?.data?.campaign[0].duration)
      setVideo(advancedData?.video)
+     setThumbnail(advancedData?.thumbnail)
 
 
     } catch (error) {
@@ -61,8 +62,6 @@ useEffect(()=>{
  
   
 },[GetCampaign,id])
-
-console.log(video)
   return (
     <>
       <div className="w-full flex flex-col items-center font-bold text-white pr-5">
@@ -76,8 +75,8 @@ console.log(video)
       <div className="w-full  flex mt-4">
         {/* video container */}
         <div className="w-2/3">
-          <video style={{ width: "100%", height: "100%", objectFit: "cover" }} controls autoPlay>
-            <source src={video} type="video/mp4" />
+          <video style={{ width: "100%", height: "100%", objectFit: "cover" }} controls src={video} autoPlay>
+            <source  type="video/mp4"  />
           </video>
         </div>
         {/* details area */}
