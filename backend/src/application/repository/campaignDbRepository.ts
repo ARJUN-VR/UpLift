@@ -27,12 +27,17 @@ export const campaignDbInterface = (
     return await repository.createReward(reward)
   }
 
+  const getCategory = async(category:string)=>{
+    return await repository.getCategory(category)
+  }
+
   return {
     listCampaigns,
     createBasics,
     createAdvanced,
     createReward,
-    getCampaign
+    getCampaign,
+    getCategory
    
   };
 };

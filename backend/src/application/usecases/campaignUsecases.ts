@@ -46,6 +46,11 @@ export const campaignUsecase = (
     return await repository.getCampaign(id)
   }
 
+
+  const getCategory = async(category:string)=>{
+    return await repository.getCategory(category)
+  }
+
   return {
     listCampaigns,
     createBasics,
@@ -53,6 +58,7 @@ export const campaignUsecase = (
     uploadImage,
     videoUpload,
     createReward,
-    getCampaign
+    getCampaign,
+    getCategory
   };
 };

@@ -58,12 +58,17 @@ export const campaignDbMethods = () => {
     return await Reward.create(reward);
   };
 
+  const getCategory = async(category:string)=>{
+    return await Basics.find({category})
+  }
+
   return {
     getAllBasics,
     createBasics,
     createAdvanced,
     createReward,
-    getCampaign
+    getCampaign,
+    getCategory
   };
 };
 

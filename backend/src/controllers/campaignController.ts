@@ -87,12 +87,19 @@ export const campaignController = (
     res.status(200).json({campaign})
   })
 
+  const getCategory = asyncHandler(async(req:Request,res:Response)=>{
+    const category = req.params.category
+    const list = await campaignUsecase(dbRepositoryCampaign).getCategory(category)
+    res.status(200).json({list})
+  })
+
 
   return {
     listCampaigns,
     createBasics,
     createAdvanced,
     createReward,
-    getCampaign
+    getCampaign,
+    getCategory
   };
 };
