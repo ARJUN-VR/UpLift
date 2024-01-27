@@ -34,7 +34,6 @@ useEffect(()=>{
   const getCampaign = async()=>{
     try {
       const campData = await GetCampaign(campaignId)
-      console.log(campData)
       localStorage.removeItem('basicId')
       const advancedData = campData?.data?.campaign[0].advancedData[0]
       const rewardData = campData.data.campaign[0].rewardData[0]
