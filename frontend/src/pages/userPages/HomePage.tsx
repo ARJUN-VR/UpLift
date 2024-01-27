@@ -16,7 +16,7 @@ export const HomePage = () => {
   const path = location.pathname
 
   return (
-    <>
+  
      <div className="bg-[#0c0c0c] min-h-screen">
       <Header/>
       <div className="flex">
@@ -29,7 +29,7 @@ export const HomePage = () => {
       </div>
    </div>
  
-    </>
+   
 
 
 
