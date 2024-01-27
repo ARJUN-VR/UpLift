@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import { useGetCampaignsMutation } from "../../redux/slices/userApiSlice";
+import { useNavigate } from "react-router-dom";
+import { Carousel } from "./Carousel";
+import { ExploreCard } from "./ExploreCard";
 
 
 export interface Campaign {
@@ -19,6 +22,7 @@ export const Content = () => {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
 
   const [getCampaign] = useGetCampaignsMutation();
+  const navigate = useNavigate()
 
   useEffect(() => {
     const list = async () => {
@@ -36,12 +40,20 @@ export const Content = () => {
 
   return (
 
+  <>
+
+<div className=" flex bg-[#0c0c0c] rounded-xl h-[500px] w-full">
+  <div className="w-[80%] bg-[#0c0c0c] rounded-xl h-full">
+  <Carousel/>
+  </div>
+<ExploreCard/>
+</div>
   
       <div className=" flex  mr-7 l bg-[#0c0c0c] ml-3 text-white">
         {/* campaign lists */}
-        <div className="w-full flex bg-[#0c0c0c] mt-5  flex-wrap justify-between">
+        <div className="w-full flex bg-[#0c0c0c] mt-5  flex-wrap space-x-4 mb-10">
           {campaigns.map((campaign) => (
-            <div className="w-56  rounded overflow-hidden shadow-xl bg-[#16141c] h-[340px] mt-8">
+            <div className="w-56  rounded overflow-hidden shadow-xl bg-[#16141c] h-[340px] mt-8" onClick={()=>navigate(`campaign/:${campaign._id}`)}>
               <img
                 className="w-full"
                 src={campaign.image}
@@ -75,6 +87,7 @@ export const Content = () => {
           ))}
         </div>
       </div>
+      </>
   
   );
 };

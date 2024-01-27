@@ -10,6 +10,7 @@ export const campaignUsecase = (
   const listCampaigns = async () => {
     return await repository.listCampaigns();
   };
+  
 
   const createBasics = async (basics: campaign_Basics) => {
     return await repository.createBasics(basics);
@@ -41,12 +42,17 @@ export const campaignUsecase = (
     return await repository.createReward(reward)
   }
 
+  const getCampaign = async(id:string)=>{
+    return await repository.getCampaign(id)
+  }
+
   return {
     listCampaigns,
     createBasics,
     createAdvanced,
     uploadImage,
     videoUpload,
-    createReward
+    createReward,
+    getCampaign
   };
 };

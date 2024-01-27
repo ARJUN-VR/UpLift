@@ -85,6 +85,12 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 body:data
             })
         }),
+        getCampaign:builder.mutation({
+            query:(campaignId)=>({
+                url:`${USER_URL}/campaign/${campaignId}`,
+                method:'GET'
+            })
+        }),
         logout:builder.mutation({
             query:()=>({
                 url:`${USER_URL}/logout`,
@@ -107,5 +113,6 @@ export const {
     useGetCampaignsMutation,
     useCreateBasicsMutation,
     useCreateAdvancedMutation,
-    useCreateRewardMutation
+    useCreateRewardMutation,
+    useGetCampaignMutation
 } = usersApiSlice

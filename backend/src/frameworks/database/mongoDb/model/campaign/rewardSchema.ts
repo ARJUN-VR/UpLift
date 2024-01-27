@@ -2,7 +2,7 @@ import mongoose, { Schema, model } from 'mongoose';
 
 const rewardSchema = new Schema({
       basicId:{
-        type:String,
+        type:Schema.Types.ObjectId,
         required : true
       },
       title:{
@@ -15,7 +15,8 @@ const rewardSchema = new Schema({
       },
       pledgeAmount:{
         type:Number,
-        required:false
+        required:false,
+        default:0
       },
       rewardList:{
         type:Array,
@@ -23,7 +24,8 @@ const rewardSchema = new Schema({
       },
       claims:{
         type:Number,
-        required:false
+        required:false,
+        default:0
       }
       
 })

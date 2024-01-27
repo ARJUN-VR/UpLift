@@ -42,13 +42,8 @@ if(!title){
 }
  const basicRes = await saveBasics({title,tagline,category,target,image,location,duration}).unwrap()
    const basicId = basicRes?.data?._id
-   console.log(basicRes)
-   console.log(basicId)
    localStorage.setItem('basicId',basicId)
-   const data = localStorage.getItem('basicId')
-   console.log(data)
   navigate('/create-campaign/advanced')
-    
   } catch (error) {
     console.log(error)
   }
@@ -81,7 +76,7 @@ if(!title){
   }
   
   return (
-    <div className="text-white">
+    <div className="text-white ">
       <span className="text-3xl font-bold">Basics</span>
       <p>
         Make a good first impression: introduce your campaign objectives and
@@ -110,7 +105,7 @@ if(!title){
             Provide a short description that best describes your campaign to your audience.
             </span>
             <Input
-              placeHolder="tagline"
+              placeHolder="tags"
               type="text"
               setInput={setTagline}
               value={tagline}

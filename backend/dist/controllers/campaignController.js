@@ -21,7 +21,6 @@ const campaignController = (dbInterface, dbImplements) => {
     //route POST /api/user/get-campaigns
     //access public
     const listCampaigns = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        console.log('getting the call');
         const basicDetails = yield (0, campaignUsecases_1.campaignUsecase)(dbRepositoryCampaign).listCampaigns();
         res.status(200).json({ basicDetails });
     }));
@@ -58,14 +57,28 @@ const campaignController = (dbInterface, dbImplements) => {
     //access private
     const createReward = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const rewardData = req.body;
+        const imgRes = yield (0, campaignUsecases_1.campaignUsecase)(dbRepositoryCampaign).uploadImage(rewardData.image);
+        if (imgRes) {
+            rewardData.image = imgRes.secure_url;
+        }
         const reward = yield (0, campaignUsecases_1.campaignUsecase)(dbRepositoryCampaign).createReward(rewardData);
         res.status(200).json({ reward });
+    }));
+    //desc   fetching full campaign informations
+    //route  GET  /api/user/getCampaign
+    //access public   
+    const getCampaign = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const Id = req.params.basicId;
+        console.log(Id, 'iddddd');
+        const campaign = yield (0, campaignUsecases_1.campaignUsecase)(dbRepositoryCampaign).getCampaign(Id);
+        res.status(200).json({ campaign });
     }));
     return {
         listCampaigns,
         createBasics,
         createAdvanced,
-        createReward
+        createReward,
+        getCampaign
     };
 };
 exports.campaignController = campaignController;

@@ -22,23 +22,6 @@ export const Profile = () => {
   const dispatch = useDispatch()
 
   const { userInfo } = useSelector((state:RootState) => state.auth);
-// console.log(userInfo);
-
-// let name = '';
-// let email = '';
-// let date = '';
-
-// if (userInfo?.result?.user) {
-//   name = userInfo.result.user.name || ''; 
-//   email = userInfo.result.user.email || ''; 
-//   const createdAt = userInfo.result.user.createdAt || '';
-//   date = new Date(createdAt).toDateString();
-// } else if (userInfo?.userData) {
-//   name = userInfo.userData.name || ''; 
-//   email = userInfo.userData.email || ''; 
-//   const createdAt = userInfo.userData.createdAt || '';
-//   date = new Date(createdAt).toDateString();
-// }
 
 useEffect(()=>{
   if(!userInfo){
@@ -48,9 +31,7 @@ useEffect(()=>{
   try{
     const userData = await getProfile('')
     console.log(userData)
-   
-    // const data = userData.data.userdata
-   
+      
     if(userData.error?.data?.message == 'Access denied.'){
       await logoutCall('').unwrap()
       dispatch(logout())

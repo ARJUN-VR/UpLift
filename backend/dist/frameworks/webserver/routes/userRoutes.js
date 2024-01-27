@@ -15,6 +15,7 @@ const router = express_1.default.Router();
 const controller = (0, userController_1.userController)(userDbrepository_1.userDbInterface, userDbMethods_1.userDbMethods);
 const campaigncontroller = (0, campaignController_1.campaignController)(campaignDbRepository_1.campaignDbInterface, campaignDbMethods_1.campaignDbMethods);
 const auth = (0, userAuth_1.protect)(userDbrepository_1.userDbInterface, userDbMethods_1.userDbMethods);
+//user routes
 router.post("/register", controller.addUser);
 router.post("/login", controller.userSignIn);
 router.post('/logout', controller.userSignout);
@@ -28,4 +29,5 @@ router.get('/get-campaigns', campaigncontroller.listCampaigns);
 router.post('/create_basics', auth, campaigncontroller.createBasics);
 router.post('/create_advanced', auth, campaigncontroller.createAdvanced);
 router.post('/create-reward', campaigncontroller.createReward);
+router.get('/campaign/:basicId', campaigncontroller.getCampaign);
 exports.default = router;

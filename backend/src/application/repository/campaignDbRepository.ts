@@ -9,9 +9,12 @@ export const campaignDbInterface = (
   repository: ReturnType<CampaignDbMethods>
 ) => {
   const listCampaigns = async () => {
-    return await repository.listBasics();
+    return await repository.getAllBasics();
   };
-
+  
+  const getCampaign = async(id:string)=>{
+    return await repository.getCampaign(id)
+  }
   const createBasics = async (basics: campaign_Basics) => {
     return await repository.createBasics(basics);
   };
@@ -28,7 +31,9 @@ export const campaignDbInterface = (
     listCampaigns,
     createBasics,
     createAdvanced,
-    createReward
+    createReward,
+    getCampaign
+   
   };
 };
 

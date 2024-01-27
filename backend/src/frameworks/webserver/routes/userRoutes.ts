@@ -12,6 +12,7 @@ const controller = userController(userDbInterface, userDbMethods);
 const campaigncontroller = campaignController(campaignDbInterface,campaignDbMethods)
 const auth=protect(userDbInterface,userDbMethods);
 
+//user routes
 router.post("/register", controller.addUser);
 router.post("/login",controller.userSignIn);
 router.post('/logout',controller.userSignout)
@@ -26,6 +27,7 @@ router.get('/get-campaigns',campaigncontroller.listCampaigns)
 router.post('/create_basics',auth,campaigncontroller.createBasics)
 router.post('/create_advanced',auth,campaigncontroller.createAdvanced)
 router.post('/create-reward',campaigncontroller.createReward)
+router.get('/campaign/:basicId',campaigncontroller.getCampaign)
 
 export default router;
 
