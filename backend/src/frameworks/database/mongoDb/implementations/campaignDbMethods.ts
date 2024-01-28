@@ -88,8 +88,19 @@ export const campaignDbMethods = () => {
 
   const addComment = async(commentData:CommentInterface)=>{
     try {
+      console.log(commentData,'dataastatatatatata')
     return await Comment.create(commentData)
     } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const listComments = async(id:string)=>{
+    try{
+   
+    return  await Comment.find({campaignid:id})
+
+    }catch(error){
       console.log(error)
     }
   }
@@ -101,7 +112,8 @@ export const campaignDbMethods = () => {
     createReward,
     getCampaign,
     getCategory,
-    addComment
+    addComment,
+    listComments
   };
 };
 

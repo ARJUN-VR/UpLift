@@ -57,6 +57,10 @@ export const campaignUsecase = (
     return await repository.addComment(commentData)
   }
 
+  const listComments = async(id:string)=>{
+    return await repository.listComments(id)
+  }
+
   return {
     listCampaigns,
     createBasics,
@@ -66,6 +70,7 @@ export const campaignUsecase = (
     createReward,
     getCampaign,
     getCategory,
-    addComment
+    addComment,
+    listComments
   };
 };

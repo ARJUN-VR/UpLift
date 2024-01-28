@@ -55,6 +55,9 @@ const campaignUsecase = (repository) => {
     const addComment = (commentData) => __awaiter(void 0, void 0, void 0, function* () {
         return yield repository.addComment(commentData);
     });
+    const listComments = (id) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.listComments(id);
+    });
     return {
         listCampaigns,
         createBasics,
@@ -64,7 +67,8 @@ const campaignUsecase = (repository) => {
         createReward,
         getCampaign,
         getCategory,
-        addComment
+        addComment,
+        listComments
     };
 };
 exports.campaignUsecase = campaignUsecase;

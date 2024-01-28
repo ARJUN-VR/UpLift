@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Comment = void 0;
 const mongoose_1 = require("mongoose");
 const commentSchema = new mongoose_1.Schema({
-    campaignId: {
+    campaignid: {
         type: String,
         required: true
     },

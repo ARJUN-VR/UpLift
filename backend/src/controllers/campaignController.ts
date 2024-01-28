@@ -24,7 +24,6 @@ export const campaignController = (
     res.status(200).json({ basicDetails });
   });
 
-
   //desc campaign basic details
   //route POST /api/user/create_basics
   //access private
@@ -68,45 +67,65 @@ export const campaignController = (
   //desc create reward
   //route POST /api/user/create-reward
   //access private
-  const createReward = asyncHandler(async(req:Request,res:Response)=>{
-    const rewardData:RewardInterface = req.body;
-    const imgRes = await campaignUsecase(dbRepositoryCampaign).uploadImage(rewardData.image)
-    if(imgRes){
-      rewardData.image = imgRes.secure_url
+  const createReward = asyncHandler(async (req: Request, res: Response) => {
+    const rewardData: RewardInterface = req.body;
+    const imgRes = await campaignUsecase(dbRepositoryCampaign).uploadImage(
+      rewardData.image
+    );
+    if (imgRes) {
+      rewardData.image = imgRes.secure_url;
     }
-    const reward = await campaignUsecase(dbRepositoryCampaign).createReward(rewardData)
-    res.status(200).json({reward})
-  })
- 
+    const reward = await campaignUsecase(dbRepositoryCampaign).createReward(
+      rewardData
+    );
+    res.status(200).json({ reward });
+  });
+
   //desc   fetching full campaign informations
   //route  GET  /api/user/getCampaign
-  //access public   
-  const getCampaign = asyncHandler(async(req:Request,res:Response)=>{
-    const Id = req.params.basicId
-    console.log(Id,'iddddd')
-    const campaign = await campaignUsecase(dbRepositoryCampaign).getCampaign(Id)
-    res.status(200).json({campaign})
-  })
-
+  //access public
+  const getCampaign = asyncHandler(async (req: Request, res: Response) => {
+    const Id = req.params.basicId;
+    console.log(Id, "iddddd");
+    const campaign = await campaignUsecase(dbRepositoryCampaign).getCampaign(
+      Id
+    );
+    res.status(200).json({ campaign });
+  });
 
   //desc   fetching campaigns based on category
   //route  GET  /api/user/get-category
   //access public
-  const getCategory = asyncHandler(async(req:Request,res:Response)=>{
-    const category = req.params.category
-    const list = await campaignUsecase(dbRepositoryCampaign).getCategory(category)
-    res.status(200).json({list})
-  })
+  const getCategory = asyncHandler(async (req: Request, res: Response) => {
+    const category = req.params.category;
+    const list = await campaignUsecase(dbRepositoryCampaign).getCategory(
+      category
+    );
+    res.status(200).json({ list });
+  });
 
+  //desc   write comment
+  //route  POST  /api/user/comment
+  //access private
+  const addComment = asyncHandler(async (req: Request, res: Response) => {
+    const CommentData: CommentInterface = req.body;
+    const data = await campaignUsecase(dbRepositoryCampaign).addComment(
+      CommentData
+    );
+    res.status(200).json({ data });
+  });
 
-  const addComment = asyncHandler(async(req:Request,res:Response)=>{
-    const CommentData:CommentInterface = req.body;
-    console.log(CommentData,'gihhihihih')
-    const data = await campaignUsecase(dbRepositoryCampaign).addComment(CommentData)
-    res.status(200).json({data})
-
-  })
-
+  //desc   fetching comments
+  //route  GET  /api/user/comment
+  //access public
+  const listComments = asyncHandler(async (req: Request, res: Response) => {
+    const id: string | undefined = req.params.campaignId;
+    const modifiedId = id.slice(1)
+    const comments = await campaignUsecase(dbRepositoryCampaign).listComments(
+      modifiedId
+    );
+    res.status(200).json({ comments });
+  });
 
   return {
     listCampaigns,
@@ -115,6 +134,7 @@ export const campaignController = (
     createReward,
     getCampaign,
     getCategory,
-    addComment
+    addComment,
+    listComments,
   };
 };

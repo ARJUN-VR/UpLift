@@ -36,6 +36,10 @@ export const campaignDbInterface = (
     return await repository.addComment(commentData)
   }
 
+  const listComments = async(id:string)=>{
+    return await repository.listComments(id)
+  }
+
   return {
     listCampaigns,
     createBasics,
@@ -43,7 +47,8 @@ export const campaignDbInterface = (
     createReward,
     getCampaign,
     getCategory,
-    addComment
+    addComment,
+    listComments
    
   };
 };

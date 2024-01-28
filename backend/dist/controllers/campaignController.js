@@ -81,11 +81,22 @@ const campaignController = (dbInterface, dbImplements) => {
         const list = yield (0, campaignUsecases_1.campaignUsecase)(dbRepositoryCampaign).getCategory(category);
         res.status(200).json({ list });
     }));
+    //desc   write comment
+    //route  POST  /api/user/comment
+    //access private
     const addComment = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const CommentData = req.body;
         console.log(CommentData, 'gihhihihih');
         const data = yield (0, campaignUsecases_1.campaignUsecase)(dbRepositoryCampaign).addComment(CommentData);
         res.status(200).json({ data });
+    }));
+    //desc   fetching comments
+    //route  GET  /api/user/comment
+    //access public
+    const listComments = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const id = req.params.campaignId;
+        const comments = yield (0, campaignUsecases_1.campaignUsecase)(dbRepositoryCampaign).listComments(id);
+        res.status(200).json({ comments });
     }));
     return {
         listCampaigns,
@@ -94,7 +105,8 @@ const campaignController = (dbInterface, dbImplements) => {
         createReward,
         getCampaign,
         getCategory,
-        addComment
+        addComment,
+        listComments
     };
 };
 exports.campaignController = campaignController;

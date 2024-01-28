@@ -82,7 +82,6 @@ export const userController = (
   //access public
   const forgotPassword = asyncHandler(async (req: Request, res: Response) => {
     const { email, password } = req.body;
-    console.log(email, password, "email apsweorj");
     await userCases(dbRepositoryuser).forgotPassword(email, password);
     res.status(200).json({ message: "password changed successfully" });
   });
@@ -92,8 +91,6 @@ export const userController = (
   //access private
   const SendOTP = asyncHandler(async (req: Request, res: Response) => {
     const { email } = req.body;
-    console.log(email);
-    console.log("getting call..");
     const otpResponse = await userCases(dbRepositoryuser).verifyUserAndSendOtp(
       email
     );

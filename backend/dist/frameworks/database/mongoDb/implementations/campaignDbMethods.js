@@ -83,10 +83,28 @@ const campaignDbMethods = () => {
         }
     });
     const getCategory = (category) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield basicSchema_1.Basics.find({ category: category });
+        try {
+            return yield basicSchema_1.Basics.find({ category: category });
+        }
+        catch (error) {
+            console.log(error);
+        }
     });
     const addComment = (commentData) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield commentSchema_1.Comment.create(commentData);
+        try {
+            return yield commentSchema_1.Comment.create(commentData);
+        }
+        catch (error) {
+            console.log(error);
+        }
+    });
+    const listComments = (id) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            return yield commentSchema_1.Comment.findOne({ campaignid: id });
+        }
+        catch (error) {
+            console.log(error);
+        }
     });
     return {
         getAllBasics,
@@ -95,7 +113,8 @@ const campaignDbMethods = () => {
         createReward,
         getCampaign,
         getCategory,
-        addComment
+        addComment,
+        listComments
     };
 };
 exports.campaignDbMethods = campaignDbMethods;

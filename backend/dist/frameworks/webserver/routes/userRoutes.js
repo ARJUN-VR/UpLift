@@ -32,4 +32,5 @@ router.post('/create-reward', campaigncontroller.createReward);
 router.get('/campaign/:basicId', campaigncontroller.getCampaign);
 router.get('/get-category/:category', campaigncontroller.getCategory);
 router.post('/comment', campaigncontroller.addComment);
+router.get('/comment/:campaignId', campaigncontroller.listComments);
 exports.default = router;

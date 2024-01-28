@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useGetCampaignMutation, usePostCommentMutation } from "../../../redux/slices/userApiSlice";
+import { useGetCampaignMutation } from "../../../redux/slices/userApiSlice";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../redux/store";
+
+import { CommentBox } from "./CommentBox";
 
 export const CampiagnMenu = () => {
   const [title, setTitle] = useState<string>("");
@@ -21,16 +21,13 @@ export const CampiagnMenu = () => {
   const [campaignid,setCampaignid] = useState<string>('')
 
 
-  const [comment,setComment] = useState<string>('')
-
-  const {userInfo} = useSelector((state:RootState)=>state.auth)
 
  
 
 
   const [GetCampaign, { isLoading }] = useGetCampaignMutation();
 
-  const [post] = usePostCommentMutation()
+
 
   let campaignId: string | undefined;
 
@@ -48,9 +45,7 @@ export const CampiagnMenu = () => {
   useEffect(() => {
     const getCampaign = async () => {
       try {
-        console.log(campaignId);
         const campData = await GetCampaign(campaignId);
-        console.log(campData);
         localStorage.removeItem("basicId");
         const advancedData = campData?.data?.campaign[0].advancedData[0];
         const rewardData = campData.data.campaign[0].rewardData[0];
@@ -73,22 +68,8 @@ export const CampiagnMenu = () => {
     getCampaign();
   }, [GetCampaign, id]);
 
+console.log(campaignid)
 
-  const PostComment=async(e:React.FormEvent)=>{
-    e.preventDefault()
-  
-  
-    if(!userInfo){
-      return toast.error('you must signin')
-    }
-    const userName = userInfo.result.user.name
-    try {
-      await post({comment,userName,campaignid})
-    } catch (error) {
-      console.log(error)
-    }
-
-  }
 
   return (
     <>
@@ -140,7 +121,7 @@ export const CampiagnMenu = () => {
         </div>
       </div>
 
-      {/* footer aresa */}
+      {/* footer area */}
 
       {active ? (
         <>
@@ -180,13 +161,9 @@ export const CampiagnMenu = () => {
             comments
           </button>
         </div>
-        <div className="pt-10 pb-32 pl-10 text-white ">
-          <form onSubmit={PostComment} className="w-full  space-x-5">
-          <input type="text" className="bg-gray-900 w-3/4 rounded-sm pl-5" placeholder="add a comment" onChange={(e)=>setComment(e.target.value)} />
-          <button className="bg-blue-500 w-20 h-10 rounded-md font-semibold text-md" type="submit" >post</button>
-          </form>
 
-        </div>
+        {/* comment section */}
+      <CommentBox campaignid={campaignid}/>
         </>
       )}
    
