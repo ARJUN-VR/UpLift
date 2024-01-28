@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { Suspense, lazy, useEffect, useState } from "react";
 import { useListCommentMutation, usePostCommentMutation } from "../../../redux/slices/userApiSlice";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { toast } from "react-toastify";
 import Loader from "../Loader";
 
+const CommentList = lazy(()=>import('./CommentList'))
+
 interface CommentProps {
   campaignid: string;
 }
 
-interface CommentData{
+export interface CommentData{
+  _id:string,
     userName:string,
     comment:string
 }
@@ -24,7 +27,7 @@ export const CommentBox = ({ campaignid }: CommentProps) => {
   const { userInfo } = useSelector((state: RootState) => state.auth);
 
   const [post, { isLoading:postLoading }] = usePostCommentMutation();
-  const [getComments,{isLoading:commentLoading}] = useListCommentMutation()
+  const [getComments] = useListCommentMutation()
 
   const PostComment = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,45 +52,52 @@ export const CommentBox = ({ campaignid }: CommentProps) => {
 
     const getCommentList = async()=>{
         const list = await getComments(campaignid).unwrap()
-        setCommentData(list.comments[0])
+        const commentArray = list.comments
+        const reversed = commentArray.slice().reverse()
+        setCommentData(reversed)
+        commentData
     }
     getCommentList()
 
-  },[campaignid,getComments])
+  },[campaignid,getComments,commentData])
+
+
+
+
+
 
 
   return (
     <>
-    <div className="pt-10 pb-2 pl-10 text-white ">
+    <div className="mt-10  pb-2 pl-10 text-white ">
       <form onSubmit={PostComment} className="w-full  space-x-5">
         <input
           type="text"
           value={comment}
-          className="bg-gray-900 w-3/4 rounded-sm pl-5"
+          className="bg-[#0c0c0c] w-3/4 rounded-sm pl-5 border-b border-[color] focus:border-[color] outline-none  border-t-0 border-l-0 border-r-0"
           placeholder="add a comment"
           onChange={(e) => setComment(e.target.value)}
         />
         <button
-          className="bg-blue-500 w-20 h-10 rounded-md font-semibold text-md"
+          className="bg-blue-500 w-32 h-10 rounded-md font-semibold text-md"
           type="submit"
         >
           post
         </button>
       </form>
       {postLoading ? <Loader /> : <div></div>}
+  
     </div>
 
     {/*comment list  */}
-    <div className="bg-red-800 w-full  p-5">
-       <div className="bg-red-600 h-14 mb-2 flex flex-col space-y-1">
-<span className="text-gray-200">username</span>
-<span className="text-white">hello</span>
+    <div className=" w-full  p-5 ">
+      {commentData.map((data)=>(
+        <Suspense key={data._id} fallback={<div>Loading...</div>}>
 
+          <CommentList data={data}/>
 
-       </div>
-       <div className="bg-red-600 h-14">
-
-</div>
+        </Suspense>
+      ))}
     </div>
     </>
 

@@ -39,7 +39,6 @@ export const CampiagnMenu = () => {
     campaignId = id?.slice(1);
   } else if (basicId) {
     campaignId = basicId;
-    console.log("bb");
   }
 
   useEffect(() => {
@@ -68,7 +67,7 @@ export const CampiagnMenu = () => {
     getCampaign();
   }, [GetCampaign, id]);
 
-console.log(campaignid)
+
 
 
   return (
@@ -84,7 +83,7 @@ console.log(campaignid)
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
             controls
             src={video}
-            autoPlay
+            poster={thumbnail}
           >
             <source type="video/mp4" />
           </video>

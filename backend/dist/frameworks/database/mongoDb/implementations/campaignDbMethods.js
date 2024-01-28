@@ -92,6 +92,7 @@ const campaignDbMethods = () => {
     });
     const addComment = (commentData) => __awaiter(void 0, void 0, void 0, function* () {
         try {
+            console.log(commentData, 'dataastatatatatata');
             return yield commentSchema_1.Comment.create(commentData);
         }
         catch (error) {
@@ -100,7 +101,7 @@ const campaignDbMethods = () => {
     });
     const listComments = (id) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            return yield commentSchema_1.Comment.findOne({ campaignid: id });
+            return yield commentSchema_1.Comment.find({ campaignid: id });
         }
         catch (error) {
             console.log(error);

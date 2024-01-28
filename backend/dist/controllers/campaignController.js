@@ -66,10 +66,10 @@ const campaignController = (dbInterface, dbImplements) => {
     }));
     //desc   fetching full campaign informations
     //route  GET  /api/user/getCampaign
-    //access public   
+    //access public
     const getCampaign = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const Id = req.params.basicId;
-        console.log(Id, 'iddddd');
+        console.log(Id, "iddddd");
         const campaign = yield (0, campaignUsecases_1.campaignUsecase)(dbRepositoryCampaign).getCampaign(Id);
         res.status(200).json({ campaign });
     }));
@@ -86,7 +86,6 @@ const campaignController = (dbInterface, dbImplements) => {
     //access private
     const addComment = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const CommentData = req.body;
-        console.log(CommentData, 'gihhihihih');
         const data = yield (0, campaignUsecases_1.campaignUsecase)(dbRepositoryCampaign).addComment(CommentData);
         res.status(200).json({ data });
     }));
@@ -95,7 +94,8 @@ const campaignController = (dbInterface, dbImplements) => {
     //access public
     const listComments = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const id = req.params.campaignId;
-        const comments = yield (0, campaignUsecases_1.campaignUsecase)(dbRepositoryCampaign).listComments(id);
+        const modifiedId = id.slice(1);
+        const comments = yield (0, campaignUsecases_1.campaignUsecase)(dbRepositoryCampaign).listComments(modifiedId);
         res.status(200).json({ comments });
     }));
     return {
@@ -106,7 +106,7 @@ const campaignController = (dbInterface, dbImplements) => {
         getCampaign,
         getCategory,
         addComment,
-        listComments
+        listComments,
     };
 };
 exports.campaignController = campaignController;

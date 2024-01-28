@@ -81,7 +81,6 @@ const userController = (dbInterface, dbImplements) => {
     //access public
     const forgotPassword = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const { email, password } = req.body;
-        console.log(email, password, "email apsweorj");
         yield (0, userCases_1.userCases)(dbRepositoryuser).forgotPassword(email, password);
         res.status(200).json({ message: "password changed successfully" });
     }));
@@ -90,8 +89,6 @@ const userController = (dbInterface, dbImplements) => {
     //access private
     const SendOTP = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const { email } = req.body;
-        console.log(email);
-        console.log("getting call..");
         const otpResponse = yield (0, userCases_1.userCases)(dbRepositoryuser).verifyUserAndSendOtp(email);
         res.status(200).json(otpResponse);
     }));
