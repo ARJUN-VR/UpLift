@@ -12,17 +12,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.campaignDbMethods = void 0;
 const advancedSchema_1 = require("../model/campaign/advancedSchema");
 const basicSchema_1 = require("../model/campaign/basicSchema");
+const commentSchema_1 = require("../model/campaign/commentSchema");
 const rewardSchema_1 = require("../model/campaign/rewardSchema");
 const mongodb_1 = require("mongodb");
 const campaignDbMethods = () => {
-    const getAllBasics = (category) => __awaiter(void 0, void 0, void 0, function* () {
+    const getAllBasics = () => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            if (category) {
-                return yield basicSchema_1.Basics.find({ category: category });
-            }
-            else {
-                return yield basicSchema_1.Basics.find();
-            }
+            return yield basicSchema_1.Basics.find();
         }
         catch (error) {
             console.log(error);
@@ -89,6 +85,9 @@ const campaignDbMethods = () => {
     const getCategory = (category) => __awaiter(void 0, void 0, void 0, function* () {
         return yield basicSchema_1.Basics.find({ category: category });
     });
+    const addComment = (commentData) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield commentSchema_1.Comment.create(commentData);
+    });
     return {
         getAllBasics,
         createBasics,
@@ -96,6 +95,7 @@ const campaignDbMethods = () => {
         createReward,
         getCampaign,
         getCategory,
+        addComment
     };
 };
 exports.campaignDbMethods = campaignDbMethods;

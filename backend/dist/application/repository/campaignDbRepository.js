@@ -11,8 +11,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.campaignDbInterface = void 0;
 const campaignDbInterface = (repository) => {
-    const listCampaigns = (category) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield repository.getAllBasics(category);
+    const listCampaigns = () => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.getAllBasics();
     });
     const getCampaign = (id) => __awaiter(void 0, void 0, void 0, function* () {
         return yield repository.getCampaign(id);
@@ -29,13 +29,17 @@ const campaignDbInterface = (repository) => {
     const getCategory = (category) => __awaiter(void 0, void 0, void 0, function* () {
         return yield repository.getCategory(category);
     });
+    const addComment = (commentData) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.addComment(commentData);
+    });
     return {
         listCampaigns,
         createBasics,
         createAdvanced,
         createReward,
         getCampaign,
-        getCategory
+        getCategory,
+        addComment
     };
 };
 exports.campaignDbInterface = campaignDbInterface;

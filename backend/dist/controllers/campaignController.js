@@ -21,8 +21,7 @@ const campaignController = (dbInterface, dbImplements) => {
     //route POST /api/user/get-campaigns
     //access public
     const listCampaigns = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        const category = req.params.category;
-        const basicDetails = yield (0, campaignUsecases_1.campaignUsecase)(dbRepositoryCampaign).listCampaigns(category);
+        const basicDetails = yield (0, campaignUsecases_1.campaignUsecase)(dbRepositoryCampaign).listCampaigns();
         res.status(200).json({ basicDetails });
     }));
     //desc campaign basic details
@@ -82,13 +81,20 @@ const campaignController = (dbInterface, dbImplements) => {
         const list = yield (0, campaignUsecases_1.campaignUsecase)(dbRepositoryCampaign).getCategory(category);
         res.status(200).json({ list });
     }));
+    const addComment = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const CommentData = req.body;
+        console.log(CommentData, 'gihhihihih');
+        const data = yield (0, campaignUsecases_1.campaignUsecase)(dbRepositoryCampaign).addComment(CommentData);
+        res.status(200).json({ data });
+    }));
     return {
         listCampaigns,
         createBasics,
         createAdvanced,
         createReward,
         getCampaign,
-        getCategory
+        getCategory,
+        addComment
     };
 };
 exports.campaignController = campaignController;

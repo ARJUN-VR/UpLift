@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 
 const commentSchema = new Schema({
-    campaignId:{
+    campaignid:{
         type:String,
         required:true
     },

@@ -78,11 +78,20 @@ export const campaignDbMethods = () => {
   };
 
   const getCategory = async (category: string) => {
+    try {
     return await Basics.find({ category: category });
+      
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   const addComment = async(commentData:CommentInterface)=>{
+    try {
     return await Comment.create(commentData)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return {

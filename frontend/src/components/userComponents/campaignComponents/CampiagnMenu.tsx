@@ -23,9 +23,10 @@ export const CampiagnMenu = () => {
 
   const [comment,setComment] = useState<string>('')
 
+  const {userInfo} = useSelector((state:RootState)=>state.auth)
 
+ 
 
-  console.log(active);
 
   const [GetCampaign, { isLoading }] = useGetCampaignMutation();
 
@@ -73,14 +74,14 @@ export const CampiagnMenu = () => {
   }, [GetCampaign, id]);
 
 
-  const Postcomment=async(e:React.FormEvent)=>{
+  const PostComment=async(e:React.FormEvent)=>{
     e.preventDefault()
-    const {userInfo} = useSelector((state:RootState)=>state.auth)
-    console.log('imwoerkfjoasdf',userInfo)
+  
+  
     if(!userInfo){
       return toast.error('you must signin')
     }
-    const userName = userInfo.name
+    const userName = userInfo.result.user.name
     try {
       await post({comment,userName,campaignid})
     } catch (error) {
@@ -180,7 +181,7 @@ export const CampiagnMenu = () => {
           </button>
         </div>
         <div className="pt-10 pb-32 pl-10 text-white ">
-          <form onSubmit={Postcomment} className="w-full  space-x-5">
+          <form onSubmit={PostComment} className="w-full  space-x-5">
           <input type="text" className="bg-gray-900 w-3/4 rounded-sm pl-5" placeholder="add a comment" onChange={(e)=>setComment(e.target.value)} />
           <button className="bg-blue-500 w-20 h-10 rounded-md font-semibold text-md" type="submit" >post</button>
           </form>
