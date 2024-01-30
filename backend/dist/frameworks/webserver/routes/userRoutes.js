@@ -24,6 +24,7 @@ router.patch('/profile', auth, controller.editProfile);
 router.patch('/forgot-password', controller.forgotPassword);
 router.post('/send-otp', controller.SendOTP);
 router.post('/verify-otp', controller.verifyOtp);
+router.post('/payment', controller.payment);
 // campaign routes
 router.get('/get-campaigns', campaigncontroller.listCampaigns);
 router.post('/create_basics', auth, campaigncontroller.createBasics);

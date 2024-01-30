@@ -17,7 +17,7 @@ const CommentList = ({ data }: DataProp) => {
           <button className="text-gray-400 hover:text-gray-200 mr-3">
             Like
           </button>
-          <button className="text-gray-400 hover:text-gray-200">Reply</button>
+          {/* <button className="text-gray-400 hover:text-gray-200">Reply</button> */}
         </div>
       </div>
     );

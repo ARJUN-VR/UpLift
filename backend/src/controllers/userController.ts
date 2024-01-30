@@ -4,6 +4,12 @@ import { UserDbMethods } from "../frameworks/database/mongoDb/implementations/us
 import { UserDbInterFace } from "../application/repository/userDbrepository";
 import { userCases } from "../application/usecases/userCases";
 import asyncHandler from "express-async-handler";
+import Stripe from "stripe";
+const stripe = new Stripe('sk_test_51OaAP7SHBlUtB8HjyKUw1a49v2k2clQxkOEogHpskMlJI3Zt4ngm4s5R0L6m1uyc7Fd33atHCx7xldknj4cc7HqF00ipvks0mn', {
+});
+
+
+
 
 
 export const userController = (
@@ -107,6 +113,38 @@ export const userController = (
     res.status(200).json({ message: otpRes?.message });
   });
 
+  const payment = asyncHandler(async (req: Request, res: Response) => {
+    try {
+      const session = await stripe.checkout.sessions.create({
+        line_items: [
+          {
+            price_data: {
+              currency: "inr",
+              product_data: {
+                name: 'Product Name',
+                description: 'Product Description',
+              },
+              unit_amount: 100 * 100,
+            },
+            quantity: 1,
+          },
+        ],
+        mode: "payment",
+        billing_address_collection: 'required', // Collects full billing address
+        success_url: 'http://localhost:5500/campaign/:65b6ac268d3ba59ed8357deb',
+        cancel_url: 'http://localhost:5500/campaign/:65b6ac268d3ba59ed8357deb',
+      });
+  
+      res.send({ url: session.url });
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({ error: 'Internal Server Error' });
+    }
+  });
+  
+
+
+
   return {
     addUser, 
     userSignIn,
@@ -115,6 +153,7 @@ export const userController = (
     editProfile,
     forgotPassword,
     SendOTP,
-    verifyOtp
+    verifyOtp,
+    payment
   };
 };

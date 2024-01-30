@@ -15,6 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.userController = void 0;
 const userCases_1 = require("../application/usecases/userCases");
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
+const stripe_1 = __importDefault(require("stripe"));
+const stripe = new stripe_1.default('sk_test_51OaAP7SHBlUtB8HjyKUw1a49v2k2clQxkOEogHpskMlJI3Zt4ngm4s5R0L6m1uyc7Fd33atHCx7xldknj4cc7HqF00ipvks0mn', {});
 const userController = (dbInterface, dbImplements) => {
     const dbRepositoryuser = dbInterface(dbImplements());
     //@desc    user register
@@ -101,6 +103,34 @@ const userController = (dbInterface, dbImplements) => {
         console.log(otpRes);
         res.status(200).json({ message: otpRes === null || otpRes === void 0 ? void 0 : otpRes.message });
     }));
+    const payment = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const session = yield stripe.checkout.sessions.create({
+                line_items: [
+                    {
+                        price_data: {
+                            currency: "inr",
+                            product_data: {
+                                name: 'Product Name',
+                                description: 'Product Description',
+                            },
+                            unit_amount: 100 * 100,
+                        },
+                        quantity: 1,
+                    },
+                ],
+                mode: "payment",
+                billing_address_collection: 'required', // Collects full billing address
+                success_url: 'http://localhost:5500/campaign/:65b6ac268d3ba59ed8357deb',
+                cancel_url: 'http://localhost:5500/campaign/:65b6ac268d3ba59ed8357deb',
+            });
+            res.send({ url: session.url });
+        }
+        catch (error) {
+            console.log(error);
+            res.status(500).send({ error: 'Internal Server Error' });
+        }
+    }));
     return {
         addUser,
         userSignIn,
@@ -109,7 +139,8 @@ const userController = (dbInterface, dbImplements) => {
         editProfile,
         forgotPassword,
         SendOTP,
-        verifyOtp
+        verifyOtp,
+        payment
     };
 };
 exports.userController = userController;

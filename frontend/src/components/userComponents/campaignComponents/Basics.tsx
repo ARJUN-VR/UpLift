@@ -43,6 +43,8 @@ if(!title){
  const basicRes = await saveBasics({title,tagline,category,target,image,location,duration}).unwrap()
    const basicId = basicRes?.data?._id
    localStorage.setItem('basicId',basicId)
+   const a = 'done'
+   localStorage.setItem('done',a)
   navigate('/create-campaign/advanced')
   } catch (error) {
     console.log(error)

@@ -14,5 +14,8 @@ export const configKeys = {
   OAUTH_REFRESH_TOKEN:process.env.OAUTH_REFRESH_TOKEN,
   CLOUD_NAME:process.env.CLOUD_NAME,
   API_KEY:process.env.API_KEY,
-  API_SECRET:process.env.API_SECRET
+  API_SECRET:process.env.API_SECRET,
+  STRIPE_KEY:process.env.STRIPE_KEY,
+  STRIPE_SECRET_KEY:process.env.STRIPE_SECRET_KEY
+
 };

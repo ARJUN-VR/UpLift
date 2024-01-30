@@ -28,7 +28,7 @@ interface CampaignDetailsProps{
         <div id="funding" className="w-full bg-gray-200 rounded-full dark:bg-gray-400">
           <div className="bg-green-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full w-[45%] h-2"></div>
         </div>
-        <span className="text-sm">20 days left</span>
+        <span className="text-sm">{campaign.duration} days left</span>
       </div>
     </div>
   </div>

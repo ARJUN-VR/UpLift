@@ -3,13 +3,25 @@ import { RewardCard } from "../RewardCard";
 import Swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 
 export const Draft = () => {
 
+
   const navigate = useNavigate()
 
+ 
+  useEffect(() => {
+    const result = localStorage.getItem('done');
+
+    if (result === null) {
+      navigate('/create-campaign');
+    }
+  }, [navigate]);
+
   const openModal = () => {
+    localStorage.removeItem('done')
     Swal.fire({
       title: 'Congratulations!',
       text: 'Your request has been sent. Our admin team will review and verify it shortly.',

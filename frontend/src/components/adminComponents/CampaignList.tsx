@@ -7,7 +7,7 @@ import { toast } from 'react-toastify'
 import Loader from '../userComponents/Loader'
 
 
-export const CampaignList = () => {
+export const CampaignList = ({sendCount}) => {
 
     const [campaigns,setCampaigns] = useState<Array<Campaign>>([])
 
@@ -22,6 +22,10 @@ export const CampaignList = () => {
           try{
         const data  = await getCampaign(' ').unwrap()
   const list = data.list
+  const listCount = list.length
+  sendCount(listCount)
+
+
       
         setCampaigns(list)
           }catch(error){
@@ -32,6 +36,7 @@ export const CampaignList = () => {
      
       },[])
 
+ 
 
       const verify=async(id:string)=>{
         try {

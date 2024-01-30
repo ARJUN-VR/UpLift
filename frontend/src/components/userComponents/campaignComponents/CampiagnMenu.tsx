@@ -14,20 +14,13 @@ export const CampiagnMenu = () => {
   const [backers, setBackers] = useState<number>(0);
   const [currentAmount, setCurrentAmount] = useState<number>(0);
   const [date, setDate] = useState<string>("");
-  const [story,setStory] = useState<string>('')
+  const [story, setStory] = useState<string>('')
 
   const [active, setActive] = useState<boolean>(true);
 
-  const [campaignid,setCampaignid] = useState<string>('')
-
-
-
- 
-
+  const [campaignid, setCampaignid] = useState<string>('')
 
   const [GetCampaign, { isLoading }] = useGetCampaignMutation();
-
-
 
   let campaignId: string | undefined;
 
@@ -60,14 +53,44 @@ export const CampiagnMenu = () => {
         setStory(advancedData?.story)
         setCampaignid(campData?.data?.campaign[0]._id)
       } catch (error) {
-        toast.error("error in campaignmenu");
+        // toast.error("error in campaignmenu");
         console.log(error);
       }
     };
     getCampaign();
   }, [GetCampaign, id]);
 
+  const user = { name: 'name' }
+  const campaignDetails = { name: 'name' }
 
+  const handlePayment = async () => {
+    try {
+      console.log('sending')
+      const res = await fetch('http://localhost:8000/api/user/payment', {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json", // Set the Content-Type header
+        },
+        body: JSON.stringify({
+          // Convert the request body to a JSON string
+          user: user,
+          campaign: campaignDetails,
+        }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        if (data.url) {
+          console.log(data.url)
+          window.location.href = data.url;
+        }
+      } else {
+        console.error("Request failed with status", res.status);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
 
   return (
@@ -114,7 +137,7 @@ export const CampiagnMenu = () => {
           </span>
 
           {/* pledge */}
-          <button className="w-[90%] bg-green-400  h-12 mt-auto text-white">
+          <button className="w-[90%] bg-green-400  h-12 mt-auto text-white" onClick={()=>handlePayment()}>
             Back this project
           </button>
         </div>

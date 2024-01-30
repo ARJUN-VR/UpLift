@@ -30,7 +30,7 @@ const campaignDbMethods = () => {
             const campaignid = new mongodb_1.ObjectId(id);
             return yield basicSchema_1.Basics.aggregate([
                 {
-                    $match: { _id: campaignid },
+                    $match: { _id: campaignid, isVerified: true },
                 },
                 {
                     $lookup: {

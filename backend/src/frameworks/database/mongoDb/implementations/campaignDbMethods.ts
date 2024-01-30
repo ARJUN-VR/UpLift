@@ -12,7 +12,7 @@ export const campaignDbMethods = () => {
   const getAllBasics = async () => {
     try {
 
-        return await Basics.find();
+        return await Basics.find({isVerified:true});
  
     } catch (error) {
       console.log(error);
