@@ -18,7 +18,7 @@ const mongodb_1 = require("mongodb");
 const campaignDbMethods = () => {
     const getAllBasics = () => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            return yield basicSchema_1.Basics.find();
+            return yield basicSchema_1.Basics.find({ isVerified: true });
         }
         catch (error) {
             console.log(error);
@@ -30,7 +30,7 @@ const campaignDbMethods = () => {
             const campaignid = new mongodb_1.ObjectId(id);
             return yield basicSchema_1.Basics.aggregate([
                 {
-                    $match: { _id: campaignid, isVerified: true },
+                    $match: { _id: campaignid },
                 },
                 {
                     $lookup: {
