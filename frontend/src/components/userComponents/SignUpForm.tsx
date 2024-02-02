@@ -90,7 +90,7 @@ export const SignUpForm = () => {
   </div>
   <div className="pointer-events-none relative hidden h-screen select-none bg-black md:block md:w-1/2">
     <div className="absolute bottom-0 z-10 px-8 text-white opacity-100">
-      <p className="mb-8 text-3xl font-semibold leading-10">We work 10x faster than our sfljsdkhflsDfand stay consistant. While they're bogged won with techincal debt, we're realeasing new features.</p>
+      <p className="mb-8 text-3xl font-semibold leading-10">We work 10x faster than our  stay consistant. While they're bogged won with techincal debt, we're realeasing new features.</p>
       <p className="mb-50 text-3xl font-semibold">John Elmond</p>
       <p className="">Founder, Emogue</p>
      

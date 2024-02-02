@@ -113,35 +113,7 @@ export const userController = (
     res.status(200).json({ message: otpRes?.message });
   });
 
-  const payment = asyncHandler(async (req: Request, res: Response) => {
-    try {
-      const session = await stripe.checkout.sessions.create({
-        line_items: [
-          {
-            price_data: {
-              currency: "inr",
-              product_data: {
-                name: 'Product Name',
-                description: 'Product Description',
-              },
-              unit_amount: 100 * 100,
-            },
-            quantity: 1,
-          },
-        ],
-        mode: "payment",
-        billing_address_collection: 'required', // Collects full billing address
-        success_url: 'http://localhost:5500/campaign/:65b6ac268d3ba59ed8357deb',
-        cancel_url: 'http://localhost:5500/campaign/:65b6ac268d3ba59ed8357deb',
-      });
-  
-      res.send({ url: session.url });
-    } catch (error) {
-      console.log(error);
-      res.status(500).send({ error: 'Internal Server Error' });
-    }
-  });
-  
+
 
 
 
@@ -153,7 +125,6 @@ export const userController = (
     editProfile,
     forgotPassword,
     SendOTP,
-    verifyOtp,
-    payment
+    verifyOtp
   };
 };
