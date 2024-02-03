@@ -111,6 +111,14 @@ export const usersApiSlice = apiSlice.injectEndpoints({
            
             })
         }),
+        getReward:builder.mutation({
+            query:(basicId)=>({
+                url:`${USER_URL}/reward/${basicId}`,
+                method:'GET',
+ 
+           
+            })
+        }),
         logout:builder.mutation({
             query:()=>({
                 url:`${USER_URL}/logout`,
@@ -137,5 +145,6 @@ export const {
     useGetCampaignMutation,
     useGetCategoryMutation,
     usePostCommentMutation,
-    useListCommentMutation
+    useListCommentMutation,
+    useGetRewardMutation
 } = usersApiSlice

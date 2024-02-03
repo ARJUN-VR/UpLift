@@ -127,6 +127,17 @@ export const campaignController = (
     res.status(200).json({ comments });
   });
 
+
+  //desc   fetching appropriate reward
+  //route  GET  /api/user/reward
+  //access public
+  const getReward = asyncHandler(async(req:Request,res:Response)=>{
+    const id:string  = req.params.basicId
+    console.log(id)
+    const reward = await campaignUsecase(dbRepositoryCampaign).getReward(id)
+    res.status(200).json({reward})
+  })
+
   return {
     listCampaigns,
     createBasics,
@@ -136,5 +147,7 @@ export const campaignController = (
     getCategory,
     addComment,
     listComments,
+    getReward
+
   };
 };
