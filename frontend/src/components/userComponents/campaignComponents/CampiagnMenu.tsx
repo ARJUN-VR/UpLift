@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { CommentBox } from "./CommentBox";
+import { Payment } from "../Payment";
 
 export const CampiagnMenu = () => {
   const [title, setTitle] = useState<string>("");
@@ -15,6 +16,8 @@ export const CampiagnMenu = () => {
   const [currentAmount, setCurrentAmount] = useState<number>(0);
   const [date, setDate] = useState<string>("");
   const [story, setStory] = useState<string>('')
+
+  const [modal,setModal] = useState<boolean>(false)
 
   const [active, setActive] = useState<boolean>(true);
 
@@ -93,6 +96,8 @@ export const CampiagnMenu = () => {
   };
 
 
+
+
   return (
     <>
       <div className="w-full flex flex-col items-center font-bold text-white pr-5">
@@ -111,6 +116,14 @@ export const CampiagnMenu = () => {
             <source type="video/mp4" />
           </video>
         </div>
+        {modal ? (
+          <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50">
+            <Payment/>
+          </div>
+        ):(
+<>
+</>
+        )}
         {/* details area */}
         <div className="w-1/3 flex  flex-col  pl-10 pr-5">
           {/* funding bar */}
@@ -137,9 +150,10 @@ export const CampiagnMenu = () => {
           </span>
 
           {/* pledge */}
-          <button className="w-[90%] bg-green-400  h-12 mt-auto text-white" onClick={()=>handlePayment()}>
+          <button className="w-[90%] bg-green-400  h-12 mt-auto text-white" onClick={()=>setModal(!modal)}>
             Back this project
           </button>
+          
         </div>
       </div>
 
