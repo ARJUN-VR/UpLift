@@ -151,9 +151,7 @@ export const userController = (
   console.log(id)
   console.log(amount)
 
-  
- const data =  await userCases(dbRepositoryuser).pledge(id,amount)
-
+     const data =  await userCases(dbRepositoryuser).pledge(id,amount)
     res.status(200).json({data})
 
  })

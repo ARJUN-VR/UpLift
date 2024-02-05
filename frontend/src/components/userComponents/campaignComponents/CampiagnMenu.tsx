@@ -75,9 +75,6 @@ export const CampiagnMenu = () => {
   const percentage:number = (currentAmount / goal) * 100
 
 
-
-
-
   return (
     <>
       <div className="w-full flex flex-col items-center font-bold text-white pr-5">
@@ -137,7 +134,7 @@ export const CampiagnMenu = () => {
           </span>
 
           {/* pledge */}
-          <button className="w-[90%] bg-green-400  h-12 mt-auto text-white" onClick={()=>setModal(!modal)}>
+          <button className="w-[90%] bg-green-600  h-12 mt-auto text-white font-semibold" onClick={()=>setModal(!modal)}>
             Back this project
           </button>
           

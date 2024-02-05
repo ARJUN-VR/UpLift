@@ -1,4 +1,5 @@
 
+import { useNavigate } from 'react-router-dom';
 import Loader from '../../components/userComponents/Loader';
 import { usePledgeMutation } from '../../redux/slices/userApiSlice';
 
@@ -7,12 +8,16 @@ export const SuccessPage = () => {
   const amount = localStorage.getItem('amount')
   const [pledge,{isLoading}] = usePledgeMutation()
 
+  const navigate = useNavigate()
+
 
   const updatePledge =async()=>{
 
     try {
       const res = await pledge({id,amount})
       console.log(res)
+      navigate('/')
+
     } catch (error) {
       console.log(error)
     }
