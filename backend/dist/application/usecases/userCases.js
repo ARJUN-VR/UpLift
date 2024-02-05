@@ -114,6 +114,9 @@ const userCases = (repository) => {
             console.log(error, 'error in video uploader');
         }
     });
+    const pledge = (id, amount) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.pledge(id, amount);
+    });
     return {
         findByEmail,
         addUser,
@@ -124,7 +127,8 @@ const userCases = (repository) => {
         verifyUserAndSendOtp,
         verifyOtp,
         uploadImage,
-        videoUpload
+        videoUpload,
+        pledge
     };
 };
 exports.userCases = userCases;

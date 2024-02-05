@@ -65,6 +65,7 @@ export const campaignUsecase = (
     return await repository.getReward(id)
   }
 
+
   return {
     listCampaigns,
     createBasics,

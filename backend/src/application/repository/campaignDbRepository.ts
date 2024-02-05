@@ -44,6 +44,8 @@ export const campaignDbInterface = (
     return await repository.getReward(id)
   }
 
+
+
   return {
     listCampaigns,
     createBasics,

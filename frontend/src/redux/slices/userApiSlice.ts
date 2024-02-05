@@ -119,6 +119,15 @@ export const usersApiSlice = apiSlice.injectEndpoints({
            
             })
         }),
+        pledge:builder.mutation({
+            query:(data)=>({
+                url:`${USER_URL}/pledge`,
+                method:'POST',
+                body:data
+ 
+           
+            })
+        }),
         logout:builder.mutation({
             query:()=>({
                 url:`${USER_URL}/logout`,
@@ -146,5 +155,6 @@ export const {
     useGetCategoryMutation,
     usePostCommentMutation,
     useListCommentMutation,
-    useGetRewardMutation
+    useGetRewardMutation,
+    usePledgeMutation
 } = usersApiSlice

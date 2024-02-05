@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.userDbMethods = void 0;
 const userSchema_1 = require("../model/userSchema");
 const otpSchema_1 = require("../model/otpSchema");
+const basicSchema_1 = require("../model/campaign/basicSchema");
 const userDbMethods = () => {
     const addUser = (user) => __awaiter(void 0, void 0, void 0, function* () {
         return yield userSchema_1.User.create(user);
@@ -65,6 +66,14 @@ const userDbMethods = () => {
             throw new Error('user not found');
         }
     });
+    const pledge = (id, amount) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            return yield basicSchema_1.Basics.findOneAndUpdate({ _id: id }, { $inc: { currentAmount: amount, backers: 1 } }, { new: true });
+        }
+        catch (error) {
+            console.log(error);
+        }
+    });
     return {
         addUser,
         findByEmail,
@@ -72,7 +81,8 @@ const userDbMethods = () => {
         saveUser,
         forgotPassword,
         saveOTP,
-        findOtpUser
+        findOtpUser,
+        pledge
     };
 };
 exports.userDbMethods = userDbMethods;

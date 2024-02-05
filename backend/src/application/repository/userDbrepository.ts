@@ -30,6 +30,11 @@ export const userDbInterface = (repository: ReturnType<UserDbMethods>) => {
   const findOtpUser = async(email:string)=>{
     return await repository.findOtpUser(email)
   }
+  
+  
+  const pledge = async(id:string,amount:number)=>{
+    return await repository.pledge(id,amount)
+  }
 
 
   return {
@@ -39,8 +44,8 @@ export const userDbInterface = (repository: ReturnType<UserDbMethods>) => {
     saveUser,
     forgotPassword,
     saveOtp,
-    findOtpUser
-  
+    findOtpUser,
+    pledge
   };
 };
 

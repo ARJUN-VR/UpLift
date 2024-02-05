@@ -104,6 +104,7 @@ const userController = (dbInterface, dbImplements) => {
         res.status(200).json({ message: otpRes === null || otpRes === void 0 ? void 0 : otpRes.message });
     }));
     const payment = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const { title, description, amount } = req.body;
         try {
             const session = yield stripe.checkout.sessions.create({
                 line_items: [
@@ -111,10 +112,10 @@ const userController = (dbInterface, dbImplements) => {
                         price_data: {
                             currency: "inr",
                             product_data: {
-                                name: 'Product Name',
-                                description: 'Product Description',
+                                name: title,
+                                description: description,
                             },
-                            unit_amount: 110 * 100,
+                            unit_amount: amount * 100,
                         },
                         quantity: 1,
                     },
@@ -123,7 +124,7 @@ const userController = (dbInterface, dbImplements) => {
                 customer_email: 'user@gmail.com',
                 billing_address_collection: "required",
                 mode: "payment",
-                success_url: 'http://localhost:5500/campaign/:65b6ac268d3ba59ed8357deb',
+                success_url: 'http://localhost:5500/success',
                 cancel_url: 'http://localhost:5500/campaign/:65b6ac268d3ba59ed8357deb',
             });
             res.send({ url: session.url });
@@ -132,6 +133,11 @@ const userController = (dbInterface, dbImplements) => {
             console.log(error);
             res.status(500).send({ error: 'Internal Server Error' });
         }
+    }));
+    const pledge = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const { id, amount } = req.body;
+        const data = yield (0, userCases_1.userCases)(dbRepositoryuser).pledge(id, amount);
+        res.status(200).json({ data });
     }));
     return {
         addUser,
@@ -142,7 +148,8 @@ const userController = (dbInterface, dbImplements) => {
         forgotPassword,
         SendOTP,
         verifyOtp,
-        payment
+        payment,
+        pledge
     };
 };
 exports.userController = userController;

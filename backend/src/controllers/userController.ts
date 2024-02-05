@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, Response, request } from "express";
 import { userInterface } from "../entities/User";
 import { UserDbMethods } from "../frameworks/database/mongoDb/implementations/userDbMethods";
 import { UserDbInterFace } from "../application/repository/userDbrepository";
@@ -146,10 +146,17 @@ export const userController = (
     }
   });
 
- const handleWebhooks = asyncHandler(async(req:Request,res:Response)=>{
-  console.log('webhook is working')
- })
+ const pledge = asyncHandler(async(req:Request,res:Response)=>{
+  const {id,amount} = req.body;
+  console.log(id)
+  console.log(amount)
 
+  
+ const data =  await userCases(dbRepositoryuser).pledge(id,amount)
+
+    res.status(200).json({data})
+
+ })
 
 
   return {
@@ -162,6 +169,6 @@ export const userController = (
     SendOTP,
     verifyOtp,
     payment,
-    handleWebhooks
+    pledge
   };
 };

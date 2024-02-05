@@ -114,6 +114,7 @@ export const campaignDbMethods = () => {
     }
   }
 
+
   return {
     getAllBasics,
     createBasics,

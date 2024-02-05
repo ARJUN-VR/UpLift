@@ -17,6 +17,7 @@ export const CampiagnMenu = () => {
   const [date, setDate] = useState<string>("");
   const [story, setStory] = useState<string>('')
 
+
   const [modal,setModal] = useState<boolean>(false)
 
   const [active, setActive] = useState<boolean>(true);
@@ -48,8 +49,8 @@ export const CampiagnMenu = () => {
         setTitle(campData?.data?.campaign[0].title);
         setTagline(campData?.data?.campaign[0].tagline);
         setGoal(campData?.data?.campaign[0].target);
-        setCurrentAmount(rewardData.pledgeAmount);
-        setBackers(rewardData.claims);
+        setCurrentAmount(campData?.data?.campaign[0].currentAmount);
+        setBackers(campData?.data?.campaign[0].backers);
         setDate(campData?.data?.campaign[0].duration);
         setVideo(advancedData?.video);
         setThumbnail(advancedData?.thumbnail);
@@ -61,7 +62,7 @@ export const CampiagnMenu = () => {
       }
     };
     getCampaign();
-  }, [GetCampaign, id]);
+  }, [GetCampaign, id,campaignId]);
 
   
 
@@ -69,6 +70,10 @@ export const CampiagnMenu = () => {
   const closeModal = ()=>{
     setModal(false)
   }
+ 
+
+  const percentage:number = (currentAmount / goal) * 100
+
 
 
 
@@ -93,18 +98,25 @@ export const CampiagnMenu = () => {
         </div>
         {modal ? (
           <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50">
-            <Payment close={closeModal} name={title} desc={tagline}/>
+            <Payment close={closeModal} name={title} desc={tagline} campaignId={campaignid}/>
           </div>
         ):(
-<>
-</>
+
+           <>
+           </>
+           
         )}
         {/* details area */}
         <div className="w-1/3 flex  flex-col  pl-10 pr-5">
           {/* funding bar */}
+          <div className="flex items-start">
           <div className="bg-gray-300 w-[90%] h-2">
-            <div className="bg-green-500 w-[45%] h-full"></div>
+            
+          <div className="bg-green-500 h-full" style={{ width: `${percentage}%` }}></div>
           </div>
+          <span className="text-white font-semibold ml-2 mt-[-10px] ">{percentage}%</span>
+          </div>
+         
           {/* goal */}
           <span className="text-2xl font-bold text-green-500 pt-2">
             ₹RS.{currentAmount}

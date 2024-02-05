@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { RewardCard } from "./RewardCard";
 
-export const Payment = ({ close , name, desc}) => {
+export const Payment = ({ close , name, desc,campaignId}) => {
 
   const [amount,setAmount] = useState<number>(0)
 
@@ -28,7 +28,7 @@ export const Payment = ({ close , name, desc}) => {
           description:desc
         }),
       });
-      
+
 
       if (res.ok) {
         const data = await res.json();
@@ -42,6 +42,15 @@ export const Payment = ({ close , name, desc}) => {
       console.error("Error:", error);
     }
   };
+
+  const pledgeAmount = ''+amount
+
+  const setValues =()=>{
+
+    localStorage.setItem('camapign',campaignId)
+    localStorage.setItem('amount',pledgeAmount)
+
+  }
 
 
 
@@ -78,7 +87,7 @@ export const Payment = ({ close , name, desc}) => {
           </span>
           <input type="number" className="h-5 ml-8 pl-2" onChange={(e)=>setAmount(parseInt(e.target.value))} />
         </div>
-        <button className="bg-green-400 w-40 text-white font-semibold rounded-sm ml-20 h-8" onClick={handlePayment}>pledge</button>
+        <button className="bg-green-400 w-40 text-white font-semibold rounded-sm ml-20 h-8" onClick={()=>{handlePayment(),setValues()}}>pledge</button>
       </div>
 
       {/* reward */}
