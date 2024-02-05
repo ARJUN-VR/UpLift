@@ -63,38 +63,7 @@ export const CampiagnMenu = () => {
     getCampaign();
   }, [GetCampaign, id]);
 
-  const user = { name: 'name' }
-  const campaignDetails = { name: 'name' }
-
-  const handlePayment = async () => {
-    try {
-      console.log('sending')
-      const res = await fetch('http://localhost:8000/api/user/payment', {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json", // Set the Content-Type header
-        },
-        body: JSON.stringify({
-          // Convert the request body to a JSON string
-          user: user,
-          campaign: campaignDetails,
-        }),
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        if (data.url) {
-          console.log(data.url)
-          window.location.href = data.url;
-        }
-      } else {
-        console.error("Request failed with status", res.status);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
-
+  
 
 
   const closeModal = ()=>{
@@ -124,7 +93,7 @@ export const CampiagnMenu = () => {
         </div>
         {modal ? (
           <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50">
-            <Payment close={closeModal}/>
+            <Payment close={closeModal} name={title} desc={tagline}/>
           </div>
         ):(
 <>

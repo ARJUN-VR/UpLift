@@ -22,6 +22,7 @@ router.patch('/forgot-password',controller.forgotPassword)
 router.post('/send-otp',controller.SendOTP)
 router.post('/verify-otp',controller.verifyOtp)
 router.post('/payment',controller.payment)
+router.post('/webhook',controller.handleWebhooks)
 
 // campaign routes
 router.get('/get-campaigns',campaigncontroller.listCampaigns)

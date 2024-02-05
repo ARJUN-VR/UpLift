@@ -98,6 +98,15 @@ const campaignController = (dbInterface, dbImplements) => {
         const comments = yield (0, campaignUsecases_1.campaignUsecase)(dbRepositoryCampaign).listComments(modifiedId);
         res.status(200).json({ comments });
     }));
+    //desc   fetching appropriate reward
+    //route  GET  /api/user/reward
+    //access public
+    const getReward = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const id = req.params.basicId;
+        console.log(id);
+        const reward = yield (0, campaignUsecases_1.campaignUsecase)(dbRepositoryCampaign).getReward(id);
+        res.status(200).json({ reward });
+    }));
     return {
         listCampaigns,
         createBasics,
@@ -107,6 +116,7 @@ const campaignController = (dbInterface, dbImplements) => {
         getCategory,
         addComment,
         listComments,
+        getReward
     };
 };
 exports.campaignController = campaignController;

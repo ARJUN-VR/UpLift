@@ -1,15 +1,55 @@
+import { useState } from "react";
 import { RewardCard } from "./RewardCard";
 
-export const Payment = ({ close }) => {
+export const Payment = ({ close , name, desc}) => {
+
+  const [amount,setAmount] = useState<number>(0)
+
+
+
   const closeModal = () => {
     close();
   };
+
+
+
+  const handlePayment = async () => {
+    try {
+
+      const res = await fetch('http://localhost:8000/api/user/payment', {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json", // Set the Content-Type header
+        },
+        body: JSON.stringify({
+          // Convert the request body to a JSON string
+          title:name,
+          amount: amount,
+          description:desc
+        }),
+      });
+      
+
+      if (res.ok) {
+        const data = await res.json();
+        if (data.url) {
+          window.location.href = data.url;
+        }
+      } else {
+        console.error("Request failed with status", res.status);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+
+
   return (
     <div className="relative w-[50%] bg-gray-800  overflow-y-auto flex items-center flex-col">
-      <span className="font-bold mt-10 text-2xl text-white">Back this project</span>
-      {/* <button
+       <button
       onClick={closeModal}
-      className="text-red-500 hover:text-red-700 focus:outline-none absolute top-2 right-2"
+      className="text-white hover:text-red-700 focus:outline-none absolute top-10 right-2"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -25,7 +65,9 @@ export const Payment = ({ close }) => {
           d="M6 18L18 6M6 6l12 12"
         />
       </svg>
-    </button> */}
+    </button>
+      <span className="font-bold mt-10 text-2xl text-white">Back this project</span>
+     
       <div className="h-20 bg-gray-900 w-full mt-10 flex  items-center mb-5">
         <span className="ml-10 text-white font-bold">make contributions</span>
 
@@ -34,9 +76,9 @@ export const Payment = ({ close }) => {
           <span className="absolute left-0 flex items-center pl-2 text-gray-100">
             ₹
           </span>
-          <input type="number" className="h-5 ml-8 pl-2" />
+          <input type="number" className="h-5 ml-8 pl-2" onChange={(e)=>setAmount(parseInt(e.target.value))} />
         </div>
-        <button className="bg-green-400 w-40 text-white font-semibold rounded-sm ml-20 h-8">pledge</button>
+        <button className="bg-green-400 w-40 text-white font-semibold rounded-sm ml-20 h-8" onClick={handlePayment}>pledge</button>
       </div>
 
       {/* reward */}

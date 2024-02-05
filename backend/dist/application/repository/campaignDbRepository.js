@@ -35,6 +35,9 @@ const campaignDbInterface = (repository) => {
     const listComments = (id) => __awaiter(void 0, void 0, void 0, function* () {
         return yield repository.listComments(id);
     });
+    const getReward = (id) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.getReward(id);
+    });
     return {
         listCampaigns,
         createBasics,
@@ -43,7 +46,8 @@ const campaignDbInterface = (repository) => {
         getCampaign,
         getCategory,
         addComment,
-        listComments
+        listComments,
+        getReward
     };
 };
 exports.campaignDbInterface = campaignDbInterface;

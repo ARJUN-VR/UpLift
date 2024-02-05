@@ -16,7 +16,7 @@ exports.userController = void 0;
 const userCases_1 = require("../application/usecases/userCases");
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const stripe_1 = __importDefault(require("stripe"));
-const stripe = new stripe_1.default('sk_test_51OaAP7SHBlUtB8HjyKUw1a49v2k2clQxkOEogHpskMlJI3Zt4ngm4s5R0L6m1uyc7Fd33atHCx7xldknj4cc7HqF00ipvks0mn', {});
+const stripe = new stripe_1.default('sk_test_51OgAh7SBqBEeU2LVufG4q6TNE6MLKyoN2lcbm3Re8JjjF2sDSRzHMCSXLsBt2K6M1GJxthhi3qk8mLjVo01VmM3y00Nh0SkIcv', {});
 const userController = (dbInterface, dbImplements) => {
     const dbRepositoryuser = dbInterface(dbImplements());
     //@desc    user register
@@ -114,13 +114,15 @@ const userController = (dbInterface, dbImplements) => {
                                 name: 'Product Name',
                                 description: 'Product Description',
                             },
-                            unit_amount: 100 * 100,
+                            unit_amount: 110 * 100,
                         },
                         quantity: 1,
                     },
                 ],
+                payment_method_types: ["card"],
+                customer_email: 'user@gmail.com',
+                billing_address_collection: "required",
                 mode: "payment",
-                billing_address_collection: 'required', // Collects full billing address
                 success_url: 'http://localhost:5500/campaign/:65b6ac268d3ba59ed8357deb',
                 cancel_url: 'http://localhost:5500/campaign/:65b6ac268d3ba59ed8357deb',
             });
