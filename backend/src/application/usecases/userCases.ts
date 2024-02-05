@@ -111,6 +111,11 @@ export const userCases = (repository: ReturnType<UserDbInterFace>) => {
     }
   }
 
+  
+  const pledge = async(id:string,amount:number)=>{
+    return await repository.pledge(id,amount)
+  }
+
 
   return {
     findByEmail,
@@ -122,6 +127,7 @@ export const userCases = (repository: ReturnType<UserDbInterFace>) => {
     verifyUserAndSendOtp,
     verifyOtp,
     uploadImage,
-    videoUpload
+    videoUpload,
+    pledge
   };
 };

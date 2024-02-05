@@ -107,6 +107,15 @@ const campaignDbMethods = () => {
             console.log(error);
         }
     });
+    const getReward = (id) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            return yield rewardSchema_1.Reward.findOne({ basicId: id });
+        }
+        catch (error) {
+            console.error(error);
+            throw Error;
+        }
+    });
     return {
         getAllBasics,
         createBasics,
@@ -115,7 +124,8 @@ const campaignDbMethods = () => {
         getCampaign,
         getCategory,
         addComment,
-        listComments
+        listComments,
+        getReward
     };
 };
 exports.campaignDbMethods = campaignDbMethods;

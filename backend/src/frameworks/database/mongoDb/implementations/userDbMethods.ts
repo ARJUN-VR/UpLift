@@ -2,6 +2,7 @@ import { userInterface } from "../../../../entities/User";
 import { User } from "../model/userSchema";
 import { Document } from "mongoose";
 import { OTP } from "../model/otpSchema";
+import { Basics } from "../model/campaign/basicSchema";
 
 
 export const userDbMethods = () => {
@@ -67,6 +68,17 @@ export const userDbMethods = () => {
       throw new Error('user not found')
     }
   }
+
+  const pledge = async(id:string,amount:number)=>{
+    try {
+      return await Basics.findOneAndUpdate({_id:id},{$inc:{currentAmount:amount,backers:1}},{new:true})
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
+  
   return {
     addUser,
     findByEmail,
@@ -74,7 +86,8 @@ export const userDbMethods = () => {
     saveUser,
     forgotPassword,
     saveOTP,
-    findOtpUser
+    findOtpUser,
+    pledge
   };
 };
 

@@ -29,6 +29,16 @@ const basicSchama = new Schema({
         type:Number,
         required:true
     },
+    backers:{
+        type:Number,
+        required:false,
+        default:0
+    },
+    currentAmount:{
+        type:Number,
+        required:false,
+        default:0
+    },
     isVerified:{
         type:Boolean,
         required:false,

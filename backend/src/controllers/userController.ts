@@ -1,11 +1,11 @@
-import { Request, Response } from "express";
+import { Request, Response, request } from "express";
 import { userInterface } from "../entities/User";
 import { UserDbMethods } from "../frameworks/database/mongoDb/implementations/userDbMethods";
 import { UserDbInterFace } from "../application/repository/userDbrepository";
 import { userCases } from "../application/usecases/userCases";
 import asyncHandler from "express-async-handler";
 import Stripe from "stripe";
-const stripe = new Stripe('sk_test_51OaAP7SHBlUtB8HjyKUw1a49v2k2clQxkOEogHpskMlJI3Zt4ngm4s5R0L6m1uyc7Fd33atHCx7xldknj4cc7HqF00ipvks0mn', {
+const stripe = new Stripe('sk_test_51OgAh7SBqBEeU2LVufG4q6TNE6MLKyoN2lcbm3Re8JjjF2sDSRzHMCSXLsBt2K6M1GJxthhi3qk8mLjVo01VmM3y00Nh0SkIcv', {
 });
 
 
@@ -113,8 +113,50 @@ export const userController = (
     res.status(200).json({ message: otpRes?.message });
   });
 
+  const payment = asyncHandler(async (req: Request, res: Response) => {
+    const {title,description,amount} = req.body;
 
+    try {
+      const session = await stripe.checkout.sessions.create({
+        line_items: [
+          {
+            price_data: {
+              currency: "inr",
+              product_data: {
+                name: title,
+                description: description,
+              },
+              unit_amount: amount * 100,
+            },
+            quantity: 1,
+          },
+        ],
+        payment_method_types:["card"],
+        customer_email:'user@gmail.com',
+  
+        billing_address_collection:"required",
+        mode: "payment",
+        success_url: 'http://localhost:5500/success',
+        cancel_url: 'http://localhost:5500/campaign/:65b6ac268d3ba59ed8357deb',
+      });
+      res.send({ url: session.url });
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({ error: 'Internal Server Error' });
+    }
+  });
 
+ const pledge = asyncHandler(async(req:Request,res:Response)=>{
+  const {id,amount} = req.body;
+  console.log(id)
+  console.log(amount)
+
+  
+ const data =  await userCases(dbRepositoryuser).pledge(id,amount)
+
+    res.status(200).json({data})
+
+ })
 
 
   return {
@@ -125,6 +167,8 @@ export const userController = (
     editProfile,
     forgotPassword,
     SendOTP,
-    verifyOtp
+    verifyOtp,
+    payment,
+    pledge
   };
 };

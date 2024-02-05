@@ -16,7 +16,7 @@ exports.userController = void 0;
 const userCases_1 = require("../application/usecases/userCases");
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const stripe_1 = __importDefault(require("stripe"));
-const stripe = new stripe_1.default('sk_test_51OaAP7SHBlUtB8HjyKUw1a49v2k2clQxkOEogHpskMlJI3Zt4ngm4s5R0L6m1uyc7Fd33atHCx7xldknj4cc7HqF00ipvks0mn', {});
+const stripe = new stripe_1.default('sk_test_51OgAh7SBqBEeU2LVufG4q6TNE6MLKyoN2lcbm3Re8JjjF2sDSRzHMCSXLsBt2K6M1GJxthhi3qk8mLjVo01VmM3y00Nh0SkIcv', {});
 const userController = (dbInterface, dbImplements) => {
     const dbRepositoryuser = dbInterface(dbImplements());
     //@desc    user register
@@ -104,6 +104,7 @@ const userController = (dbInterface, dbImplements) => {
         res.status(200).json({ message: otpRes === null || otpRes === void 0 ? void 0 : otpRes.message });
     }));
     const payment = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const { title, description, amount } = req.body;
         try {
             const session = yield stripe.checkout.sessions.create({
                 line_items: [
@@ -111,17 +112,19 @@ const userController = (dbInterface, dbImplements) => {
                         price_data: {
                             currency: "inr",
                             product_data: {
-                                name: 'Product Name',
-                                description: 'Product Description',
+                                name: title,
+                                description: description,
                             },
-                            unit_amount: 100 * 100,
+                            unit_amount: amount * 100,
                         },
                         quantity: 1,
                     },
                 ],
+                payment_method_types: ["card"],
+                customer_email: 'user@gmail.com',
+                billing_address_collection: "required",
                 mode: "payment",
-                billing_address_collection: 'required', // Collects full billing address
-                success_url: 'http://localhost:5500/campaign/:65b6ac268d3ba59ed8357deb',
+                success_url: 'http://localhost:5500/success',
                 cancel_url: 'http://localhost:5500/campaign/:65b6ac268d3ba59ed8357deb',
             });
             res.send({ url: session.url });
@@ -130,6 +133,11 @@ const userController = (dbInterface, dbImplements) => {
             console.log(error);
             res.status(500).send({ error: 'Internal Server Error' });
         }
+    }));
+    const pledge = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const { id, amount } = req.body;
+        const data = yield (0, userCases_1.userCases)(dbRepositoryuser).pledge(id, amount);
+        res.status(200).json({ data });
     }));
     return {
         addUser,
@@ -140,7 +148,8 @@ const userController = (dbInterface, dbImplements) => {
         forgotPassword,
         SendOTP,
         verifyOtp,
-        payment
+        payment,
+        pledge
     };
 };
 exports.userController = userController;

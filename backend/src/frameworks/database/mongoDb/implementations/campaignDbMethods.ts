@@ -105,6 +105,16 @@ export const campaignDbMethods = () => {
     }
   }
 
+  const getReward = async(id:string)=>{
+    try{
+      return await Reward.findOne({basicId:id})
+    }catch(error){
+      console.error(error)
+      throw Error
+    }
+  }
+
+
   return {
     getAllBasics,
     createBasics,
@@ -113,7 +123,8 @@ export const campaignDbMethods = () => {
     getCampaign,
     getCategory,
     addComment,
-    listComments
+    listComments,
+    getReward
   };
 };
 

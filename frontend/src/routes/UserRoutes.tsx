@@ -9,6 +9,7 @@ import { SetNewPassowrd } from "../components/userComponents/SetNewPassowrd"
 import { CampaignPage } from "../pages/userPages/campaign/CampaignPage"
 import { SinglePageView } from "../pages/userPages/SinglePageView"
 import { CategoryPage } from "../pages/userPages/CategoryPage"
+import { SuccessPage } from "../pages/userPages/SuccessPage"
 
 
 
@@ -26,7 +27,8 @@ export const UserRoutes = () => {
             <Route path="/setpass" element={<SetNewPassowrd/>}/>
             <Route path="/campaign/:id" element={<SinglePageView/>}/>
             <Route path="/category/:cat" element={<CategoryPage/>}/>
-           
+            <Route path="/success" element={<SuccessPage/>}/>
+            
 
             {/* Private Routes */}
 

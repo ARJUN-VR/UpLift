@@ -21,7 +21,12 @@ router.patch('/profile',auth,controller.editProfile)
 router.patch('/forgot-password',controller.forgotPassword)
 router.post('/send-otp',controller.SendOTP)
 router.post('/verify-otp',controller.verifyOtp)
+<<<<<<< HEAD
 
+=======
+router.post('/payment',controller.payment)
+router.post('/pledge',controller.pledge)
+>>>>>>> cee5721d35f056ff09a3b0ceba6a900ab9221459
 
 // campaign routes
 router.get('/get-campaigns',campaigncontroller.listCampaigns)
@@ -32,6 +37,8 @@ router.get('/campaign/:basicId',campaigncontroller.getCampaign)
 router.get('/get-category/:category',campaigncontroller.getCategory)
 router.post('/comment',campaigncontroller.addComment)
 router.get('/comment/:campaignId',campaigncontroller.listComments)
+router.get('/reward/:basicId',campaigncontroller.getReward)
 
 export default router;
 
+ 

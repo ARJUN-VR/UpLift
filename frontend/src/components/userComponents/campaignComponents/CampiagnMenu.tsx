@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { CommentBox } from "./CommentBox";
+import { Payment } from "../Payment";
 
 export const CampiagnMenu = () => {
   const [title, setTitle] = useState<string>("");
@@ -15,6 +16,9 @@ export const CampiagnMenu = () => {
   const [currentAmount, setCurrentAmount] = useState<number>(0);
   const [date, setDate] = useState<string>("");
   const [story, setStory] = useState<string>('')
+
+
+  const [modal,setModal] = useState<boolean>(false)
 
   const [active, setActive] = useState<boolean>(true);
 
@@ -45,8 +49,8 @@ export const CampiagnMenu = () => {
         setTitle(campData?.data?.campaign[0].title);
         setTagline(campData?.data?.campaign[0].tagline);
         setGoal(campData?.data?.campaign[0].target);
-        setCurrentAmount(rewardData.pledgeAmount);
-        setBackers(rewardData.claims);
+        setCurrentAmount(campData?.data?.campaign[0].currentAmount);
+        setBackers(campData?.data?.campaign[0].backers);
         setDate(campData?.data?.campaign[0].duration);
         setVideo(advancedData?.video);
         setThumbnail(advancedData?.thumbnail);
@@ -58,39 +62,20 @@ export const CampiagnMenu = () => {
       }
     };
     getCampaign();
-  }, [GetCampaign, id]);
+  }, [GetCampaign, id,campaignId]);
 
-  const user = { name: 'name' }
-  const campaignDetails = { name: 'name' }
+  
 
-  const handlePayment = async () => {
-    try {
-      console.log('sending')
-      const res = await fetch('http://localhost:8000/api/user/payment', {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json", // Set the Content-Type header
-        },
-        body: JSON.stringify({
-          // Convert the request body to a JSON string
-          user: user,
-          campaign: campaignDetails,
-        }),
-      });
 
-      if (res.ok) {
-        const data = await res.json();
-        if (data.url) {
-          console.log(data.url)
-          window.location.href = data.url;
-        }
-      } else {
-        console.error("Request failed with status", res.status);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
+  const closeModal = ()=>{
+    setModal(false)
+  }
+ 
+
+  const percentage:number = (currentAmount / goal) * 100
+
+
+
 
 
   return (
@@ -111,12 +96,27 @@ export const CampiagnMenu = () => {
             <source type="video/mp4" />
           </video>
         </div>
+        {modal ? (
+          <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50">
+            <Payment close={closeModal} name={title} desc={tagline} campaignId={campaignid}/>
+          </div>
+        ):(
+
+           <>
+           </>
+           
+        )}
         {/* details area */}
         <div className="w-1/3 flex  flex-col  pl-10 pr-5">
           {/* funding bar */}
+          <div className="flex items-start">
           <div className="bg-gray-300 w-[90%] h-2">
-            <div className="bg-green-500 w-[45%] h-full"></div>
+            
+          <div className="bg-green-500 h-full" style={{ width: `${percentage}%` }}></div>
           </div>
+          <span className="text-white font-semibold ml-2 mt-[-10px] ">{percentage}%</span>
+          </div>
+         
           {/* goal */}
           <span className="text-2xl font-bold text-green-500 pt-2">
             ₹RS.{currentAmount}
@@ -137,9 +137,10 @@ export const CampiagnMenu = () => {
           </span>
 
           {/* pledge */}
-          <button className="w-[90%] bg-green-400  h-12 mt-auto text-white" onClick={()=>handlePayment()}>
+          <button className="w-[90%] bg-green-400  h-12 mt-auto text-white" onClick={()=>setModal(!modal)}>
             Back this project
           </button>
+          
         </div>
       </div>
 

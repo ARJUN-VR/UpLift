@@ -33,6 +33,9 @@ const userDbInterface = (repository) => {
     const findOtpUser = (email) => __awaiter(void 0, void 0, void 0, function* () {
         return yield repository.findOtpUser(email);
     });
+    const pledge = (id, amount) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.pledge(id, amount);
+    });
     return {
         adduser,
         findByEmail,
@@ -40,7 +43,8 @@ const userDbInterface = (repository) => {
         saveUser,
         forgotPassword,
         saveOtp,
-        findOtpUser
+        findOtpUser,
+        pledge
     };
 };
 exports.userDbInterface = userDbInterface;

@@ -25,6 +25,7 @@ router.patch('/forgot-password', controller.forgotPassword);
 router.post('/send-otp', controller.SendOTP);
 router.post('/verify-otp', controller.verifyOtp);
 router.post('/payment', controller.payment);
+router.post('/pledge', controller.pledge);
 // campaign routes
 router.get('/get-campaigns', campaigncontroller.listCampaigns);
 router.post('/create_basics', auth, campaigncontroller.createBasics);
@@ -34,4 +35,5 @@ router.get('/campaign/:basicId', campaigncontroller.getCampaign);
 router.get('/get-category/:category', campaigncontroller.getCategory);
 router.post('/comment', campaigncontroller.addComment);
 router.get('/comment/:campaignId', campaigncontroller.listComments);
+router.get('/reward/:basicId', campaigncontroller.getReward);
 exports.default = router;
