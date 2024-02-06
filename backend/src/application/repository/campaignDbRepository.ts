@@ -44,6 +44,10 @@ export const campaignDbInterface = (
     return await repository.getReward(id)
   }
 
+  const getNotificationCount = async()=>{
+    return await repository.getNotificationCount()
+  }
+
 
 
   return {
@@ -55,7 +59,8 @@ export const campaignDbInterface = (
     getCategory,
     addComment,
     listComments,
-    getReward
+    getReward,
+    getNotificationCount
    
   };
 };

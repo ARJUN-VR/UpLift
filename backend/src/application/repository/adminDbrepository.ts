@@ -21,6 +21,7 @@ export const adminDbInterface = (repository:ReturnType<AdminDbMethods>) =>{
    }
 
    const verifyCampaign = async(id:string)=>{
+      
       return await repository.verfyCampaign(id)
    }
 

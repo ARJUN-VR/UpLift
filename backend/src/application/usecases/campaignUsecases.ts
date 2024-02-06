@@ -4,6 +4,8 @@ import { CommentInterface } from "../../entities/CommentInterface";
 import { RewardInterface } from "../../entities/RewardInterface";
 import { CampaignDbInterface } from "../repository/campaignDbRepository";
 import cloudinary from "cloudinary";
+import { emitEventToClient } from "../services/socketService";
+import { io } from "../../app";
 
 export const campaignUsecase = (
   repository: ReturnType<CampaignDbInterface>
@@ -14,6 +16,12 @@ export const campaignUsecase = (
   
 
   const createBasics = async (basics: campaign_Basics) => {
+    const count:number | undefined = await repository.getNotificationCount()
+    let newCount=0
+    if(count){
+      newCount = count + 1
+    }
+    emitEventToClient(io,'notification',newCount)
     return await repository.createBasics(basics);
   };
 

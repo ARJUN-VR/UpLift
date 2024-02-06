@@ -136,6 +136,8 @@ const userController = (dbInterface, dbImplements) => {
     }));
     const pledge = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const { id, amount } = req.body;
+        console.log(id);
+        console.log(amount);
         const data = yield (0, userCases_1.userCases)(dbRepositoryuser).pledge(id, amount);
         res.status(200).json({ data });
     }));

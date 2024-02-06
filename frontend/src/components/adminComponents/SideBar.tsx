@@ -1,12 +1,39 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { logout } from "../../redux/reducers/adminReducers"
 import { useDispatch } from "react-redux"
-import { useAdminlogoutMutation } from "../../redux/slices/adminApiSlice"
+import { useAdminlogoutMutation, useGetCampaignAdminMutation } from "../../redux/slices/adminApiSlice"
 import { useNavigate } from "react-router-dom"
+import { io } from "socket.io-client"
 
 
-const SideBar = ({count}) => {
+
+
+const SideBar = () => {
     const [tab,setTab] = useState<string>('dashboard')
+    const [c,setC] = useState<number>()
+
+    const [getCampaign] = useGetCampaignAdminMutation()
+
+    useEffect(()=>{
+      const list = async()=>{
+        const data = await getCampaign('').unwrap()
+        setC(data.list.length)
+
+      }
+      list()
+    },[])
+
+
+
+    const socket = io('http://localhost:8000')
+
+
+
+    socket.on('notification',(value:number)=>{
+      setC(value)
+
+    })
+
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -56,7 +83,7 @@ const SideBar = ({count}) => {
         <a href="#" className={`${tab=='not' ? 'translate-x-4 text-gray-800 ':''}flex flex-row items-center h-12 transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800`} onClick={()=>setTab('not')}>
           <span className="inline-flex items-center justify-center h-12 w-12 text-lg text-gray-400"><i className="bx bx-bell"></i></span>
           <span className="text-sm font-medium">Notifications</span>
-          <span className="ml-auto mr-6 text-sm bg-red-100 rounded-full px-3 py-px text-red-500">{count}</span>
+          <span className="ml-auto mr-6 text-sm bg-red-100 rounded-full px-3 py-px text-red-500">{c}</span>
         </a>
       </li>
       <li onClick={logoutHandler}>

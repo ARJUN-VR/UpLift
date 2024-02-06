@@ -11,8 +11,27 @@ const server_1 = require("./frameworks/webserver/server");
 const routes_1 = require("./frameworks/webserver/routes");
 const uploadImage_1 = __importDefault(require("./application/services/uploadImage"));
 const errorHandler_1 = __importDefault(require("./frameworks/webserver/middlewares/errorHandler"));
+const socket_io_1 = require("socket.io");
 const app = (0, express_1.default)();
 const server = http_1.default.createServer(app);
+const io = new socket_io_1.Server(server, {
+    cors: {
+        origin: "*", // or specify your allowed origins
+        methods: ["GET", "POST"], // or specify your allowed methods
+        allowedHeaders: ["Authorization"], // or specify your allowed headers
+        credentials: true // or false to disallow credentials
+    }
+});
+io.on('connection', (socket) => {
+    console.log('an user connected');
+    socket.emit('hello', 'world');
+    socket.on('catch', (value) => {
+        console.log(value);
+    });
+    socket.on('disconnect', () => {
+        console.log('user disconnected');
+    });
+});
 (0, connection_1.connectDb)();
 uploadImage_1.default;
 (0, express_2.default)(app);

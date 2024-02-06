@@ -7,7 +7,7 @@ import { toast } from 'react-toastify'
 import Loader from '../userComponents/Loader'
 
 
-export const CampaignList = ({sendCount}) => {
+export const CampaignList = () => {
 
     const [campaigns,setCampaigns] = useState<Array<Campaign>>([])
 
@@ -22,8 +22,7 @@ export const CampaignList = ({sendCount}) => {
           try{
         const data  = await getCampaign(' ').unwrap()
   const list = data.list
-  const listCount = list.length
-  sendCount(listCount)
+
 
 
       
@@ -38,7 +37,7 @@ export const CampaignList = ({sendCount}) => {
 
  
 
-      const verify=async(id:string)=>{
+      const verify=async(id:string)=>{                       
         try {
           console.log(id)
           await verifyCampaign({id}).unwrap()
@@ -96,9 +95,10 @@ export const CampaignList = ({sendCount}) => {
                     <img src={campaign.image} alt="card image" style={{ width: '150px', height: '100px' }} className='rounded-xl' />
                   </td>
                   <td>
-                    <button className='bg-green-400 w-[70%] h-10 rounded-md text-white' onClick={() => verify(campaign._id)}>
-                      publish
-                    </button>
+                  <button className='bg-green-400 w-[70%] h-10 rounded-md text-white' onClick={() => { verify(campaign._id); window.location.reload(); }}>
+  Publish
+</button>
+
                   </td>
                 </tr>
               ))}

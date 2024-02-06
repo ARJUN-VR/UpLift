@@ -16,7 +16,7 @@ const rewardSchema = new Schema({
       pledgeAmount:{
         type:Number,
         required:false,
-        default:0
+        default:250
       },
       rewardList:{
         type:Array,

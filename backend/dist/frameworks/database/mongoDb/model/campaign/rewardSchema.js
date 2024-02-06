@@ -18,7 +18,7 @@ const rewardSchema = new mongoose_1.Schema({
     pledgeAmount: {
         type: Number,
         required: false,
-        default: 0
+        default: 250
     },
     rewardList: {
         type: Array,

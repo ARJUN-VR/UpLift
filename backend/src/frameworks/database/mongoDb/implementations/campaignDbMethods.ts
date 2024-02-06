@@ -114,6 +114,14 @@ export const campaignDbMethods = () => {
     }
   }
 
+  const getNotificationCount = async()=>{
+    try{
+      return await Basics.find({isVerified:false},{new:true}).countDocuments()
+  }catch(error){
+    console.log(error)
+  }
+  }
+
 
   return {
     getAllBasics,
@@ -124,7 +132,8 @@ export const campaignDbMethods = () => {
     getCategory,
     addComment,
     listComments,
-    getReward
+    getReward,
+    getNotificationCount
   };
 };
 
