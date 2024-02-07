@@ -148,8 +148,8 @@ export const userController = (
 
  const pledge = asyncHandler(async(req:Request,res:Response)=>{
   const {id,amount} = req.body;
-  console.log(id)
-  console.log(amount)
+  console.log(id,'idd')
+  console.log(amount,'amount')
 
      const data =  await userCases(dbRepositoryuser).pledge(id,amount)
     res.status(200).json({data})

@@ -42,7 +42,6 @@ console.log(token,'token')
           throw error
         }else{
           req.user=userdata
-          console.log('nooooo')
           next()
         }
         
