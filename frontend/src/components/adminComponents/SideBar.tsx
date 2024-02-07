@@ -77,6 +77,13 @@ const SideBar = () => {
           <span className="text-sm font-medium ">Campaigns</span>
         </a>
       </li>
+
+      <li className={`${tab=='category' ? 'bg-gray-100':''}`} onClick={()=>navigate('/admin/category')}>
+        <a href="#" className={`${tab=='campaigns' ? 'translate-x-4 text-gray-800 ':''}flex flex-row items-center h-12 transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800`} onClick={()=>setTab('category')}>
+          <span className="inline-flex items-center justify-center h-12 w-12 text-lg text-gray-400"><i className="bx bx-shopping-bag"></i></span> 
+          <span className="text-sm font-medium ">Category</span>
+        </a>
+      </li>
   
  
       <li className={`${tab=='not' ? 'bg-gray-100':''}`} onClick={()=>navigate('/admin/notifications')}>

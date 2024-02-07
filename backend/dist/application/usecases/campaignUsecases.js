@@ -14,11 +14,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.campaignUsecase = void 0;
 const cloudinary_1 = __importDefault(require("cloudinary"));
+const socketService_1 = require("../services/socketService");
+const app_1 = require("../../app");
 const campaignUsecase = (repository) => {
     const listCampaigns = () => __awaiter(void 0, void 0, void 0, function* () {
         return yield repository.listCampaigns();
     });
     const createBasics = (basics) => __awaiter(void 0, void 0, void 0, function* () {
+        const count = yield repository.getNotificationCount();
+        let newCount = 0;
+        if (count) {
+            newCount = count + 1;
+        }
+        (0, socketService_1.emitEventToClient)(app_1.io, 'notification', newCount);
         return yield repository.createBasics(basics);
     });
     const createAdvanced = (advanced) => __awaiter(void 0, void 0, void 0, function* () {

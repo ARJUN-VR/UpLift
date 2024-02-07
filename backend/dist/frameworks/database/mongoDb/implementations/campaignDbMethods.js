@@ -116,6 +116,14 @@ const campaignDbMethods = () => {
             throw Error;
         }
     });
+    const getNotificationCount = () => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            return yield basicSchema_1.Basics.find({ isVerified: false }, { new: true }).countDocuments();
+        }
+        catch (error) {
+            console.log(error);
+        }
+    });
     return {
         getAllBasics,
         createBasics,
@@ -125,7 +133,8 @@ const campaignDbMethods = () => {
         getCategory,
         addComment,
         listComments,
-        getReward
+        getReward,
+        getNotificationCount
     };
 };
 exports.campaignDbMethods = campaignDbMethods;

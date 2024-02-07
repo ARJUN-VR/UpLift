@@ -16,6 +16,7 @@ export const AdminRoutes = () => {
         <Route path='/campaigns' element={<AdminHome/>}/>
         <Route path='/campaignView/:id' element={<AdminHome/>}/>
         <Route path='/notifications' element={<AdminHome/>}/>
+        <Route path='/category' element={<AdminHome/>}/>
       </Route>
         
     </Routes>

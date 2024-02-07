@@ -1,6 +1,7 @@
 import { Admin } from "../model/adminSchema";
 import { Advanced } from "../model/campaign/advancedSchema";
 import { Basics } from "../model/campaign/basicSchema";
+import { Category } from "../model/categorySchema";
 import { User } from "../model/userSchema";
 
 
@@ -46,6 +47,10 @@ export const adminDbMethods =()=>{
         return Basics.find({isVerified:true})
       }
 
+      const addCategory = async(name:string)=>{
+        return Category.create({name})
+      }
+
     return {
         findByEmail,
         getUsers,
@@ -54,7 +59,8 @@ export const adminDbMethods =()=>{
         verfyCampaign,
         listCampaignRequests,
         listLiveCampaigns,
-        findAdvanced
+        findAdvanced,
+        addCategory
     }
 }
 

@@ -55,6 +55,10 @@ export const adminCases = (repository:ReturnType<AdminDbRepository>)=>{
     return await repository.findAdvanced(id)
    }
 
+   const addCategory = async(name:string)=>{
+    return await repository.addCategory(name)
+   }
+
     return {
         adminSignin,
         logout,
@@ -64,7 +68,8 @@ export const adminCases = (repository:ReturnType<AdminDbRepository>)=>{
         verifyCampaign,
         listCampaignRequests,
         listLiveCampaigns,
-        findAdvanced
+        findAdvanced,
+        addCategory
   
     }
 }

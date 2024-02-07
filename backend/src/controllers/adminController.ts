@@ -92,6 +92,16 @@ export const adminController = (
   })
 
 
+  const addCategory = asyncHandler(async(req:Request,res:Response)=>{
+    const {name} = req.body;
+    console.log(name,'namemjhb')
+    const result = await adminCases(dbRepsitoryAdmn).addCategory(name)
+    console.log(result)
+    res.status(200).json({message:'category created',result})
+
+  })
+
+
 
 
 
@@ -103,6 +113,7 @@ export const adminController = (
     findCampaignById,
     verifyCampaign,
     listCampaignRequests,
-    listLiveCampaigns
+    listLiveCampaigns,
+    addCategory
   };
 };

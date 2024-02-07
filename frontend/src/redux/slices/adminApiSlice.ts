@@ -45,6 +45,13 @@ export const adminApiSlice = apiSlice.injectEndpoints({
                
             })
         }),
+        addCategory:builder.mutation({
+            query:(name)=>({
+                url:`${ADMIN_URL}/category`,
+                method:'POST',
+                body:name
+            })
+        }),
         getSingleCampaign:builder.mutation({
             query:(id)=>({
                 url:`${ADMIN_URL}/getCampaign?id=${id}`,
@@ -67,5 +74,6 @@ export const {
     useVerifyCampaignMutation,
     useGetCampaignAdminMutation,
     useGetVerifiedCampaignsMutation,
-    useGetSingleCampaignMutation
+    useGetSingleCampaignMutation,
+    useAddCategoryMutation
 } = adminApiSlice

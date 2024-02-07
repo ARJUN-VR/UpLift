@@ -33,7 +33,6 @@ const protect = (userDbInterface, dbImplements) => {
                 }
                 else {
                     req.user = userdata;
-                    console.log('nooooo');
                     next();
                 }
             }

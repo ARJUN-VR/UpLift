@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.io = void 0;
 const express_1 = __importDefault(require("express"));
 const http_1 = __importDefault(require("http"));
 const connection_1 = require("./frameworks/database/connection");
@@ -14,7 +15,7 @@ const errorHandler_1 = __importDefault(require("./frameworks/webserver/middlewar
 const socket_io_1 = require("socket.io");
 const app = (0, express_1.default)();
 const server = http_1.default.createServer(app);
-const io = new socket_io_1.Server(server, {
+exports.io = new socket_io_1.Server(server, {
     cors: {
         origin: "*", // or specify your allowed origins
         methods: ["GET", "POST"], // or specify your allowed methods
@@ -22,7 +23,7 @@ const io = new socket_io_1.Server(server, {
         credentials: true // or false to disallow credentials
     }
 });
-io.on('connection', (socket) => {
+exports.io.on('connection', (socket) => {
     console.log('an user connected');
     socket.emit('hello', 'world');
     socket.on('catch', (value) => {
