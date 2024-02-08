@@ -24,16 +24,18 @@ router.post('/verify-otp',controller.verifyOtp)
 router.post('/payment',controller.payment)
 router.post('/pledge',auth,controller.pledge)
 
+
 // campaign routes
 router.get('/get-campaigns',campaigncontroller.listCampaigns)
-router.post('/create_basics',auth,campaigncontroller.createBasics)
-router.post('/create_advanced',auth,campaigncontroller.createAdvanced)
+router.post('/create_basics',campaigncontroller.createBasics)
+router.post('/create_advanced',campaigncontroller.createAdvanced)
 router.post('/create-reward',campaigncontroller.createReward)
 router.get('/campaign/:basicId',campaigncontroller.getCampaign)
 router.get('/get-category/:category',campaigncontroller.getCategory)
 router.post('/comment',campaigncontroller.addComment)
 router.get('/comment/:campaignId',campaigncontroller.listComments)
 router.get('/reward/:basicId',campaigncontroller.getReward)
+router.get('/fetchthedata',campaigncontroller.listCategory)
 
 export default router;
 

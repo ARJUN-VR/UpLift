@@ -15,6 +15,7 @@ const basicSchema_1 = require("../model/campaign/basicSchema");
 const commentSchema_1 = require("../model/campaign/commentSchema");
 const rewardSchema_1 = require("../model/campaign/rewardSchema");
 const mongodb_1 = require("mongodb");
+const categorySchema_1 = require("../model/categorySchema");
 const campaignDbMethods = () => {
     const getAllBasics = () => __awaiter(void 0, void 0, void 0, function* () {
         try {
@@ -124,6 +125,14 @@ const campaignDbMethods = () => {
             console.log(error);
         }
     });
+    const listCategory = () => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            return yield categorySchema_1.Category.find();
+        }
+        catch (error) {
+            console.log(error);
+        }
+    });
     return {
         getAllBasics,
         createBasics,
@@ -134,7 +143,8 @@ const campaignDbMethods = () => {
         addComment,
         listComments,
         getReward,
-        getNotificationCount
+        getNotificationCount,
+        listCategory
     };
 };
 exports.campaignDbMethods = campaignDbMethods;

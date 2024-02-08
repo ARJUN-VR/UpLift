@@ -1,9 +1,14 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Input } from "./Input";
-import { useCreateBasicsMutation } from "../../../redux/slices/userApiSlice";
+import { useCreateBasicsMutation, useListCategoryMutation } from "../../../redux/slices/userApiSlice";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Loader from "../Loader";
+
+interface catlist{
+  id:string,
+  name:string
+}
 
 export const Basics = () => {
   const [title, setTitle] = useState<string>("");
@@ -16,7 +21,23 @@ export const Basics = () => {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  
+
+  const [catList,setCatList] = useState<catlist[]>([])
+
+  const [fetchcategory] = useListCategoryMutation()
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await fetchcategory('').unwrap();
+        setCatList(data?.list)
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, [])
 
   const navigate = useNavigate()
 
@@ -85,6 +106,7 @@ if(!title){
         entice people to learn more. This basic information will represent your
         campaign on your campaign page, on your campaign card, and in searches.
       </p>
+     
       <div>
         <form onSubmit={submitHandler}>
           {/* Title */}
@@ -128,10 +150,13 @@ if(!title){
               <option value="" disabled hidden>
                 Select a category
               </option>
-              <option value="Technology">Technology</option>
-              <option value="Science">Science</option>
-              <option value="Art">Art</option>
-              <option value="Game">Game</option>
+              {
+                catList.map((data)=>{
+             return <option value={data.name}>{data.name}</option>
+              
+                })
+              }
+        
 
               {/* Add more options as needed */}
             </select>

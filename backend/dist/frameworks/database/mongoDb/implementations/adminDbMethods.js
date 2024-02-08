@@ -13,6 +13,7 @@ exports.adminDbMethods = void 0;
 const adminSchema_1 = require("../model/adminSchema");
 const advancedSchema_1 = require("../model/campaign/advancedSchema");
 const basicSchema_1 = require("../model/campaign/basicSchema");
+const categorySchema_1 = require("../model/categorySchema");
 const userSchema_1 = require("../model/userSchema");
 const adminDbMethods = () => {
     const findByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () {
@@ -46,6 +47,9 @@ const adminDbMethods = () => {
     const listLiveCampaigns = () => __awaiter(void 0, void 0, void 0, function* () {
         return basicSchema_1.Basics.find({ isVerified: true });
     });
+    const addCategory = (name) => __awaiter(void 0, void 0, void 0, function* () {
+        return categorySchema_1.Category.create({ name });
+    });
     return {
         findByEmail,
         getUsers,
@@ -54,7 +58,8 @@ const adminDbMethods = () => {
         verfyCampaign,
         listCampaignRequests,
         listLiveCampaigns,
-        findAdvanced
+        findAdvanced,
+        addCategory
     };
 };
 exports.adminDbMethods = adminDbMethods;

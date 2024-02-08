@@ -138,6 +138,15 @@ export const campaignController = (
     res.status(200).json({reward})
   })
 
+  const listCategory = asyncHandler(async(req:Request,res:Response)=>{
+    console.log('workinggggggggggg')
+
+    const list = await campaignUsecase(dbRepositoryCampaign).listCategory()
+    res.status(200).json({message:'fetched',list})
+  })
+
+
+
   return {
     listCampaigns,
     createBasics,
@@ -147,7 +156,8 @@ export const campaignController = (
     getCategory,
     addComment,
     listComments,
-    getReward
+    getReward,
+    listCategory
 
   };
 };

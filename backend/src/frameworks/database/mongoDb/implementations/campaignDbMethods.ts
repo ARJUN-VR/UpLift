@@ -7,6 +7,7 @@ import { Basics } from "../model/campaign/basicSchema";
 import { Comment } from "../model/campaign/commentSchema";
 import { Reward } from "../model/campaign/rewardSchema";
 import { ObjectId } from "mongodb";
+import { Category } from "../model/categorySchema";
 
 export const campaignDbMethods = () => {
   const getAllBasics = async () => {
@@ -122,6 +123,15 @@ export const campaignDbMethods = () => {
   }
   }
 
+  const listCategory = async()=>{
+    try{
+      return await Category.find()
+    }catch(error){
+      console.log(error)
+    }
+
+  }
+
 
   return {
     getAllBasics,
@@ -133,7 +143,8 @@ export const campaignDbMethods = () => {
     addComment,
     listComments,
     getReward,
-    getNotificationCount
+    getNotificationCount,
+    listCategory
   };
 };
 

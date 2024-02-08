@@ -23,16 +23,16 @@ exports.io = new socket_io_1.Server(server, {
         credentials: true // or false to disallow credentials
     }
 });
-exports.io.on('connection', (socket) => {
-    console.log('an user connected');
-    socket.emit('hello', 'world');
-    socket.on('catch', (value) => {
-        console.log(value);
-    });
-    socket.on('disconnect', () => {
-        console.log('user disconnected');
-    });
-});
+// io.on('connection',(socket:Socket)=>{
+//     console.log('an user connected')
+//     socket.emit('hello','world')
+//     socket.on('catch',(value)=>{
+//         console.log(value)
+//     })
+//     socket.on('disconnect',()=>{
+//         console.log('user disconnected')
+//     })
+// })
 (0, connection_1.connectDb)();
 uploadImage_1.default;
 (0, express_2.default)(app);

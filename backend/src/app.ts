@@ -20,19 +20,19 @@ export const io = new Server(server, {
     }
   });
 
-io.on('connection',(socket:Socket)=>{
-    console.log('an user connected')
+// io.on('connection',(socket:Socket)=>{
+//     console.log('an user connected')
 
-    socket.emit('hello','world')
+//     socket.emit('hello','world')
 
-    socket.on('catch',(value)=>{
-        console.log(value)
-    })
+//     socket.on('catch',(value)=>{
+//         console.log(value)
+//     })
 
-    socket.on('disconnect',()=>{
-        console.log('user disconnected')
-    })
-})
+//     socket.on('disconnect',()=>{
+//         console.log('user disconnected')
+//     })
+// })
 
 connectDb();
 

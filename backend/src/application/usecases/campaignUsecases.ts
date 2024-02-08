@@ -73,6 +73,10 @@ export const campaignUsecase = (
     return await repository.getReward(id)
   }
 
+  const listCategory = async()=>{
+    return await repository.listCategory()
+  }
+
 
   return {
     listCampaigns,
@@ -85,6 +89,7 @@ export const campaignUsecase = (
     getCategory,
     addComment,
     listComments,
-    getReward
+    getReward,
+    listCategory
   };
 };

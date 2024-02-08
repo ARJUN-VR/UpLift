@@ -81,6 +81,13 @@ const adminController = (dbInterface, dbImplements) => {
         const campaigns = yield (0, adminCases_1.adminCases)(dbRepsitoryAdmn).listLiveCampaigns();
         res.status(200).json({ campaigns });
     }));
+    const addCategory = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const { name } = req.body;
+        console.log(name, 'namemjhb');
+        const result = yield (0, adminCases_1.adminCases)(dbRepsitoryAdmn).addCategory(name);
+        console.log(result);
+        res.status(200).json({ message: 'category created', result });
+    }));
     return {
         adminSignin,
         logout,
@@ -89,7 +96,8 @@ const adminController = (dbInterface, dbImplements) => {
         findCampaignById,
         verifyCampaign,
         listCampaignRequests,
-        listLiveCampaigns
+        listLiveCampaigns,
+        addCategory
     };
 };
 exports.adminController = adminController;
