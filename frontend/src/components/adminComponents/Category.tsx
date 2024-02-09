@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useAddCategoryMutation } from '../../redux/slices/adminApiSlice';
+import { useAddCategoryMutation, useBlockCategoryMutation } from '../../redux/slices/adminApiSlice';
 import Loader from '../userComponents/Loader';
 import { toast } from 'react-toastify';
 import { useListCategoryMutation } from '../../redux/slices/userApiSlice';
@@ -13,6 +13,8 @@ export const Category = () => {
     const [addCategory,{isLoading}] = useAddCategoryMutation()
 
     const [fetchcategory] = useListCategoryMutation()
+
+    const [blockCategory] = useBlockCategoryMutation()
 
     useEffect(()=>{
       const fetch = async()=>{
@@ -36,9 +38,25 @@ export const Category = () => {
      
     }
 
+    const categoryAction = async(name:string)=>{
+      try{
+      const res = await blockCategory({name}).unwrap()
+      const categoryRes:catlist = res.catData
+      console.log(res)
+      setChange(!change)
+      if(categoryRes.isBlocked){
+        toast.success('category blocked')
+      }else{
+        toast.success('category unblocked')
+      }
 
+        
+      }catch(error){
+        toast.error(error?.data?.message)
+        console.log(error)
+      }
 
-
+    }
 
     return (
       <div className="w-full mt-10 p-6 rounded-lg">
@@ -75,8 +93,7 @@ export const Category = () => {
         <tr key={index} className={index % 2 === 0 ? "bg-gray-100" : ""}>
           <td className="border px-4 py-2">{category.name}</td>
           <td className="border px-4 py-2 flex justify-center space-x-2">
-            <button className="bg-green-500 text-white py-1 px-2 rounded-md hover:bg-green-600">List</button>
-            <button className="bg-red-500 text-white py-1 px-2 rounded-md hover:bg-red-600">Unlist</button>
+            <button className={`${category.isBlocked?`bg-green-500  hover:bg-green-600`:`bg-red-500 hover:bg-red-600`}text-white py-1 px-2 rounded-md`} onClick={()=>categoryAction(category.name)}>{category.isBlocked?'list':'unlist'}</button>
           </td>
         </tr>
       ))}
@@ -88,5 +105,4 @@ export const Category = () => {
     );
     
 };
-
 

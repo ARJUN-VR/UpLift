@@ -7,7 +7,8 @@ import Loader from "../Loader";
 
 export interface catlist{
   id:string,
-  name:string
+  name:string,
+  isBlocked:boolean
 }
 
 export const Basics = () => {

@@ -15,9 +15,6 @@ export const adminController = (
   //access   public
   const adminSignin = asyncHandler(async (req: Request, res: Response) => {
     const { email, password } = req.body;
-    console.log("data");
-    console.log(email);
-    console.log(password);
     const result = await adminCases(dbRepsitoryAdmn).adminSignin(
       email,
       password,
@@ -47,63 +44,57 @@ export const adminController = (
   //access private
   const getUsers = asyncHandler(async (req: Request, res: Response) => {
     const users = await adminCases(dbRepsitoryAdmn).getUsers();
-    console.log(users)
-
     res.status(200).json({ message: "users fetched successfully", users });
   });
 
   const blockUser = asyncHandler(async (req: Request, res: Response) => {
     const email: string = req.query.email as string;
     const user = await adminCases(dbRepsitoryAdmn).blockUser(email);
-    res.status(200).json({ message: "user blocked/unblocked successfully" ,user});
+    res
+      .status(200)
+      .json({ message: "user blocked/unblocked successfully", user });
   });
 
-  const findCampaignById = asyncHandler(async(req:Request, res:Response)=>{
-    const id = req.query.id as string
-    
-    console.log(id,'this is id')
-    const basicData = await adminCases(dbRepsitoryAdmn).findCampaignById(id)
-    const advancedData = await adminCases(dbRepsitoryAdmn).findAdvanced(id)
+  const findCampaignById = asyncHandler(async (req: Request, res: Response) => {
+    const id = req.query.id as string;
 
+    const basicData = await adminCases(dbRepsitoryAdmn).findCampaignById(id);
+    const advancedData = await adminCases(dbRepsitoryAdmn).findAdvanced(id);
 
-   res.status(200).json({message:'success',basicData,advancedData})
-
-
-
-  })
-
-  const verifyCampaign = asyncHandler(async(req:Request,res:Response)=>{
-    const id = req.body.id
-    console.log(id)
-    const data = await adminCases(dbRepsitoryAdmn).verifyCampaign(id)
-    res.status(200).json({message:'verified',data})
-  })
-
-
-  const listCampaignRequests = asyncHandler(async (req: Request, res: Response) => {
-    const list = await adminCases(dbRepsitoryAdmn).listCampaignRequests();
-    console.log(list)
-    res.status(200).json({ list });
+    res.status(200).json({ message: "success", basicData, advancedData });
   });
 
-  const listLiveCampaigns = asyncHandler(async(req:Request,res:Response)=>{
-    const campaigns = await adminCases(dbRepsitoryAdmn).listLiveCampaigns()
-    res.status(200).json({campaigns})
-  })
+  const verifyCampaign = asyncHandler(async (req: Request, res: Response) => {
+    const id = req.body.id;
+    const data = await adminCases(dbRepsitoryAdmn).verifyCampaign(id);
+    res.status(200).json({ message: "verified", data });
+  });
 
+  const listCampaignRequests = asyncHandler(
+    async (req: Request, res: Response) => {
+      const list = await adminCases(dbRepsitoryAdmn).listCampaignRequests();
+      res.status(200).json({ list });
+    }
+  );
 
-  const addCategory = asyncHandler(async(req:Request,res:Response)=>{
-    const {name} = req.body;
-    console.log(name,'namemjhb')
-    const result = await adminCases(dbRepsitoryAdmn).addCategory(name)
-    console.log(result)
-    res.status(200).json({message:'category created',result})
+  const listLiveCampaigns = asyncHandler(
+    async (req: Request, res: Response) => {
+      const campaigns = await adminCases(dbRepsitoryAdmn).listLiveCampaigns();
+      res.status(200).json({ campaigns });
+    }
+  );
 
-  })
+  const addCategory = asyncHandler(async (req: Request, res: Response) => {
+    const { name } = req.body;
+    const result = await adminCases(dbRepsitoryAdmn).addCategory(name);
+    res.status(200).json({ message: "category created", result });
+  });
 
-
-
-
+  const categoryAction = asyncHandler(async (req: Request, res: Response) => {
+    const { name } = req.body;
+    const catData = await adminCases(dbRepsitoryAdmn).categoryAction(name);
+    res.status(200).json({ message: "action did", catData });
+  });
 
   return {
     adminSignin,
@@ -114,6 +105,7 @@ export const adminController = (
     verifyCampaign,
     listCampaignRequests,
     listLiveCampaigns,
-    addCategory
+    addCategory,
+    categoryAction,
   };
 };

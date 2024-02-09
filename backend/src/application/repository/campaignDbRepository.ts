@@ -54,6 +54,8 @@ export const campaignDbInterface = (
 
 
 
+
+
   return {
     listCampaigns,
     createBasics,

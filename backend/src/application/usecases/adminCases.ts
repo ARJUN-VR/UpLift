@@ -59,6 +59,11 @@ export const adminCases = (repository:ReturnType<AdminDbRepository>)=>{
     return await repository.addCategory(name)
    }
 
+   const categoryAction = async(name:string)=>{
+    console.log(name,'in the usecase')
+    return await repository.categoryAction(name)
+  }
+
     return {
         adminSignin,
         logout,
@@ -69,7 +74,8 @@ export const adminCases = (repository:ReturnType<AdminDbRepository>)=>{
         listCampaignRequests,
         listLiveCampaigns,
         findAdvanced,
-        addCategory
+        addCategory,
+        categoryAction
   
     }
 }

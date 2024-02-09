@@ -41,6 +41,10 @@ export const adminDbInterface = (repository:ReturnType<AdminDbMethods>) =>{
       return await repository.addCategory(name)
    }
 
+   const categoryAction = async(name:string)=>{
+      return await repository.categoryAction(name)
+    }
+
 
    return{
     findByEmail,
@@ -51,7 +55,8 @@ export const adminDbInterface = (repository:ReturnType<AdminDbMethods>) =>{
     listCampaignRequests,
     listLiveCampaigns,
     findAdvanced,
-    addCategory
+    addCategory,
+    categoryAction
 
    }
 }

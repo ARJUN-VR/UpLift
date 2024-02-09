@@ -51,6 +51,16 @@ export const adminDbMethods =()=>{
         return Category.create({name})
       }
 
+      const categoryAction = async(name:string)=>{
+        try{
+          return await Basics.updateMany({ category: name }, { $set: { isVerified: { $not: "$isVerified" } } });
+
+        }catch(error){
+          console.log(error)
+          throw new Error('no things')
+        }
+      }
+
     return {
         findByEmail,
         getUsers,
@@ -60,7 +70,8 @@ export const adminDbMethods =()=>{
         listCampaignRequests,
         listLiveCampaigns,
         findAdvanced,
-        addCategory
+        addCategory,
+        categoryAction
     }
 }
 

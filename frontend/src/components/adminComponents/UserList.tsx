@@ -26,9 +26,7 @@ export const UserList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log("11111");
         const userData = await getUsers("").unwrap();
-        console.log(userData)
         setUsers(userData.users);
        
       } catch (error) {

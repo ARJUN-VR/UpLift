@@ -139,8 +139,6 @@ export const campaignController = (
   })
 
   const listCategory = asyncHandler(async(req:Request,res:Response)=>{
-    console.log('workinggggggggggg')
-
     const list = await campaignUsecase(dbRepositoryCampaign).listCategory()
     res.status(200).json({message:'fetched',list})
   })

@@ -89,7 +89,7 @@ export const campaignDbMethods = () => {
 
   const addComment = async(commentData:CommentInterface)=>{
     try {
-      console.log(commentData,'dataastatatatatata')
+
     return await Comment.create(commentData)
     } catch (error) {
       console.log(error)
@@ -131,6 +131,8 @@ export const campaignDbMethods = () => {
     }
 
   }
+
+
 
 
   return {
