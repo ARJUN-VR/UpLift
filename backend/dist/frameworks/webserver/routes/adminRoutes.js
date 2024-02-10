@@ -18,4 +18,5 @@ adminRouter.patch('/verify-campaign', controller.verifyCampaign);
 adminRouter.get('/get-campaigns', controller.listCampaignRequests);
 adminRouter.get('/get-liveCampaigns', controller.listLiveCampaigns);
 adminRouter.post('/category', controller.addCategory);
+adminRouter.patch('/category-action', controller.categoryAction);
 exports.default = adminRouter;

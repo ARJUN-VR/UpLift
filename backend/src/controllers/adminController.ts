@@ -92,7 +92,9 @@ export const adminController = (
 
   const categoryAction = asyncHandler(async (req: Request, res: Response) => {
     const { name } = req.body;
-    const catData = await adminCases(dbRepsitoryAdmn).categoryAction(name);
+    console.log(name)
+    const catData = await adminCases(dbRepsitoryAdmn).handleCategoryAction(name);
+    console.log(catData,'from controller')
     res.status(200).json({ message: "action did", catData });
   });
 

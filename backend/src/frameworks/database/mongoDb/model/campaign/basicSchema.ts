@@ -43,6 +43,11 @@ const basicSchama = new Schema({
         type:Boolean,
         required:false,
         default:false
+    },
+    isListed:{
+        type:Boolean,
+        requried:false,
+        default:false
     }
 })
 

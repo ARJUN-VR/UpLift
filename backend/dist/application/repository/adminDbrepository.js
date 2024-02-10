@@ -38,6 +38,15 @@ const adminDbInterface = (repository) => {
     const addCategory = (name) => __awaiter(void 0, void 0, void 0, function* () {
         return yield repository.addCategory(name);
     });
+    const listCategory = (name) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.listCategory(name);
+    });
+    const unListCategory = (name) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.unListCategory(name);
+    });
+    const checkListStatus = (name) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.checkListStatus(name);
+    });
     return {
         findByEmail,
         getUsers,
@@ -47,7 +56,10 @@ const adminDbInterface = (repository) => {
         listCampaignRequests,
         listLiveCampaigns,
         findAdvanced,
-        addCategory
+        addCategory,
+        listCategory,
+        unListCategory,
+        checkListStatus
     };
 };
 exports.adminDbInterface = adminDbInterface;

@@ -59,10 +59,22 @@ export const adminCases = (repository:ReturnType<AdminDbRepository>)=>{
     return await repository.addCategory(name)
    }
 
-   const categoryAction = async(name:string)=>{
-    console.log(name,'in the usecase')
-    return await repository.categoryAction(name)
-  }
+
+   const handleCategoryAction = async(name:string)=>{
+    try {
+        const res = await repository.checkListStatus(name)
+        if(res){
+           return await repository.unListCategory(name)
+        }else{
+            return await repository.listCategory(name)
+        }
+    } catch (error) {
+        console.log(error)
+    }
+   
+   }
+
+   
 
     return {
         adminSignin,
@@ -75,7 +87,9 @@ export const adminCases = (repository:ReturnType<AdminDbRepository>)=>{
         listLiveCampaigns,
         findAdvanced,
         addCategory,
-        categoryAction
+        handleCategoryAction
+       
+        
   
     }
 }

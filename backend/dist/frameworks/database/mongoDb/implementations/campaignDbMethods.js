@@ -93,7 +93,6 @@ const campaignDbMethods = () => {
     });
     const addComment = (commentData) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            console.log(commentData, 'dataastatatatatata');
             return yield commentSchema_1.Comment.create(commentData);
         }
         catch (error) {

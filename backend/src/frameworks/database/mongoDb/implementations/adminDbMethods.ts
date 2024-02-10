@@ -28,11 +28,11 @@ export const adminDbMethods =()=>{
       
     }
     const findCampaignById = async(id:string | undefined)=>{
-        return Basics.find({_id:id})
+        return await Basics.find({_id:id})
       }
 
   const findAdvanced = async(id:string | undefined)=>{
-    return Advanced.find({basicId:id})
+    return await Advanced.find({basicId:id})
   }
       const verfyCampaign = async(id:string)=>{
         return  await Basics.updateOne({ _id: id }, { $set: { isVerified: true } });
@@ -40,26 +40,53 @@ export const adminDbMethods =()=>{
         
       }
       const listCampaignRequests = async()=>{
-        return Basics.find({isVerified:false})
+        return await Basics.find({isVerified:false})
       }
 
       const listLiveCampaigns = async()=>{
-        return Basics.find({isVerified:true})
+        return await Basics.find({isVerified:true})
       }
 
       const addCategory = async(name:string)=>{
-        return Category.create({name})
+        return await Category.create({name})
       }
 
-      const categoryAction = async(name:string)=>{
-        try{
-          return await Basics.updateMany({ category: name }, { $set: { isVerified: { $not: "$isVerified" } } });
+     const listCategory=async(name:string)=>{
+       await Basics.updateMany({category:name},{$set:{isListed:true}},{new:true})
+       const detail = await Category.findOne({name:name})
+       if(detail){
+        detail.isBlocked = !detail.isBlocked
+        await detail.save()
+       }else{
+        return {success:false}
+       }
+       
+      return Basics.find({category:name})
+     }
 
-        }catch(error){
-          console.log(error)
-          throw new Error('no things')
-        }
+     const unListCategory=async(name:string)=>{
+       await Basics.updateMany({category:name},{$set:{isListed:false}},{new:true})
+       const detail = await Category.findOne({name:name})
+       if(detail){
+        detail.isBlocked = !detail.isBlocked
+        await detail.save()
+       }else{
+        return {success:false}
+       }
+       return Basics.find({category:name})
+     }
+
+     const checkListStatus = async(name:string)=>{
+      try {
+        const campData = await Basics.find({category:name})
+        console.log(campData,'datata')
+      return campData[0].isListed
+      } catch (error) {
+        console.log(error)
       }
+      
+     }
+
 
     return {
         findByEmail,
@@ -71,7 +98,9 @@ export const adminDbMethods =()=>{
         listLiveCampaigns,
         findAdvanced,
         addCategory,
-        categoryAction
+        listCategory,
+        unListCategory,
+        checkListStatus
     }
 }
 

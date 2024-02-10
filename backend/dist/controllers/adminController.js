@@ -22,9 +22,6 @@ const adminController = (dbInterface, dbImplements) => {
     //access   public
     const adminSignin = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const { email, password } = req.body;
-        console.log("data");
-        console.log(email);
-        console.log(password);
         const result = yield (0, adminCases_1.adminCases)(dbRepsitoryAdmn).adminSignin(email, password, res);
         if (result.success) {
             res.status(200).json({ message: "admin signedIn successfully", result });
@@ -51,30 +48,28 @@ const adminController = (dbInterface, dbImplements) => {
     //access private
     const getUsers = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const users = yield (0, adminCases_1.adminCases)(dbRepsitoryAdmn).getUsers();
-        console.log(users);
         res.status(200).json({ message: "users fetched successfully", users });
     }));
     const blockUser = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const email = req.query.email;
         const user = yield (0, adminCases_1.adminCases)(dbRepsitoryAdmn).blockUser(email);
-        res.status(200).json({ message: "user blocked/unblocked successfully", user });
+        res
+            .status(200)
+            .json({ message: "user blocked/unblocked successfully", user });
     }));
     const findCampaignById = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const id = req.query.id;
-        console.log(id, 'this is id');
         const basicData = yield (0, adminCases_1.adminCases)(dbRepsitoryAdmn).findCampaignById(id);
         const advancedData = yield (0, adminCases_1.adminCases)(dbRepsitoryAdmn).findAdvanced(id);
-        res.status(200).json({ message: 'success', basicData, advancedData });
+        res.status(200).json({ message: "success", basicData, advancedData });
     }));
     const verifyCampaign = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const id = req.body.id;
-        console.log(id);
         const data = yield (0, adminCases_1.adminCases)(dbRepsitoryAdmn).verifyCampaign(id);
-        res.status(200).json({ message: 'verified', data });
+        res.status(200).json({ message: "verified", data });
     }));
     const listCampaignRequests = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const list = yield (0, adminCases_1.adminCases)(dbRepsitoryAdmn).listCampaignRequests();
-        console.log(list);
         res.status(200).json({ list });
     }));
     const listLiveCampaigns = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -83,10 +78,13 @@ const adminController = (dbInterface, dbImplements) => {
     }));
     const addCategory = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const { name } = req.body;
-        console.log(name, 'namemjhb');
         const result = yield (0, adminCases_1.adminCases)(dbRepsitoryAdmn).addCategory(name);
-        console.log(result);
-        res.status(200).json({ message: 'category created', result });
+        res.status(200).json({ message: "category created", result });
+    }));
+    const categoryAction = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const { name } = req.body;
+        const catData = yield (0, adminCases_1.adminCases)(dbRepsitoryAdmn).handleCategoryAction(name);
+        res.status(200).json({ message: "action did", catData });
     }));
     return {
         adminSignin,
@@ -97,7 +95,8 @@ const adminController = (dbInterface, dbImplements) => {
         verifyCampaign,
         listCampaignRequests,
         listLiveCampaigns,
-        addCategory
+        addCategory,
+        categoryAction,
     };
 };
 exports.adminController = adminController;

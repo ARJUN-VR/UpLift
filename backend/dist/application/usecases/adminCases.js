@@ -63,6 +63,20 @@ const adminCases = (repository) => {
     const addCategory = (name) => __awaiter(void 0, void 0, void 0, function* () {
         return yield repository.addCategory(name);
     });
+    const handleCategoryAction = (name) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const res = yield repository.checkListStatus(name);
+            if (res) {
+                return yield repository.unListCategory(name);
+            }
+            else {
+                return yield repository.listCategory(name);
+            }
+        }
+        catch (error) {
+            console.log(error);
+        }
+    });
     return {
         adminSignin,
         logout,
@@ -73,7 +87,8 @@ const adminCases = (repository) => {
         listCampaignRequests,
         listLiveCampaigns,
         findAdvanced,
-        addCategory
+        addCategory,
+        handleCategoryAction
     };
 };
 exports.adminCases = adminCases;

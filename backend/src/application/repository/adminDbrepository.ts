@@ -41,9 +41,17 @@ export const adminDbInterface = (repository:ReturnType<AdminDbMethods>) =>{
       return await repository.addCategory(name)
    }
 
-   const categoryAction = async(name:string)=>{
-      return await repository.categoryAction(name)
-    }
+   const listCategory = async(name:string)=>{
+      return await repository.listCategory(name)
+   }
+
+   const unListCategory = async(name:string)=>{
+      return await repository.unListCategory(name)
+   }
+
+   const checkListStatus = async(name:string)=>{
+      return await repository.checkListStatus(name)
+   }
 
 
    return{
@@ -56,7 +64,9 @@ export const adminDbInterface = (repository:ReturnType<AdminDbMethods>) =>{
     listLiveCampaigns,
     findAdvanced,
     addCategory,
-    categoryAction
+    listCategory,
+    unListCategory,
+    checkListStatus
 
    }
 }

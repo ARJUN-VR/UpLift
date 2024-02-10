@@ -45,6 +45,11 @@ const basicSchama = new mongoose_1.Schema({
         type: Boolean,
         required: false,
         default: false
+    },
+    isListed: {
+        type: Boolean,
+        requried: false,
+        default: false
     }
 });
 exports.Basics = (0, mongoose_1.model)('campaign_basics', basicSchama);

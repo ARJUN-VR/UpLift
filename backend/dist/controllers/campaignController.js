@@ -108,7 +108,6 @@ const campaignController = (dbInterface, dbImplements) => {
         res.status(200).json({ reward });
     }));
     const listCategory = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        console.log('workinggggggggggg');
         const list = yield (0, campaignUsecases_1.campaignUsecase)(dbRepositoryCampaign).listCategory();
         res.status(200).json({ message: 'fetched', list });
     }));

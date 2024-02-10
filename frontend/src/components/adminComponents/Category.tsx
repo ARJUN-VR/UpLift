@@ -41,10 +41,11 @@ export const Category = () => {
     const categoryAction = async(name:string)=>{
       try{
       const res = await blockCategory({name}).unwrap()
-      const categoryRes:catlist = res.catData
+      
       console.log(res)
+      
       setChange(!change)
-      if(categoryRes.isBlocked){
+      if(res.catData[0].isListed){
         toast.success('category blocked')
       }else{
         toast.success('category unblocked')

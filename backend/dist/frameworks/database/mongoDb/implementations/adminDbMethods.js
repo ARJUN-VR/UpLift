@@ -33,22 +33,32 @@ const adminDbMethods = () => {
         }
     });
     const findCampaignById = (id) => __awaiter(void 0, void 0, void 0, function* () {
-        return basicSchema_1.Basics.find({ _id: id });
+        return yield basicSchema_1.Basics.find({ _id: id });
     });
     const findAdvanced = (id) => __awaiter(void 0, void 0, void 0, function* () {
-        return advancedSchema_1.Advanced.find({ basicId: id });
+        return yield advancedSchema_1.Advanced.find({ basicId: id });
     });
     const verfyCampaign = (id) => __awaiter(void 0, void 0, void 0, function* () {
         return yield basicSchema_1.Basics.updateOne({ _id: id }, { $set: { isVerified: true } });
     });
     const listCampaignRequests = () => __awaiter(void 0, void 0, void 0, function* () {
-        return basicSchema_1.Basics.find({ isVerified: false });
+        return yield basicSchema_1.Basics.find({ isVerified: false });
     });
     const listLiveCampaigns = () => __awaiter(void 0, void 0, void 0, function* () {
-        return basicSchema_1.Basics.find({ isVerified: true });
+        return yield basicSchema_1.Basics.find({ isVerified: true });
     });
     const addCategory = (name) => __awaiter(void 0, void 0, void 0, function* () {
-        return categorySchema_1.Category.create({ name });
+        return yield categorySchema_1.Category.create({ name });
+    });
+    const listCategory = (name) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield basicSchema_1.Basics.updateMany({ category: name }, { $set: { isListed: true } });
+    });
+    const unListCategory = (name) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield basicSchema_1.Basics.updateMany({ category: name }, { $set: { isListed: false } });
+    });
+    const checkListStatus = (name) => __awaiter(void 0, void 0, void 0, function* () {
+        const campData = yield basicSchema_1.Basics.find({ category: name });
+        return campData[0].isListed;
     });
     return {
         findByEmail,
@@ -59,7 +69,10 @@ const adminDbMethods = () => {
         listCampaignRequests,
         listLiveCampaigns,
         findAdvanced,
-        addCategory
+        addCategory,
+        listCategory,
+        unListCategory,
+        checkListStatus
     };
 };
 exports.adminDbMethods = adminDbMethods;

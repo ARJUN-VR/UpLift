@@ -5,6 +5,11 @@ const categorySchema = new Schema({
         type:String,
         required:true,
         unique:true
+    },
+    isBlocked:{
+        type:Boolean,
+        required:true,
+        default:false
     }
 })
 
