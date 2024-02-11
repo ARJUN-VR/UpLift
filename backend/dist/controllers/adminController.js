@@ -83,7 +83,9 @@ const adminController = (dbInterface, dbImplements) => {
     }));
     const categoryAction = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const { name } = req.body;
+        console.log(name);
         const catData = yield (0, adminCases_1.adminCases)(dbRepsitoryAdmn).handleCategoryAction(name);
+        console.log(catData, 'from controller');
         res.status(200).json({ message: "action did", catData });
     }));
     return {

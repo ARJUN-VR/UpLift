@@ -51,14 +51,38 @@ const adminDbMethods = () => {
         return yield categorySchema_1.Category.create({ name });
     });
     const listCategory = (name) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield basicSchema_1.Basics.updateMany({ category: name }, { $set: { isListed: true } });
+        yield basicSchema_1.Basics.updateMany({ category: name }, { $set: { isListed: true } }, { new: true });
+        const detail = yield categorySchema_1.Category.findOne({ name: name });
+        if (detail) {
+            detail.isBlocked = !detail.isBlocked;
+            yield detail.save();
+        }
+        else {
+            return { success: false };
+        }
+        return basicSchema_1.Basics.find({ category: name });
     });
     const unListCategory = (name) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield basicSchema_1.Basics.updateMany({ category: name }, { $set: { isListed: false } });
+        yield basicSchema_1.Basics.updateMany({ category: name }, { $set: { isListed: false } }, { new: true });
+        const detail = yield categorySchema_1.Category.findOne({ name: name });
+        if (detail) {
+            detail.isBlocked = !detail.isBlocked;
+            yield detail.save();
+        }
+        else {
+            return { success: false };
+        }
+        return basicSchema_1.Basics.find({ category: name });
     });
     const checkListStatus = (name) => __awaiter(void 0, void 0, void 0, function* () {
-        const campData = yield basicSchema_1.Basics.find({ category: name });
-        return campData[0].isListed;
+        try {
+            const campData = yield basicSchema_1.Basics.find({ category: name });
+            console.log(campData, 'datata');
+            return campData[0].isListed;
+        }
+        catch (error) {
+            console.log(error);
+        }
     });
     return {
         findByEmail,

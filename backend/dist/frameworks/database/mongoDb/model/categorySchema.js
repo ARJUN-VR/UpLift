@@ -7,6 +7,11 @@ const categorySchema = new mongoose_1.Schema({
         type: String,
         required: true,
         unique: true
+    },
+    isBlocked: {
+        type: Boolean,
+        required: true,
+        default: false
     }
 });
 exports.Category = (0, mongoose_1.model)('category', categorySchema);
