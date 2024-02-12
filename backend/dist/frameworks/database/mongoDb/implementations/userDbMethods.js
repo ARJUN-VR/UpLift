@@ -13,6 +13,8 @@ exports.userDbMethods = void 0;
 const userSchema_1 = require("../model/userSchema");
 const otpSchema_1 = require("../model/otpSchema");
 const basicSchema_1 = require("../model/campaign/basicSchema");
+const paymentSchema_1 = require("../model/paymentSchema");
+const mongodb_1 = require("mongodb");
 const userDbMethods = () => {
     const addUser = (user) => __awaiter(void 0, void 0, void 0, function* () {
         return yield userSchema_1.User.create(user);
@@ -66,9 +68,38 @@ const userDbMethods = () => {
             throw new Error('user not found');
         }
     });
-    const pledge = (id, amount) => __awaiter(void 0, void 0, void 0, function* () {
+    const pledge = (campaignId, payment, userEmail) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            return yield basicSchema_1.Basics.findOneAndUpdate({ _id: id }, { $inc: { currentAmount: amount, backers: 1 } }, { new: true });
+            yield paymentSchema_1.Payment.create({ campaignId, payment, userEmail });
+            return yield basicSchema_1.Basics.findOneAndUpdate({ _id: campaignId }, { $inc: { currentAmount: payment, backers: 1 } }, { new: true });
+        }
+        catch (error) {
+            console.log(error);
+        }
+    });
+    const fetchChannelsId = (userEmail) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            return yield paymentSchema_1.Payment.find({ userEmail: userEmail }, { _id: 0, campaignId: 1 });
+        }
+        catch (error) {
+            console.log(error);
+        }
+    });
+    const fetchChannelData = (campaignId) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const id = new mongodb_1.ObjectId(campaignId);
+            return yield basicSchema_1.Basics.aggregate([
+                {
+                    $match: { _id: id },
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        title: 1,
+                        image: 1
+                    }
+                }
+            ]);
         }
         catch (error) {
             console.log(error);
@@ -82,7 +113,9 @@ const userDbMethods = () => {
         forgotPassword,
         saveOTP,
         findOtpUser,
-        pledge
+        pledge,
+        fetchChannelsId,
+        fetchChannelData
     };
 };
 exports.userDbMethods = userDbMethods;

@@ -10,6 +10,7 @@ import { CampaignPage } from "../pages/userPages/campaign/CampaignPage"
 import { SinglePageView } from "../pages/userPages/SinglePageView"
 import { CategoryPage } from "../pages/userPages/CategoryPage"
 import { SuccessPage } from "../pages/userPages/SuccessPage"
+import { CommunityPage } from "../pages/userPages/CommunityPage"
 
 
 
@@ -38,6 +39,8 @@ export const UserRoutes = () => {
             <Route path="/create-campaign/advanced" element={<CampaignPage/>}/>
             <Route path='/create-campaign/reward' element={<CampaignPage/>}/>
             <Route path='/create-campaign/draft' element={<CampaignPage/>}/>
+            <Route path="/community" element={<CommunityPage/>}/>
+
 
 
             

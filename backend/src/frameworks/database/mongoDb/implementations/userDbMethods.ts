@@ -3,6 +3,10 @@ import { User } from "../model/userSchema";
 import { Document } from "mongoose";
 import { OTP } from "../model/otpSchema";
 import { Basics } from "../model/campaign/basicSchema";
+import { Payment } from "../model/paymentSchema";
+import { ObjectId } from "mongodb";
+import { Chat } from "../model/chatSchema";
+import { ChatInterface } from "../../../../entities/Chat";
 
 
 export const userDbMethods = () => {
@@ -69,13 +73,58 @@ export const userDbMethods = () => {
     }
   }
 
-  const pledge = async(id:string,amount:number)=>{
+  const pledge = async(campaignId:string,payment:number,userEmail:string)=>{
     try {
-      return await Basics.findOneAndUpdate({_id:id},{$inc:{currentAmount:amount,backers:1}},{new:true})
+      await Payment.create({campaignId,payment,userEmail})
+      return await Basics.findOneAndUpdate({_id:campaignId},{$inc:{currentAmount:payment,backers:1}},{new:true})
     } catch (error) {
       console.log(error)
     }
   }
+
+ const fetchChannelsId = async(userEmail:string)=>{
+  try {
+    return await Payment.find({userEmail:userEmail},{_id:0,campaignId:1})
+    
+  } catch (error) {
+    console.log(error)
+  }
+ }
+
+ const fetchChannelData = async(campaignId:string|undefined)=>{
+  try{
+
+    const id = new ObjectId(campaignId);
+      return await Basics.aggregate([
+        {
+          $match: { _id: id },
+        },
+        {
+          $project:{
+          _id:1,
+          title:1,
+          image:1
+          }
+        }
+        
+      ]);
+
+  }catch(error){
+    console.log(error)
+  }
+ }
+
+ const saveChat = async(chat:ChatInterface)=>{
+
+  return await Chat.create(chat)
+
+ }
+
+
+ const getChats = async(campaignId:string)=>{
+  return await Chat.find({campaignId})
+ }
+
 
 
   
@@ -87,7 +136,11 @@ export const userDbMethods = () => {
     forgotPassword,
     saveOTP,
     findOtpUser,
-    pledge
+    pledge,
+    fetchChannelsId,
+    fetchChannelData,
+    saveChat,
+    getChats
   };
 };
 

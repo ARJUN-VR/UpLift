@@ -5,6 +5,7 @@ import { UserDbInterFace } from "../application/repository/userDbrepository";
 import { userCases } from "../application/usecases/userCases";
 import asyncHandler from "express-async-handler";
 import Stripe from "stripe";
+import { ChatInterface } from "../entities/Chat";
 const stripe = new Stripe('sk_test_51OgAh7SBqBEeU2LVufG4q6TNE6MLKyoN2lcbm3Re8JjjF2sDSRzHMCSXLsBt2K6M1GJxthhi3qk8mLjVo01VmM3y00Nh0SkIcv', {
 });
 
@@ -147,14 +148,38 @@ export const userController = (
   });
 
  const pledge = asyncHandler(async(req:Request,res:Response)=>{
-  const {id,amount} = req.body;
-  console.log(id,'idd')
-  console.log(amount,'amount')
+  const {id,amount,userEmail} = req.body;
 
-     const data =  await userCases(dbRepositoryuser).pledge(id,amount)
+
+     const data =  await userCases(dbRepositoryuser).pledge(id,amount,userEmail)
     res.status(200).json({data})
 
  })
+
+ const getChannel = asyncHandler(async(req:Request,res:Response)=>{
+  const {userEmail} = req.params
+  console.log(userEmail)
+  const data = await userCases(dbRepositoryuser).getChannels(userEmail)
+
+  res.status(200).json({data})
+ })
+
+
+ const saveChat = asyncHandler(async(req:Request,res:Response)=>{
+  const chat:ChatInterface = req.body;
+  console.log(chat,'world')
+  const data = await userCases(dbRepositoryuser).saveChat(chat)
+  res.status(200).json({data})
+ })
+
+
+ const getChats = asyncHandler(async(req:Request,res:Response)=>{
+  const {campaignId} = req.params;
+  const data = await userCases(dbRepositoryuser).getChats(campaignId)
+  res.status(200).json({data})
+ })
+
+ 
 
 
   return {
@@ -167,6 +192,9 @@ export const userController = (
     SendOTP,
     verifyOtp,
     payment,
-    pledge
+    pledge,
+    getChannel,
+    saveChat,
+    getChats
   };
 };

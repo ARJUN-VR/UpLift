@@ -3,6 +3,12 @@ import { userInterface } from "../../entities/User";
 import generateToken from "../services/generateJwt";
 import OTPService from "../services/otpGeneration";
 import cloudinary from 'cloudinary'
+import { ChatInterface } from "../../entities/Chat";
+
+interface IdType{
+  campaignId?:string | null | undefined
+
+}
 
 
 
@@ -112,9 +118,45 @@ export const userCases = (repository: ReturnType<UserDbInterFace>) => {
   }
 
   
-  const pledge = async(id:string,amount:number)=>{
-    return await repository.pledge(id,amount)
+  const pledge = async(campaignId:string,payment:number,userEmail:string)=>{
+    return await repository.pledge(campaignId,payment,userEmail)
   }
+
+  
+
+  const getChannels = async(userEmail:string)=>{
+    try{
+     const channelIDs:IdType[] | undefined = await repository.fetchChannelsId(userEmail)
+    
+
+      const channelData = []
+      if(channelIDs){
+        for(let id of channelIDs){
+          const data =  await repository.fetchChannelData(id.campaignId?.toString())
+          channelData.push(data)
+            
+          }
+      }
+
+      return channelData
+    
+
+    }catch(error){
+      console.log(error)
+    }
+
+  }
+
+
+  const saveChat = async(chat:ChatInterface)=>{
+    return await repository.saveChat(chat)
+  }
+
+  const getChats = async(campaignId:string)=>{
+    return await repository.getChats(campaignId)
+  }
+
+  
 
 
   return {
@@ -128,6 +170,9 @@ export const userCases = (repository: ReturnType<UserDbInterFace>) => {
     verifyOtp,
     uploadImage,
     videoUpload,
-    pledge
+    pledge,
+    getChannels,
+    saveChat,
+    getChats
   };
 };

@@ -135,10 +135,14 @@ const userController = (dbInterface, dbImplements) => {
         }
     }));
     const pledge = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        const { id, amount } = req.body;
-        console.log(id, 'idd');
-        console.log(amount, 'amount');
-        const data = yield (0, userCases_1.userCases)(dbRepositoryuser).pledge(id, amount);
+        const { id, amount, userEmail } = req.body;
+        const data = yield (0, userCases_1.userCases)(dbRepositoryuser).pledge(id, amount, userEmail);
+        res.status(200).json({ data });
+    }));
+    const getChannel = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const { userEmail } = req.params;
+        console.log(userEmail);
+        const data = yield (0, userCases_1.userCases)(dbRepositoryuser).getChannels(userEmail);
         res.status(200).json({ data });
     }));
     return {
@@ -151,7 +155,8 @@ const userController = (dbInterface, dbImplements) => {
         SendOTP,
         verifyOtp,
         payment,
-        pledge
+        pledge,
+        getChannel
     };
 };
 exports.userController = userController;

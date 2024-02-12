@@ -1,4 +1,5 @@
 
+import { ChatInterface } from "../../entities/Chat";
 import { userInterface } from "../../entities/User";
 import { UserDbMethods } from "../../frameworks/database/mongoDb/implementations/userDbMethods";
 
@@ -32,9 +33,26 @@ export const userDbInterface = (repository: ReturnType<UserDbMethods>) => {
   }
   
   
-  const pledge = async(id:string,amount:number)=>{
-    return await repository.pledge(id,amount)
+  const pledge = async(campaignId:string,payment:number,userEmail:string)=>{
+    return await repository.pledge(campaignId,payment,userEmail)
   }
+
+  const fetchChannelsId = async(userEmail:string)=>{
+    return await repository.fetchChannelsId(userEmail)
+  }
+
+  const fetchChannelData = async(campaignId:string|undefined)=>{
+    return await repository.fetchChannelData(campaignId)
+  }
+
+  const saveChat = async(chat:ChatInterface)=>{
+    return await repository.saveChat(chat)
+  }
+
+  const getChats = async(campaignId:string)=>{
+    return await repository.getChats(campaignId)
+  }
+
 
 
   return {
@@ -45,7 +63,11 @@ export const userDbInterface = (repository: ReturnType<UserDbMethods>) => {
     forgotPassword,
     saveOtp,
     findOtpUser,
-    pledge
+    pledge,
+    fetchChannelsId,
+    fetchChannelData,
+    saveChat,
+    getChats
   };
 };
 

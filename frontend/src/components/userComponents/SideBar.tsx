@@ -39,7 +39,7 @@ export const SideBar = () => {
         <span className="text-[15px] ml-4  font-bold">Explore</span>
       </div>
       <div
-        className="p-6 mt-5  flex items-center rounded-md px-4 duration-300 cursor-pointer text-white hover:bg-white hover:text-black bg-[#141514]"
+        className="p-6 mt-5  flex items-center rounded-md px-4 duration-300 cursor-pointer text-white hover:bg-white hover:text-black bg-[#141514]" onClick={()=>navigate('/community')}
       >
         <i className="bi bi-house-door-fill "></i>
         <span className="text-[15px] ml-4  font-bold ">Community</span>

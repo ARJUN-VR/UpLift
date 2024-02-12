@@ -9,12 +9,16 @@ export const SuccessPage = () => {
   const [pledge,{isLoading}] = usePledgeMutation()
 
   const navigate = useNavigate()
+  const userData = localStorage.getItem('userInfo')
+  const parsedData = JSON.parse(userData)
+  const userEmail = parsedData.result.user.email
+
 
 
   const updatePledge =async()=>{
 
     try {
-      const res = await pledge({id,amount})
+      const res = await pledge({id,amount,userEmail})
       console.log(res)
       navigate('/')
 

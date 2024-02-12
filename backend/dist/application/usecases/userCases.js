@@ -114,8 +114,25 @@ const userCases = (repository) => {
             console.log(error, 'error in video uploader');
         }
     });
-    const pledge = (id, amount) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield repository.pledge(id, amount);
+    const pledge = (campaignId, payment, userEmail) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.pledge(campaignId, payment, userEmail);
+    });
+    const getChannels = (userEmail) => __awaiter(void 0, void 0, void 0, function* () {
+        var _a;
+        try {
+            const channelIDs = yield repository.fetchChannelsId(userEmail);
+            const channelData = [];
+            if (channelIDs) {
+                for (let id of channelIDs) {
+                    const data = yield repository.fetchChannelData((_a = id.campaignId) === null || _a === void 0 ? void 0 : _a.toString());
+                    channelData.push(data);
+                }
+            }
+            return channelData;
+        }
+        catch (error) {
+            console.log(error);
+        }
     });
     return {
         findByEmail,
@@ -128,7 +145,8 @@ const userCases = (repository) => {
         verifyOtp,
         uploadImage,
         videoUpload,
-        pledge
+        pledge,
+        getChannels
     };
 };
 exports.userCases = userCases;

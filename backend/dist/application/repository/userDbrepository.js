@@ -33,8 +33,14 @@ const userDbInterface = (repository) => {
     const findOtpUser = (email) => __awaiter(void 0, void 0, void 0, function* () {
         return yield repository.findOtpUser(email);
     });
-    const pledge = (id, amount) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield repository.pledge(id, amount);
+    const pledge = (campaignId, payment, userEmail) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.pledge(campaignId, payment, userEmail);
+    });
+    const fetchChannelsId = (userEmail) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.fetchChannelsId(userEmail);
+    });
+    const fetchChannelData = (campaignId) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.fetchChannelData(campaignId);
     });
     return {
         adduser,
@@ -44,7 +50,9 @@ const userDbInterface = (repository) => {
         forgotPassword,
         saveOtp,
         findOtpUser,
-        pledge
+        pledge,
+        fetchChannelsId,
+        fetchChannelData
     };
 };
 exports.userDbInterface = userDbInterface;

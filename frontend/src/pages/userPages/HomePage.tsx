@@ -10,6 +10,7 @@ import { useLocation } from "react-router-dom"
 
 
 
+
 export const HomePage = () => {
 
   const location = useLocation()
@@ -24,7 +25,7 @@ export const HomePage = () => {
           <SideBar/> 
         </div>
         <div className="w-full">
-        {path =='/' ? (<Content/>): path =='/profile' ? (<Profile/>):null}
+        {path =='/' ? (<Content/>): path =='/profile' ? (<Profile/>): null}
         </div>
       </div>
    </div>
