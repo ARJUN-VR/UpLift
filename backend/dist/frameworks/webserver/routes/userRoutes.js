@@ -27,6 +27,8 @@ router.post('/verify-otp', controller.verifyOtp);
 router.post('/payment', controller.payment);
 router.post('/pledge', auth, controller.pledge);
 router.get('/channels/:userEmail', controller.getChannel);
+router.post('/chat', controller.saveChat);
+router.get('/chat/:campaignId', controller.getChats);
 // campaign routes
 router.get('/get-campaigns', campaigncontroller.listCampaigns);
 router.post('/create_basics', campaigncontroller.createBasics);

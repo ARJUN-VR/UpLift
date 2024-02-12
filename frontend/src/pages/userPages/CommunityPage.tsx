@@ -17,6 +17,8 @@ export const CommunityPage = () => {
 
     const [id,setId] = useState<string>('')
 
+    
+
     const channelProp = (value:string)=>{
         setId(value)
 

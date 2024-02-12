@@ -42,6 +42,12 @@ const userDbInterface = (repository) => {
     const fetchChannelData = (campaignId) => __awaiter(void 0, void 0, void 0, function* () {
         return yield repository.fetchChannelData(campaignId);
     });
+    const saveChat = (chat) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.saveChat(chat);
+    });
+    const getChats = (campaignId) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.getChats(campaignId);
+    });
     return {
         adduser,
         findByEmail,
@@ -52,7 +58,9 @@ const userDbInterface = (repository) => {
         findOtpUser,
         pledge,
         fetchChannelsId,
-        fetchChannelData
+        fetchChannelData,
+        saveChat,
+        getChats
     };
 };
 exports.userDbInterface = userDbInterface;

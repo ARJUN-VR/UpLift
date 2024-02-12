@@ -26,13 +26,20 @@ exports.io = new socket_io_1.Server(server, {
 // io.on('connection',(socket:Socket)=>{
 //     console.log('an user connected')
 //     socket.emit('hello','world')
-//     socket.on('catch',(value)=>{
-//         console.log(value)
-//     })
 //     socket.on('disconnect',()=>{
 //         console.log('user disconnected')
 //     })
 // })
+exports.io.on('connection', (socket) => {
+    console.log('user entered chat section');
+    socket.on('chat', () => {
+        console.log('chat');
+    });
+    socket.on('send', (message) => {
+        exports.io.emit('message', message);
+        console.log('works', message);
+    });
+});
 (0, connection_1.connectDb)();
 uploadImage_1.default;
 (0, express_2.default)(app);

@@ -20,6 +20,8 @@ export const Channels = ({callback}) => {
 
 
  const email = parsedData.result.user.email
+
+
  
 
  const [fetchChannel] = useGetChannelDataMutation()
@@ -50,7 +52,7 @@ export const Channels = ({callback}) => {
       </div>
       {
   channel.flat().map((data, index) => (
-    <div key={index} className='flex items-center w-full bg-gray-700 rounded-md p-2 mb-1' onClick={callback(data._id)}>
+    <div key={index} className='flex items-center w-full bg-gray-700 rounded-md p-2 mb-1' onClick={()=>callback(data._id)}>
       <img src={data.image} alt={data.title} className='rounded-full mr-2' style={{ width: '70px', height: '70px' }} />
       <span className='line-clamp-1'>{data.title}</span>
     </div>

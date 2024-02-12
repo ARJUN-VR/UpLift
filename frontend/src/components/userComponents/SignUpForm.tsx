@@ -5,6 +5,9 @@ import { useNavigate } from "react-router-dom";
 import { useRegisterMutation } from "../../redux/slices/userApiSlice";
 import { setCredentials } from "../../redux/reducers/userReducers";
 import { toast } from "react-toastify";
+import { GoogleOAuthProvider,GoogleLogin } from '@react-oauth/google';
+import {jwtDecode} from 'jwt-decode'
+
 
 
 export const SignUpForm = () => {
@@ -55,7 +58,22 @@ export const SignUpForm = () => {
     <div className="lg:w-[28rem] mx-auto my-auto flex flex-col justify-center pt-8 md:justify-start md:px-6 md:pt-0">
       <p className="text-center text-3xl font-bold">Welcome.</p>
     
-      <button className="-2 mt-8 flex items-center justify-center rounded-md border px-4 py-1 outline-none ring-gray-400 ring-offset-2 transition focus:ring-2 hover:border-transparent hover:bg-black hover:text-white"><img className="mr-2 h-5" src="https://static.cdnlogo.com/logos/g/35/google-icon.svg"  /> Signup with Google</button>
+      <GoogleOAuthProvider clientId="447056395807-iqisfi2d9o0jb7cs2lh8bg3k4e9o538r.apps.googleusercontent.com">
+
+
+         <GoogleLogin
+  onSuccess={credentialResponse => {
+    if(credentialResponse){
+      const decoded = jwtDecode(credentialResponse.credential)
+      console.log(decoded);
+    }
+   
+  }}
+  onError={() => {
+    console.log('Login Failed');
+  }}
+/>
+        </GoogleOAuthProvider>
       <div className="relative mt-8 flex h-px place-items-center bg-gray-200">
         <div className="absolute left-1/2 h-6 w-14 -translate-x-1/2 bg-white text-center text-sm text-gray-500">or</div>
       </div>

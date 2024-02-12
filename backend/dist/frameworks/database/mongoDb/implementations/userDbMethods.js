@@ -15,6 +15,7 @@ const otpSchema_1 = require("../model/otpSchema");
 const basicSchema_1 = require("../model/campaign/basicSchema");
 const paymentSchema_1 = require("../model/paymentSchema");
 const mongodb_1 = require("mongodb");
+const chatSchema_1 = require("../model/chatSchema");
 const userDbMethods = () => {
     const addUser = (user) => __awaiter(void 0, void 0, void 0, function* () {
         return yield userSchema_1.User.create(user);
@@ -94,7 +95,7 @@ const userDbMethods = () => {
                 },
                 {
                     $project: {
-                        _id: 0,
+                        _id: 1,
                         title: 1,
                         image: 1
                     }
@@ -104,6 +105,12 @@ const userDbMethods = () => {
         catch (error) {
             console.log(error);
         }
+    });
+    const saveChat = (chat) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield chatSchema_1.Chat.create(chat);
+    });
+    const getChats = (campaignId) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield chatSchema_1.Chat.find({ campaignId });
     });
     return {
         addUser,
@@ -115,7 +122,9 @@ const userDbMethods = () => {
         findOtpUser,
         pledge,
         fetchChannelsId,
-        fetchChannelData
+        fetchChannelData,
+        saveChat,
+        getChats
     };
 };
 exports.userDbMethods = userDbMethods;

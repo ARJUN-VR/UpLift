@@ -1,21 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { io } from "socket.io-client";
-import { useSaveChatMutation } from "../../redux/slices/userApiSlice";
+import {
+  useGetChatMutation,
+  useSaveChatMutation,
+} from "../../redux/slices/userApiSlice";
 
 const socket = io("http://localhost:8000");
 
 interface MessageType {
   message: string;
-  user?: string;
+  userName?: string;
 }
 
 export const ChatArea = ({ campaignId }) => {
-
+  console.log(campaignId);
 
   const [message2, setMessage2] = useState<string>("");
   const [messages, setMessages] = useState<MessageType[]>([]);
-
+ 
   const [saveChat] = useSaveChatMutation();
+  const [getChats] = useGetChatMutation();
 
   const userData = localStorage.getItem("userInfo");
   const parsedData = JSON.parse(userData);
@@ -23,36 +27,45 @@ export const ChatArea = ({ campaignId }) => {
   const userName: string = parsedData.result.user.name;
 
   useEffect(() => {
+    const fetchChats = async () => {
+      const chatRes = await getChats(campaignId).unwrap();
+
+      setMessages(chatRes.data);
+      console.log(chatRes)
+ 
+    };
+
+    fetchChats();
+
+   
+
     socket.on("message", (data) => {
       setMessages((prev) => [...prev, data]);
-     const message = data.message
-    
+      const message = data.message;
 
       if (campaignId) {
         const save = async () => {
-
           const res = await saveChat({
             campaignId,
             message,
             userName,
           }).unwrap();
-
         };
         save();
       }
     });
 
+   
+
     return () => {
       socket.off("message");
     };
-  }, []);
-
-
+  }, [campaignId,getChats,saveChat,userName]);
+  
 
   const sendMessage = (message: string) => {
     socket.emit("send", { message });
-    setMessage2('')
-    
+    setMessage2("");
   };
 
   return (
@@ -66,11 +79,13 @@ export const ChatArea = ({ campaignId }) => {
         }}
       >
         <div className="flex flex-col m-2 ">
-          {messages.map((data) => (
-            <div className="bg-blue-300 rounded-md py-2 px-4 mb-2 self-start max-w-[80%]">
-              {data.message}
-            </div>
-          ))}
+        {messages.map((data, index) => (
+  <div key={index} className="flex flex-col mb-2">
+    <div className="text-sm font-semibold text-gray-300">{data.userName}</div>
+    <div className="bg-blue-300 rounded-md py-2 px-4 max-w-[80%] self-start">{data.message}</div>
+  </div>
+))}
+
 
           {/* Add more chat messages here */}
         </div>
@@ -86,7 +101,6 @@ export const ChatArea = ({ campaignId }) => {
         <button
           className="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-md text-white"
           onClick={() => {
-           
             sendMessage(message2);
           }}
         >

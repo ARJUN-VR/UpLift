@@ -145,6 +145,18 @@ const userController = (dbInterface, dbImplements) => {
         const data = yield (0, userCases_1.userCases)(dbRepositoryuser).getChannels(userEmail);
         res.status(200).json({ data });
     }));
+    const saveChat = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const chat = req.body;
+        console.log(chat, 'world');
+        const data = yield (0, userCases_1.userCases)(dbRepositoryuser).saveChat(chat);
+        res.status(200).json({ data });
+    }));
+    const getChats = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const { campaignId } = req.params;
+        console.log(campaignId);
+        const data = yield (0, userCases_1.userCases)(dbRepositoryuser).getChats(campaignId);
+        res.status(200).json({ data });
+    }));
     return {
         addUser,
         userSignIn,
@@ -156,7 +168,9 @@ const userController = (dbInterface, dbImplements) => {
         verifyOtp,
         payment,
         pledge,
-        getChannel
+        getChannel,
+        saveChat,
+        getChats
     };
 };
 exports.userController = userController;

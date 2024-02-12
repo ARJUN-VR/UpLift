@@ -175,6 +175,7 @@ export const userController = (
 
  const getChats = asyncHandler(async(req:Request,res:Response)=>{
   const {campaignId} = req.params;
+  console.log(campaignId)
   const data = await userCases(dbRepositoryuser).getChats(campaignId)
   res.status(200).json({data})
  })

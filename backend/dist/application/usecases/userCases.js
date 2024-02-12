@@ -134,6 +134,12 @@ const userCases = (repository) => {
             console.log(error);
         }
     });
+    const saveChat = (chat) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.saveChat(chat);
+    });
+    const getChats = (campaignId) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.getChats(campaignId);
+    });
     return {
         findByEmail,
         addUser,
@@ -146,7 +152,9 @@ const userCases = (repository) => {
         uploadImage,
         videoUpload,
         pledge,
-        getChannels
+        getChannels,
+        saveChat,
+        getChats
     };
 };
 exports.userCases = userCases;

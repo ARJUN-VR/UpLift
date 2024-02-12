@@ -147,6 +147,13 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 body:data
             })
         }),
+        getChat:builder.mutation({
+            query:(campaignId)=>({
+                url:`${USER_URL}/chat/${campaignId}`,
+                method:'GET',
+              
+            })
+        }),
         logout:builder.mutation({
             query:()=>({
                 url:`${USER_URL}/logout`,
@@ -178,5 +185,6 @@ export const {
     usePledgeMutation,
     useListCategoryMutation,
     useGetChannelDataMutation,
-    useSaveChatMutation
+    useSaveChatMutation,
+    useGetChatMutation
 } = usersApiSlice
