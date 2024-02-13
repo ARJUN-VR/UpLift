@@ -4,7 +4,9 @@ import { useLoginMutation } from "../../redux/slices/userApiSlice"
 import { setCredentials } from "../../redux/reducers/userReducers"
 import { useNavigate } from "react-router-dom"
 import { RootState } from "../../redux/store"
-import { toast } from "react-toastify"
+import { toast } from "react-toastify";
+import { GoogleOAuthProvider,GoogleLogin } from '@react-oauth/google';
+import {jwtDecode} from 'jwt-decode'
 
 
 
@@ -91,6 +93,52 @@ export const SignInForm = () => {
       </div>
   
       <button type="submit" className="rounded-lg bg-blue-600 py-3 mt-4 font-bold text-white ">Login</button>
+      <GoogleOAuthProvider clientId="447056395807-iqisfi2d9o0jb7cs2lh8bg3k4e9o538r.apps.googleusercontent.com">
+
+
+<GoogleLogin
+onSuccess={credentialResponse => {
+if(credentialResponse){
+const decoded = jwtDecode(credentialResponse.credential)
+console.log(decoded);
+
+
+const email = decoded.email
+
+const pass = decoded.sub
+
+console.log(pass)
+
+
+console.log(email)
+
+const loginWithGoogle = async()=>{
+  try{
+    const res = await login({email,pass}).unwrap()
+    console.log(res)
+    dispatch(setCredentials({...res}))
+    toast.success('signed in successfully.')
+
+   }catch(err){
+    console.log(err)
+    toast.error(err?.data?.message || err.error)
+   }
+
+
+
+}
+
+loginWithGoogle()
+
+
+}
+
+}}
+onError={() => {
+console.log('Login Failed');
+}}
+/>
+</GoogleOAuthProvider>
       <div>don't have an account? <span className="text-blue-800"><a  href="/register">register account</a></span></div>
      
      

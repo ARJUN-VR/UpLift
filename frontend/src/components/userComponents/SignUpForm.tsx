@@ -66,6 +66,34 @@ export const SignUpForm = () => {
     if(credentialResponse){
       const decoded = jwtDecode(credentialResponse.credential)
       console.log(decoded);
+
+      const name = decoded.name
+      const email = decoded.email
+
+      const password = decoded.sub
+
+      console.log(name)
+      console.log(email)
+
+      const reg = async()=>{
+        try {
+          const userData = await register({name,email,password}).unwrap()
+    
+          dispatch(setCredentials({...userData}))
+          navigate('/')
+          toast.success('registration success.')
+          
+        } catch (err) {
+          toast.error(err?.data?.message || err.error)
+        }
+
+
+       
+      }
+
+      reg()
+
+     
     }
    
   }}
