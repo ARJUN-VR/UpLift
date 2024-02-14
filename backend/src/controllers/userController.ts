@@ -22,7 +22,17 @@ export const userController = (
   //@desc    user register
   //route    POST /api/user/register
   //access   public
-  
+  const addUser = asyncHandler(async (req: Request, res: Response) => {
+    const user: userInterface = req.body;
+    const userData: userInterface | {} = await userCases(
+      dbRepositoryuser
+    ).addUser(user);
+    if (userData == false) {
+      res.status(401).json({ message: "user already exist" });
+    } else {
+      res.status(201).json({ message: "user added successfully", userData });
+    }
+  });
 
   //desc     user login
   //route    POST /api/user
