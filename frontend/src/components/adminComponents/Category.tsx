@@ -46,9 +46,9 @@ export const Category = () => {
       
       setChange(!change)
       if(res.catData[0].isListed){
-        toast.success('category blocked')
-      }else{
         toast.success('category unblocked')
+      }else{
+        toast.success('category blocked')
       }
 
         

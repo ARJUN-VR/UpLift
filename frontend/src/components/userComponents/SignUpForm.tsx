@@ -48,6 +48,7 @@ export const SignUpForm = () => {
    
   }
 
+  
 
   return (
 <div className="flex flex-wrap">
@@ -60,20 +61,18 @@ export const SignUpForm = () => {
     
       <GoogleOAuthProvider clientId="447056395807-iqisfi2d9o0jb7cs2lh8bg3k4e9o538r.apps.googleusercontent.com">
 
+        
+
 
          <GoogleLogin
   onSuccess={credentialResponse => {
     if(credentialResponse){
       const decoded = jwtDecode(credentialResponse.credential)
-      console.log(decoded);
 
       const name = decoded.name
       const email = decoded.email
 
       const password = decoded.sub
-
-      console.log(name)
-      console.log(email)
 
       const reg = async()=>{
         try {
@@ -98,7 +97,8 @@ export const SignUpForm = () => {
    
   }}
   onError={() => {
-    console.log('Login Failed');
+    console.log('Registration Failed');
+    toast.error('/Registration Failed')
   }}
 />
         </GoogleOAuthProvider>

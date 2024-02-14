@@ -98,7 +98,7 @@ export const Payment = ({ close , name, desc,campaignId}) => {
     <div className="flex items-center bg-gray-800 w-full flex-col text-white px-10">
       <span className="text-xl mt-2 mb-5 font-semibold">Reward</span>
       <p>Rewards inspire support, offering backers exclusive benefits, from early access to unique products. They recognize contributions, creating a sense of partnership. Exciting perks like limited editions or acknowledgments enrich the backer experience, fostering engagement. Your support goes beyond a transaction; it becomes a meaningful collaboration with tangible, valuable returns</p>
-      <button className="mt-10 bg-blue-700 w-40 h-10 rounded-md">Claim</button>
+      {/* <button className="mt-10 bg-blue-700 w-40 h-10 rounded-md">Claim</button> */}
     </div>
      </div>
 

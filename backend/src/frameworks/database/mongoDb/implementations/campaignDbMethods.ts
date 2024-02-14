@@ -13,7 +13,7 @@ export const campaignDbMethods = () => {
   const getAllBasics = async () => {
     try {
 
-        return await Basics.find({isVerified:true});
+        return await Basics.find({$and:[{isVerified:true},{isListed:true}]});
  
     } catch (error) {
       console.log(error);
@@ -80,7 +80,7 @@ export const campaignDbMethods = () => {
 
   const getCategory = async (category: string) => {
     try {
-    return await Basics.find({ category: category });
+    return await Basics.find({$and:[{ category: category },{isVerified:true},{isListed:true}]});
       
     } catch (error) {
       console.log(error)

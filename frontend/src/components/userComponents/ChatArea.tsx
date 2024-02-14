@@ -17,6 +17,7 @@ export const ChatArea = ({ campaignId }) => {
 
   const [message2, setMessage2] = useState<string>("");
   const [messages, setMessages] = useState<MessageType[]>([]);
+  const [makeChange,setMakeChange] = useState<boolean>(false)
  
   const [saveChat] = useSaveChatMutation();
   const [getChats] = useGetChatMutation();
@@ -26,9 +27,12 @@ export const ChatArea = ({ campaignId }) => {
 
   const userName: string = parsedData.result.user.name;
 
+
+
   useEffect(() => {
     const fetchChats = async () => {
       const chatRes = await getChats(campaignId).unwrap();
+
 
       setMessages(chatRes.data);
       console.log(chatRes)
@@ -40,8 +44,11 @@ export const ChatArea = ({ campaignId }) => {
    
 
     socket.on("message", (data) => {
+      
+
       setMessages((prev) => [...prev, data]);
       const message = data.message;
+      const userName = data.userName
 
       if (campaignId) {
         const save = async () => {
@@ -64,8 +71,9 @@ export const ChatArea = ({ campaignId }) => {
   
 
   const sendMessage = (message: string) => {
-    socket.emit("send", { message });
+    socket.emit("send", { message:message,userName:userName });
     setMessage2("");
+    setMakeChange(!makeChange)
   };
 
   return (
@@ -81,6 +89,7 @@ export const ChatArea = ({ campaignId }) => {
         <div className="flex flex-col m-2 ">
         {messages.map((data, index) => (
   <div key={index} className="flex flex-col mb-2">
+    {console.log(data.userName)}
     <div className="text-sm font-semibold text-gray-300">{data.userName}</div>
     <div className="bg-blue-300 rounded-md py-2 px-4 max-w-[80%] self-start">{data.message}</div>
   </div>

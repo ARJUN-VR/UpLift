@@ -15,6 +15,7 @@ export interface Campaign {
   duration: string;
   location: string;
   userEmail: string;
+  currentAmount:number
 }
 const CampaignDetails = lazy(
   () => import("../userComponents/campaignComponents/CampaignDetails")
@@ -30,6 +31,7 @@ export const Content = () => {
     const list = async () => {
       try {
         const details = await getCampaign("");
+        console.log(details)
         const list = details.data.basicDetails;
         setCampaigns(list);
       } catch (error) {

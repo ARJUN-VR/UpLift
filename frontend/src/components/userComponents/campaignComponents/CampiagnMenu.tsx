@@ -72,7 +72,8 @@ export const CampiagnMenu = () => {
   }
  
 
-  const percentage:number = (currentAmount / goal) * 100
+  const percentage: number = parseFloat(((currentAmount / goal) * 100).toFixed(1));
+
 
 
   return (
