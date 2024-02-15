@@ -29,9 +29,10 @@ export const userDbMethods = () => {
   const saveUser = async (req: any) => {
     const user = await User.findById({ _id: req.user._id });
     if (user) {
-      user.name = req.body.name || user.name;
-      user.email = req.body.email || user.email;
+      user.name = req.body.editName || user.name;
+      user.email = req.body.editEmail || user.email;
       user.password = req.body.password || user.password;
+      user.image = req.body.image || user.image
 
       return await user.save();
     }

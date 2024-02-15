@@ -19,7 +19,7 @@ const categorySchema_1 = require("../model/categorySchema");
 const campaignDbMethods = () => {
     const getAllBasics = () => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            return yield basicSchema_1.Basics.find({ isVerified: true });
+            return yield basicSchema_1.Basics.find({ $and: [{ isVerified: true }, { isListed: true }] });
         }
         catch (error) {
             console.log(error);
@@ -85,7 +85,7 @@ const campaignDbMethods = () => {
     });
     const getCategory = (category) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            return yield basicSchema_1.Basics.find({ category: category });
+            return yield basicSchema_1.Basics.find({ $and: [{ category: category }, { isVerified: true }, { isListed: true }] });
         }
         catch (error) {
             console.log(error);

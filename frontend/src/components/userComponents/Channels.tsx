@@ -13,6 +13,8 @@ export const Channels = ({callback}) => {
 
   const [channel,setChannel] = useState<channelData[]>([])
 
+  const [isChannels,setIsChannels] = useState<boolean>(true)
+
 
 
  const userInfo = localStorage.getItem('userInfo')
@@ -31,7 +33,12 @@ export const Channels = ({callback}) => {
   const getDetails = async()=>{
 
     const res = await fetchChannel(email).unwrap()
-    setChannel(res.data)
+    if(res.data.length ===0 ){
+      setIsChannels(false)
+    }else{
+      setChannel(res.data)
+
+    }
 
 
   }
@@ -50,7 +57,9 @@ export const Channels = ({callback}) => {
       <span className='text-2xl font-semibold'>channels</span> 
 
       </div>
-      {
+      {isChannels?(
+        <>
+        {
   channel.flat().map((data, index) => (
     <div key={index} className='flex items-center w-full bg-gray-700 rounded-md p-2 mb-1' onClick={()=>callback(data._id)}>
       <img src={data.image} alt={data.title} className='rounded-full mr-2' style={{ width: '70px', height: '70px' }} />
@@ -58,6 +67,14 @@ export const Channels = ({callback}) => {
     </div>
   ))
 }
+        </>
+ 
+      ):(
+        <div className="flex justify-center mt-56">
+        <span className="text-white text-3xl font-bold">Back projects to access community.</span>
+      </div>
+      )}
+     
 
      
     </div>

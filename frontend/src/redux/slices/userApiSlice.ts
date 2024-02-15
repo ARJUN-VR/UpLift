@@ -154,6 +154,14 @@ export const usersApiSlice = apiSlice.injectEndpoints({
               
             })
         }),
+        editProfile:builder.mutation({
+            query:(data)=>({
+                url:`${USER_URL}/profile`,
+                method:'PATCH',
+                body:data
+              
+            })
+        }),
         logout:builder.mutation({
             query:()=>({
                 url:`${USER_URL}/logout`,
@@ -186,5 +194,6 @@ export const {
     useListCategoryMutation,
     useGetChannelDataMutation,
     useSaveChatMutation,
-    useGetChatMutation
+    useGetChatMutation,
+    useEditProfileMutation
 } = usersApiSlice
