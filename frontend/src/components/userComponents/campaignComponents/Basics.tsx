@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import Loader from "../Loader";
 
 export interface catlist{
-  id:string,
+  _id:string,
   name:string,
   isBlocked:boolean
 }

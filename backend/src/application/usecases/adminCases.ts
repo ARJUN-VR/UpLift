@@ -74,6 +74,10 @@ export const adminCases = (repository:ReturnType<AdminDbRepository>)=>{
    
    }
 
+   const editCategory = async(categoryId:string,newName:string)=>{
+    return await repository.editCategory(categoryId,newName)
+   }
+
    
 
     return {
@@ -87,7 +91,8 @@ export const adminCases = (repository:ReturnType<AdminDbRepository>)=>{
         listLiveCampaigns,
         findAdvanced,
         addCategory,
-        handleCategoryAction
+        handleCategoryAction,
+        editCategory
        
         
   

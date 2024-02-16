@@ -32,6 +32,11 @@ const userSchema = new mongoose_1.Schema({
         type: Object,
         required: false,
     },
+    image: {
+        type: String,
+        required: false,
+        default: 'https:img.freepik.com/premium-vector/man-avatar-profile-picture-vector-illustration_268834-538.jpg'
+    },
     isBlocked: {
         type: Boolean,
         default: false,

@@ -64,6 +64,13 @@ export const adminApiSlice = apiSlice.injectEndpoints({
                 body:name
             })
         }),
+        editCategory:builder.mutation({
+            query:(data)=>({
+                url:`${ADMIN_URL}/edit-category`,
+                method:'PATCH',
+                body:data
+            })
+        }),
         blockuser:builder.mutation({
             query:(email)=>({
                 url:`${ADMIN_URL}/blockuser?email=${email}`,
@@ -83,5 +90,6 @@ export const {
     useGetVerifiedCampaignsMutation,
     useGetSingleCampaignMutation,
     useAddCategoryMutation,
-    useBlockCategoryMutation
+    useBlockCategoryMutation,
+    useEditCategoryMutation
 } = adminApiSlice

@@ -14,11 +14,12 @@ interface MessageType {
 
 export const ChatArea = ({ campaignId }) => {
   console.log(campaignId);
+ 
 
   const [message2, setMessage2] = useState<string>("");
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [makeChange, setMakeChange] = useState<boolean>(false);
-  const [isChat, setIsChat] = useState<boolean>(true);
+
 
   const [saveChat] = useSaveChatMutation();
   const [getChats] = useGetChatMutation();
@@ -28,19 +29,21 @@ export const ChatArea = ({ campaignId }) => {
 
   const userName: string = parsedData.result.user.name;
 
-  // if (!campaignId) {
-  //   setIsChat(false);
-  // }
+  let isChat:string;
+  if(campaignId){
+    isChat=campaignId
+  }
 
   useEffect(() => {
     const fetchChats = async () => {
       const chatRes = await getChats(campaignId).unwrap();
 
       setMessages(chatRes.data);
-      console.log(chatRes);
     };
 
     fetchChats();
+
+
 
     socket.on("message", (data) => {
       setMessages((prev) => [...prev, data]);
@@ -62,7 +65,7 @@ export const ChatArea = ({ campaignId }) => {
     return () => {
       socket.off("message");
     };
-  }, [campaignId, getChats, saveChat, userName]);
+  }, [ campaignId,getChats, saveChat, userName]);
 
   const sendMessage = (message: string) => {
     socket.emit("send", { message: message, userName: userName });
@@ -119,7 +122,10 @@ export const ChatArea = ({ campaignId }) => {
           </div>
         </>
       ) : (
-        <div>hello</div>
+        <div className="flex flex-col my-56 items-center ">
+          <span className="text-3xl font-semibold text-gray-300">Uplift chats</span>
+          <span className="text-xl font-semibold text-gray-300">send messages with backers using uplift chats.</span>
+        </div>
       )}
     </div>
   );

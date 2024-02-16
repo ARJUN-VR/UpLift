@@ -53,6 +53,10 @@ export const adminDbInterface = (repository:ReturnType<AdminDbMethods>) =>{
       return await repository.checkListStatus(name)
    }
 
+   const editCategory = async(categoryId:string,newName:string)=>{
+      return await repository.editCategory(categoryId,newName)
+   }
+
 
    return{
     findByEmail,
@@ -66,7 +70,8 @@ export const adminDbInterface = (repository:ReturnType<AdminDbMethods>) =>{
     addCategory,
     listCategory,
     unListCategory,
-    checkListStatus
+    checkListStatus,
+    editCategory
 
    }
 }

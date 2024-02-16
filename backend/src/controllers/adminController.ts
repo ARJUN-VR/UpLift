@@ -98,6 +98,13 @@ export const adminController = (
     res.status(200).json({ message: "action did", catData });
   });
 
+
+  const editCategory = asyncHandler(async(req:Request,res:Response)=>{
+    const {newName,categoryId} = req.body;
+    const data = await adminCases(dbRepsitoryAdmn).editCategory(categoryId,newName)
+    res.status(200).json({message:'edit success',data})
+  })
+
   return {
     adminSignin,
     logout,
@@ -109,5 +116,6 @@ export const adminController = (
     listLiveCampaigns,
     addCategory,
     categoryAction,
+    editCategory
   };
 };

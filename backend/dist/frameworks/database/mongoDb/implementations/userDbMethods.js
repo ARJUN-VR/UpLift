@@ -30,9 +30,10 @@ const userDbMethods = () => {
     const saveUser = (req) => __awaiter(void 0, void 0, void 0, function* () {
         const user = yield userSchema_1.User.findById({ _id: req.user._id });
         if (user) {
-            user.name = req.body.name || user.name;
-            user.email = req.body.email || user.email;
+            user.name = req.body.editName || user.name;
+            user.email = req.body.editEmail || user.email;
             user.password = req.body.password || user.password;
+            user.image = req.body.image || user.image;
             return yield user.save();
         }
     });

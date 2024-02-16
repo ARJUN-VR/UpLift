@@ -48,7 +48,14 @@ export const adminDbMethods =()=>{
       }
 
       const addCategory = async(name:string)=>{
+       const isExist = await Category.find({name})
+
+       if(isExist){
+        throw new Error('category already exist')
+       }else{
         return await Category.create({name})
+        
+       }
       }
 
      const listCategory=async(name:string)=>{
@@ -79,12 +86,20 @@ export const adminDbMethods =()=>{
      const checkListStatus = async(name:string)=>{
       try {
         const campData = await Basics.find({category:name})
-        console.log(campData,'datata')
       return campData[0].isListed
       } catch (error) {
         console.log(error)
       }
       
+     }
+
+     const editCategory = async(categoryId:string,newName:string)=>{
+      try{
+          return await Category.findOneAndUpdate({_id:categoryId},{$set:{name:newName}},{new:true})
+      }catch(error){
+        console.log(error)
+        throw new Error('something went wrong')
+      }
      }
 
 
@@ -100,7 +115,8 @@ export const adminDbMethods =()=>{
         addCategory,
         listCategory,
         unListCategory,
-        checkListStatus
+        checkListStatus,
+        editCategory
     }
 }
 
