@@ -47,6 +47,9 @@ const adminDbInterface = (repository) => {
     const checkListStatus = (name) => __awaiter(void 0, void 0, void 0, function* () {
         return yield repository.checkListStatus(name);
     });
+    const editCategory = (categoryId, newName) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.editCategory(categoryId, newName);
+    });
     return {
         findByEmail,
         getUsers,
@@ -59,7 +62,8 @@ const adminDbInterface = (repository) => {
         addCategory,
         listCategory,
         unListCategory,
-        checkListStatus
+        checkListStatus,
+        editCategory
     };
 };
 exports.adminDbInterface = adminDbInterface;

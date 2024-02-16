@@ -77,6 +77,9 @@ const adminCases = (repository) => {
             console.log(error);
         }
     });
+    const editCategory = (categoryId, newName) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.editCategory(categoryId, newName);
+    });
     return {
         adminSignin,
         logout,
@@ -88,7 +91,8 @@ const adminCases = (repository) => {
         listLiveCampaigns,
         findAdvanced,
         addCategory,
-        handleCategoryAction
+        handleCategoryAction,
+        editCategory
     };
 };
 exports.adminCases = adminCases;
