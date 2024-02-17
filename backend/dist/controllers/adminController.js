@@ -88,6 +88,11 @@ const adminController = (dbInterface, dbImplements) => {
         console.log(catData, 'from controller');
         res.status(200).json({ message: "action did", catData });
     }));
+    const editCategory = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const { newName, categoryId } = req.body;
+        const data = yield (0, adminCases_1.adminCases)(dbRepsitoryAdmn).editCategory(categoryId, newName);
+        res.status(200).json({ message: 'edit success', data });
+    }));
     return {
         adminSignin,
         logout,
@@ -99,6 +104,7 @@ const adminController = (dbInterface, dbImplements) => {
         listLiveCampaigns,
         addCategory,
         categoryAction,
+        editCategory
     };
 };
 exports.adminController = adminController;

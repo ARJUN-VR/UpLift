@@ -12,7 +12,7 @@ const socket = io("http://localhost:8000");
 interface MessageType {
   message: string;
   userName?: string;
-  imageUrl?:string
+  image?: string;
 }
 
 export const ChatArea = ({ campaignId }) => {
@@ -22,7 +22,7 @@ export const ChatArea = ({ campaignId }) => {
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [makeChange, setMakeChange] = useState<boolean>(false);
 
-  const [image,setImage] = useState<string>('')
+  const [image, setImage] = useState<string>("");
 
   const imageRef = useRef<HTMLInputElement>(null);
 
@@ -55,16 +55,17 @@ export const ChatArea = ({ campaignId }) => {
 
     socket.on("message", (data) => {
       setMessages((prev) => [...prev, data]);
-      const message = data.message
-      const userName = data.userName
-  
+      const message = data.message;
+      const userName = data.userName;
+      const image = data.image
 
       if (campaignId) {
         const save = async () => {
           await saveChat({
             campaignId,
             message,
-            userName
+            userName,
+            image
           }).unwrap();
         };
         save();
@@ -77,23 +78,19 @@ export const ChatArea = ({ campaignId }) => {
   }, [campaignId, getChats, saveChat, userName]);
 
   const sendMessage = (message: string) => {
-    socket.emit("send", { message: message, userName: userName ,image:image});
+    socket.emit("send", { message: message, userName: userName, image: image });
     setMessage2("");
     setMakeChange(!makeChange);
-    setImage('')
-    
+    setImage("");
   };
 
-
-  const imageHandler =(e:React.ChangeEvent<HTMLInputElement>)=>{
-    const imgFile =e.target?.files?.[0];
-
+  const imageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const imgFile = e.target?.files?.[0];
 
     const setFileToBase64 = (file: File | undefined) => {
       const reader = new FileReader();
       reader.onloadend = () => {
         const base64String = reader.result as string;
-        console.log(base64String)
         setImage(base64String);
       };
       if (file) {
@@ -101,14 +98,11 @@ export const ChatArea = ({ campaignId }) => {
       }
     };
     setFileToBase64(imgFile);
- 
-    
-  }
-  
-
+  };
 
   return (
     <div className="chat-area flex flex-col h-[645px] bg-gray-800 text-white w-full rounded-md">
+      {/* chat list */}
       {isChat ? (
         <>
           <div
@@ -119,39 +113,54 @@ export const ChatArea = ({ campaignId }) => {
               "::-webkit-scrollbar": { display: "none" },
             }}
           >
+            {/* listing all the chats */}
             <div className="flex flex-col m-2 ">
               {messages.map((data, index) => (
                 <div key={index} className="flex flex-col mb-2">
-                    {data.imageUrl?(
-                      <div><img src={data.imageUrl} alt="" /></div>
-                    ):(
+                  {data.image ? (
+                    <div className="bg-green-300 rounded-md py-2 px-4 max-w-[80%] self-start">
+                      <div className="text-sm font-semibold text-gray-900">
+                        {data.userName}
+                      </div>
+                      <img src={data.image} alt="" />
+                    </div>
+                  ) : (
+                    <>
                       <div className="text-sm font-semibold text-gray-300">
+                        {data.userName}
+                      </div>
+                      <div className="bg-blue-300 rounded-md py-2 px-4 max-w-[80%] self-start">
                         {data.message}
-                  </div>
-
-                    )}
-
-                  <div className="bg-blue-300 rounded-md py-2 px-4 max-w-[80%] self-start">
-                    {data.message}
-                  </div>
+                      </div>
+                    </>
+                  )}
                 </div>
               ))}
-
-              {/* Add more chat messages here */}
             </div>
           </div>
-          {image&&(
-                <div className="h-auto w-96"><img src={`${image}`} alt="image" className="w-full h-full overflow-hidden"/></div>
-              )
+          {/* selected image div */}
+          {image && (
+            <div className="h-auto w-96">
+              <img
+                src={`${image}`}
+                alt="image"
+                className="w-full h-full overflow-hidden"
+              />
+            </div>
+          )}
 
-              }
+          {/* message input area */}
           <div className="input-area bg-gray-800 p-4 flex items-center">
-        
             <div className="bg-gray-700 w-full rounded-md">
-            
-              <input type="file" style={{ display: "none" }} ref={imageRef} accept="image/*" onChange={imageHandler} />
+              <input
+                type="file"
+                style={{ display: "none" }}
+                ref={imageRef}
+                accept="image/*"
+                onChange={imageHandler}
+              />
               <span className="ml-3" onClick={triggerImage}>
-                <FontAwesomeIcon icon={faImage} />
+                <FontAwesomeIcon icon={faImage}  />
               </span>
               <input
                 type="text"
@@ -173,10 +182,12 @@ export const ChatArea = ({ campaignId }) => {
           </div>
         </>
       ) : (
+        // initial page view
         <div className="flex flex-col my-56 items-center ">
           <span className="text-3xl font-semibold text-gray-300">
-          <FontAwesomeIcon icon={faComment} size="3x" />
+            <FontAwesomeIcon icon={faComment} size="3x" />
           </span>
+
           <span className="text-xl font-semibold text-gray-300">
             send messages with backers using uplift chats.
           </span>

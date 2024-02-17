@@ -11,16 +11,22 @@ export const chatConnect = async()=>{
         })
         socket.on('send',async(data)=>{
             const {message,userName,image} = data
-            let imageUrl:string|undefined;
-            if(image){
-                try{
-                   const  res = await uploadImage(image)
-                   imageUrl = res?.secure_url
-                }catch(error){
-                    console.log(error)
-                }
+
+            if(!message){
+              io.emit('message',{userName,image})
+            }else{
+              io.emit('message',{message,userName,image})
+
             }
-          io.emit('message',{message,userName,imageUrl})
+            // let imageUrl:string|undefined;
+            // if(image){
+            //     try{
+            //        const  res = await uploadImage(image)
+            //        imageUrl = res?.secure_url
+            //     }catch(error){
+            //         console.log(error)
+            //     }
+            // }
         
         })
       })

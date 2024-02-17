@@ -10,9 +10,10 @@ const connection_1 = require("./frameworks/database/connection");
 const express_2 = __importDefault(require("./frameworks/webserver/express"));
 const server_1 = require("./frameworks/webserver/server");
 const routes_1 = require("./frameworks/webserver/routes");
-const uploadImage_1 = __importDefault(require("./application/services/uploadImage"));
+const cloudinaryConfig_1 = __importDefault(require("./application/services/cloudinaryConfig"));
 const errorHandler_1 = __importDefault(require("./frameworks/webserver/middlewares/errorHandler"));
 const socket_io_1 = require("socket.io");
+const chat_1 = require("./application/services/chat");
 const app = (0, express_1.default)();
 const server = http_1.default.createServer(app);
 exports.io = new socket_io_1.Server(server, {
@@ -30,18 +31,19 @@ exports.io = new socket_io_1.Server(server, {
 //         console.log('user disconnected')
 //     })
 // })
-exports.io.on('connection', (socket) => {
-    console.log('user entered chat section');
-    socket.on('chat', () => {
-        console.log('chat');
-    });
-    socket.on('send', (message) => {
-        exports.io.emit('message', message);
-        console.log('works', message);
-    });
-});
+// io.on('connection',(socket:Socket)=>{
+//   console.log('user entered chat section')
+//   socket.on('chat',()=>{
+//     console.log('chat')
+//   })
+//   socket.on('send',(message)=>{
+//     io.emit('message',message)
+//     console.log('works',message)
+//   })
+// })
+(0, chat_1.chatConnect)();
 (0, connection_1.connectDb)();
-uploadImage_1.default;
+cloudinaryConfig_1.default;
 (0, express_2.default)(app);
 (0, routes_1.routes)(app);
 app.use(errorHandler_1.default);

@@ -1,6 +1,7 @@
 export interface ChatInterface{
     userName:string,
     campaignId:string,
-    message:string
+    message:string,
+    image:string | undefined
 
 }

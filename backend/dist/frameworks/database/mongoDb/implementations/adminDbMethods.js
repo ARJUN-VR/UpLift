@@ -48,7 +48,13 @@ const adminDbMethods = () => {
         return yield basicSchema_1.Basics.find({ isVerified: true });
     });
     const addCategory = (name) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield categorySchema_1.Category.create({ name });
+        const isExist = yield categorySchema_1.Category.find({ name });
+        if (isExist) {
+            throw new Error('category already exist');
+        }
+        else {
+            return yield categorySchema_1.Category.create({ name });
+        }
     });
     const listCategory = (name) => __awaiter(void 0, void 0, void 0, function* () {
         yield basicSchema_1.Basics.updateMany({ category: name }, { $set: { isListed: true } }, { new: true });
@@ -77,11 +83,19 @@ const adminDbMethods = () => {
     const checkListStatus = (name) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const campData = yield basicSchema_1.Basics.find({ category: name });
-            console.log(campData, 'datata');
             return campData[0].isListed;
         }
         catch (error) {
             console.log(error);
+        }
+    });
+    const editCategory = (categoryId, newName) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            return yield categorySchema_1.Category.findOneAndUpdate({ _id: categoryId }, { $set: { name: newName } }, { new: true });
+        }
+        catch (error) {
+            console.log(error);
+            throw new Error('something went wrong');
         }
     });
     return {
@@ -96,7 +110,8 @@ const adminDbMethods = () => {
         addCategory,
         listCategory,
         unListCategory,
-        checkListStatus
+        checkListStatus,
+        editCategory
     };
 };
 exports.adminDbMethods = adminDbMethods;
