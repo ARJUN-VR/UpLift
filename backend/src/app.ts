@@ -4,9 +4,10 @@ import { connectDb } from "./frameworks/database/connection";
 import expressConfig from "./frameworks/webserver/express";
 import { serverConfig } from "./frameworks/webserver/server";
 import { routes } from "./frameworks/webserver/routes";
-import cloudinary from "./application/services/uploadImage";
+import cloudinary from "./application/services/cloudinaryConfig";
 import handleError from "./frameworks/webserver/middlewares/errorHandler";
 import {Server,Socket} from 'socket.io'
+import { chatConnect } from "./application/services/chat";
 
 const app: Application = express();
 
@@ -31,16 +32,18 @@ export const io = new Server(server, {
 //     })
 // })
 
-io.on('connection',(socket:Socket)=>{
-  console.log('user entered chat section')
-  socket.on('chat',()=>{
-    console.log('chat')
-  })
-  socket.on('send',(message)=>{
-    io.emit('message',message)
-    console.log('works',message)
-  })
-})
+// io.on('connection',(socket:Socket)=>{
+//   console.log('user entered chat section')
+//   socket.on('chat',()=>{
+//     console.log('chat')
+//   })
+//   socket.on('send',(message)=>{
+//     io.emit('message',message)
+//     console.log('works',message)
+//   })
+// })
+
+chatConnect()
 
 connectDb();
 

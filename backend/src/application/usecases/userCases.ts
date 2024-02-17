@@ -149,6 +149,14 @@ export const userCases = (repository: ReturnType<UserDbInterFace>) => {
 
 
   const saveChat = async(chat:ChatInterface)=>{
+    if(chat.image){
+      try{
+       const imageRes =  await uploadImage(chat.image)
+       chat.image = imageRes?.secure_url
+      }catch(error){
+        console.log(error)
+      }
+    }
     return await repository.saveChat(chat)
   }
 

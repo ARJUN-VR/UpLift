@@ -102,9 +102,14 @@ setEditEmail(email)
   }
 
   const updateHandler = async()=>{
-    const res = await updateProfile({editName,editEmail,image,password})
-    setEditMode(false)
-    toast.success('updated')
+    try{
+      await updateProfile({editName,editEmail,image,password})
+      setEditMode(false)
+      toast.success('updated')
+    }catch(error){
+      console.log(error)
+    }
+
 
   }
   return (
