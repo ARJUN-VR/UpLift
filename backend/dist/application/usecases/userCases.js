@@ -135,6 +135,15 @@ const userCases = (repository) => {
         }
     });
     const saveChat = (chat) => __awaiter(void 0, void 0, void 0, function* () {
+        if (chat.image) {
+            try {
+                const imageRes = yield uploadImage(chat.image);
+                chat.image = imageRes === null || imageRes === void 0 ? void 0 : imageRes.secure_url;
+            }
+            catch (error) {
+                console.log(error);
+            }
+        }
         return yield repository.saveChat(chat);
     });
     const getChats = (campaignId) => __awaiter(void 0, void 0, void 0, function* () {

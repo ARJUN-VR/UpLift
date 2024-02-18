@@ -4,6 +4,8 @@ import { Header } from "../../components/userComponents/Header"
 import { SideBar } from "../../components/userComponents/SideBar"
 import { Profile } from "../../components/userComponents/Profile"
 import { useLocation } from "react-router-dom"
+import { DasboardPage } from "./DasboardPage"
+import { CreatorDashboard } from "../../components/creatorComponents/CreatorDashboard"
 
 
 
@@ -25,7 +27,7 @@ export const HomePage = () => {
           <SideBar/> 
         </div>
         <div className="w-full">
-        {path =='/' ? (<Content/>): path =='/profile' ? (<Profile/>): null}
+        {path =='/' ? (<Content/>): path =='/profile' ? (<Profile/>): path =='/dashboard'?(<CreatorDashboard/>):null}
         </div>
       </div>
    </div>

@@ -11,7 +11,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.chatConnect = void 0;
 const app_1 = require("../../app");
-const uploadImage_1 = require("./uploadImage");
 const chatConnect = () => __awaiter(void 0, void 0, void 0, function* () {
     app_1.io.on('connection', (socket) => {
         console.log('user entered chat section');
@@ -20,17 +19,21 @@ const chatConnect = () => __awaiter(void 0, void 0, void 0, function* () {
         });
         socket.on('send', (data) => __awaiter(void 0, void 0, void 0, function* () {
             const { message, userName, image } = data;
-            let imageUrl;
-            if (image) {
-                try {
-                    const res = yield (0, uploadImage_1.uploadImage)(image);
-                    imageUrl = res === null || res === void 0 ? void 0 : res.secure_url;
-                }
-                catch (error) {
-                    console.log(error);
-                }
+            if (!message) {
+                app_1.io.emit('message', { userName, image });
             }
-            app_1.io.emit('message', { message, userName, imageUrl });
+            else {
+                app_1.io.emit('message', { message, userName, image });
+            }
+            // let imageUrl:string|undefined;
+            // if(image){
+            //     try{
+            //        const  res = await uploadImage(image)
+            //        imageUrl = res?.secure_url
+            //     }catch(error){
+            //         console.log(error)
+            //     }
+            // }
         }));
     });
 });
