@@ -5,6 +5,7 @@ const mongoose_1 = require("mongoose");
 const chatSchema = new mongoose_1.Schema({
     campaignId: String,
     userName: String,
-    message: String
+    message: String,
+    image: String
 });
 exports.Chat = (0, mongoose_1.model)('chats', chatSchema);

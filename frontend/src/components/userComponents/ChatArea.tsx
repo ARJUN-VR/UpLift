@@ -6,6 +6,7 @@ import {
 } from "../../redux/slices/userApiSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment, faImage } from "@fortawesome/free-solid-svg-icons";
+import Loader from "./Loader";
 
 const socket = io("http://localhost:8000");
 
@@ -32,7 +33,7 @@ export const ChatArea = ({ campaignId }) => {
   };
 
   const [saveChat] = useSaveChatMutation();
-  const [getChats] = useGetChatMutation();
+  const [getChats,{isLoading}] = useGetChatMutation();
 
   const userData = localStorage.getItem("userInfo");
   const parsedData = JSON.parse(userData);
@@ -118,11 +119,14 @@ export const ChatArea = ({ campaignId }) => {
               {messages.map((data, index) => (
                 <div key={index} className="flex flex-col mb-2">
                   {data.image ? (
-                    <div className="bg-green-300 rounded-md py-2 px-4 max-w-[80%] self-start">
-                      <div className="text-sm font-semibold text-gray-900">
+                    <div className="bg-gray-600 rounded-md  max-w-[80%] self-start">
+                      <div className="text-sm font-semibold text-gray-200 py-1">
                         {data.userName}
                       </div>
                       <img src={data.image} alt="" />
+                      {data.message && (
+                        <span className="text-black">{data.message}</span>
+                      )}
                     </div>
                   ) : (
                     <>
@@ -148,6 +152,11 @@ export const ChatArea = ({ campaignId }) => {
               />
             </div>
           )}
+          {
+            isLoading&&(
+              <Loader/>
+            )
+          }
 
           {/* message input area */}
           <div className="input-area bg-gray-800 p-4 flex items-center">
