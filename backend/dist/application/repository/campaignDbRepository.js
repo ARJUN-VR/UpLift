@@ -44,6 +44,9 @@ const campaignDbInterface = (repository) => {
     const listCategory = () => __awaiter(void 0, void 0, void 0, function* () {
         return yield repository.listCategory();
     });
+    const getDashboardData = (creatorEmail) => __awaiter(void 0, void 0, void 0, function* () {
+        return repository.getDashboardData(creatorEmail);
+    });
     return {
         listCampaigns,
         createBasics,
@@ -55,7 +58,8 @@ const campaignDbInterface = (repository) => {
         listComments,
         getReward,
         getNotificationCount,
-        listCategory
+        listCategory,
+        getDashboardData
     };
 };
 exports.campaignDbInterface = campaignDbInterface;

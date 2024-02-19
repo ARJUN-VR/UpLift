@@ -46,6 +46,10 @@ const basicSchama = new mongoose_1.Schema({
         required: false,
         default: false
     },
+    creator: {
+        type: String,
+        requried: false
+    },
     isListed: {
         type: Boolean,
         requried: false,

@@ -162,6 +162,22 @@ export const usersApiSlice = apiSlice.injectEndpoints({
               
             })
         }),
+        getDashboardData:builder.mutation({
+            query:(creatorEmail)=>({
+                url:`${USER_URL}/dashboard/${creatorEmail}`,
+                method:'GET'
+
+              
+            })
+        }),
+        getPaymentData:builder.mutation({
+            query:(campaignId)=>({
+                url:`${USER_URL}/paymentData/${campaignId}`,
+                method:'GET'
+
+              
+            })
+        }),
         logout:builder.mutation({
             query:()=>({
                 url:`${USER_URL}/logout`,
@@ -195,5 +211,7 @@ export const {
     useGetChannelDataMutation,
     useSaveChatMutation,
     useGetChatMutation,
-    useEditProfileMutation
+    useEditProfileMutation,
+    useGetDashboardDataMutation,
+    useGetPaymentDataMutation
 } = usersApiSlice

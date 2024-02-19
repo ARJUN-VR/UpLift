@@ -132,6 +132,9 @@ const campaignDbMethods = () => {
             console.log(error);
         }
     });
+    const getDashboardData = (creatorEmail) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield basicSchema_1.Basics.find({ creator: creatorEmail });
+    });
     return {
         getAllBasics,
         createBasics,
@@ -143,7 +146,8 @@ const campaignDbMethods = () => {
         listComments,
         getReward,
         getNotificationCount,
-        listCategory
+        listCategory,
+        getDashboardData
     };
 };
 exports.campaignDbMethods = campaignDbMethods;

@@ -77,6 +77,14 @@ export const campaignUsecase = (
     return await repository.listCategory()
   }
 
+  const getDashboardData = async(creatorEmail:string)=>{
+    return await repository.getDashboardData(creatorEmail)
+  }
+
+  const getPaymentData = async(campaignId:string)=>{
+    return await repository.getPaymentData(campaignId)
+  }
+
 
 
 
@@ -92,6 +100,8 @@ export const campaignUsecase = (
     addComment,
     listComments,
     getReward,
-    listCategory
+    listCategory,
+    getDashboardData,
+    getPaymentData
   };
 };

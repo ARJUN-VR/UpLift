@@ -111,6 +111,10 @@ const campaignController = (dbInterface, dbImplements) => {
         const list = yield (0, campaignUsecases_1.campaignUsecase)(dbRepositoryCampaign).listCategory();
         res.status(200).json({ message: 'fetched', list });
     }));
+    const getDashboardData = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const { creatorEmail } = req.params;
+        const data = yield (0, campaignUsecases_1.campaignUsecase)(dbRepositoryCampaign).getDashboardData(creatorEmail);
+    }));
     return {
         listCampaigns,
         createBasics,
@@ -121,7 +125,8 @@ const campaignController = (dbInterface, dbImplements) => {
         addComment,
         listComments,
         getReward,
-        listCategory
+        listCategory,
+        getDashboardData
     };
 };
 exports.campaignController = campaignController;
