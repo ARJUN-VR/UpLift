@@ -16,6 +16,7 @@ const commentSchema_1 = require("../model/campaign/commentSchema");
 const rewardSchema_1 = require("../model/campaign/rewardSchema");
 const mongodb_1 = require("mongodb");
 const categorySchema_1 = require("../model/categorySchema");
+const paymentSchema_1 = require("../model/paymentSchema");
 const campaignDbMethods = () => {
     const getAllBasics = () => __awaiter(void 0, void 0, void 0, function* () {
         try {
@@ -133,7 +134,24 @@ const campaignDbMethods = () => {
         }
     });
     const getDashboardData = (creatorEmail) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield basicSchema_1.Basics.find({ creator: creatorEmail });
+        try {
+            return yield basicSchema_1.Basics.aggregate([
+                { $match: {
+                        "creator": creatorEmail
+                    } },
+                { $project: {
+                        'currentAmount': 1,
+                        'target': 1,
+                        'backers': 1
+                    } }
+            ]);
+        }
+        catch (error) {
+            console.log(error);
+        }
+    });
+    const getPaymentData = (campaignId) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield paymentSchema_1.Payment.find({ campaignId });
     });
     return {
         getAllBasics,
@@ -147,7 +165,8 @@ const campaignDbMethods = () => {
         getReward,
         getNotificationCount,
         listCategory,
-        getDashboardData
+        getDashboardData,
+        getPaymentData
     };
 };
 exports.campaignDbMethods = campaignDbMethods;

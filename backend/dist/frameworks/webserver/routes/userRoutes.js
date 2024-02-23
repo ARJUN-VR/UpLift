@@ -41,4 +41,5 @@ router.get('/comment/:campaignId', campaigncontroller.listComments);
 router.get('/reward/:basicId', campaigncontroller.getReward);
 router.get('/fetchthedata', campaigncontroller.listCategory);
 router.get('/dashboard/:creatorEmail', campaigncontroller.getDashboardData);
+router.get('/paymentData/:campaignId', campaigncontroller.getPaymentData);
 exports.default = router;
