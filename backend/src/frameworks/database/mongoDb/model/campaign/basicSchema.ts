@@ -44,11 +44,17 @@ const basicSchama = new Schema({
         required:false,
         default:false
     },
+    creator:{
+        type:String,
+        requried:false
+    },
     isListed:{
         type:Boolean,
         requried:false,
         default:false
     }
-})
+},
+{timestamps:true}
+)
 
 export const Basics =  model('campaign_basics',basicSchama)

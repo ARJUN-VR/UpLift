@@ -52,6 +52,14 @@ export const campaignDbInterface = (
     return await repository.listCategory()
   }
 
+  const getDashboardData = async(creatorEmail:string)=>{
+    return await repository.getDashboardData(creatorEmail)
+  }
+
+  const getPaymentData = async(campaignId:string)=>{
+    return await repository.getPaymentData(campaignId)
+  }
+
 
 
 
@@ -67,7 +75,9 @@ export const campaignDbInterface = (
     listComments,
     getReward,
     getNotificationCount,
-    listCategory
+    listCategory,
+    getDashboardData,
+    getPaymentData
    
   };
 };

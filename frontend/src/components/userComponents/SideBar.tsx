@@ -8,6 +8,14 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 export const SideBar = () => {
   const {userInfo} = useSelector((state:RootState)=>state.auth)
+let isCreator;
+  if(userInfo){
+   isCreator = userInfo.result.user.isCreator
+    
+  }
+
+  console.log(isCreator)
+
   const [logoutCall] = useLogoutMutation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -32,12 +40,21 @@ export const SideBar = () => {
         <i className="bi bi-house-door-fill"></i>
         <span className="text-[15px] ml-4  font-bold">Home</span>
       </div>
+     {isCreator?(
+       <div
+       className="p-6 mt-5  flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-white text-white hover:text-black bg-[#141514]" onClick={()=>navigate('/dashboard')}
+     >
+       <i className="bi bi-house-door-fill"></i>
+       <span className="text-[15px] ml-4  font-bold">Dashboard</span>
+     </div>
+     ):(
       <div
-        className="p-6 mt-5  flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-white text-white hover:text-black bg-[#141514]"
-      >
-        <i className="bi bi-house-door-fill"></i>
-        <span className="text-[15px] ml-4  font-bold">Explore</span>
-      </div>
+      className="p-6 mt-5  flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-white text-white hover:text-black bg-[#141514]"
+    >
+      <i className="bi bi-house-door-fill"></i>
+      <span className="text-[15px] ml-4  font-bold">Explore</span>
+    </div>
+     )}
       <div
         className="p-6 mt-5  flex items-center rounded-md px-4 duration-300 cursor-pointer text-white hover:bg-white hover:text-black bg-[#141514]" onClick={()=>navigate('/community')}
       >

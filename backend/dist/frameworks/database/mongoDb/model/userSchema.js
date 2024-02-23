@@ -41,6 +41,11 @@ const userSchema = new mongoose_1.Schema({
         type: Boolean,
         default: false,
         required: false
+    },
+    isCreator: {
+        type: Boolean,
+        default: false,
+        required: false
     }
 }, { timestamps: true });
 userSchema.pre("save", function (next) {

@@ -144,6 +144,23 @@ export const campaignController = (
   })
 
 
+  const getDashboardData = asyncHandler(async(req:Request,res:Response)=>{
+    const {creatorEmail} = req.params;
+    const data = await campaignUsecase(dbRepositoryCampaign).getDashboardData(creatorEmail)
+    res.status(200).json({message:'data retrieved successfully',data})
+  })
+
+
+  const getPaymentData = asyncHandler(async(req:Request,res:Response)=>{
+    const {campaignId} = req.params;
+    console.log(campaignId)
+    const paymentData = await campaignUsecase(dbRepositoryCampaign).getPaymentData(campaignId)
+    res.status(200).json({message:'fetched successfully',paymentData})
+  })
+
+
+
+
 
   return {
     listCampaigns,
@@ -155,7 +172,9 @@ export const campaignController = (
     addComment,
     listComments,
     getReward,
-    listCategory
+    listCategory,
+    getDashboardData,
+    getPaymentData
 
   };
 };

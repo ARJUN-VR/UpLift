@@ -8,6 +8,7 @@ import { Comment } from "../model/campaign/commentSchema";
 import { Reward } from "../model/campaign/rewardSchema";
 import { ObjectId } from "mongodb";
 import { Category } from "../model/categorySchema";
+import { Payment } from "../model/paymentSchema";
 
 export const campaignDbMethods = () => {
   const getAllBasics = async () => {
@@ -133,6 +134,33 @@ export const campaignDbMethods = () => {
   }
 
 
+  const getDashboardData = async(creatorEmail:string)=>{
+    try{
+      return await Basics.aggregate([
+        {$match:{
+          "creator":creatorEmail
+        }},
+        {$project:{
+          'currentAmount':1,
+          'target':1,
+          'backers':1
+  
+        }}
+      ])
+    }catch(error){
+      console.log(error)
+    }
+   
+  }
+
+  const getPaymentData = async(campaignId:string)=>{
+    return await Payment.find({campaignId})
+  }
+
+
+
+
+
 
 
   return {
@@ -146,7 +174,9 @@ export const campaignDbMethods = () => {
     listComments,
     getReward,
     getNotificationCount,
-    listCategory
+    listCategory,
+    getDashboardData,
+    getPaymentData
   };
 };
 

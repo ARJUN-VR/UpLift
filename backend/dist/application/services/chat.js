@@ -21,10 +21,26 @@ const chatConnect = () => __awaiter(void 0, void 0, void 0, function* () {
             const { message, userName, image } = data;
             if (!message) {
                 app_1.io.emit('message', { userName, image });
+<<<<<<< HEAD
             }
             else {
                 app_1.io.emit('message', { message, userName, image });
             }
+=======
+            }
+            else {
+                app_1.io.emit('message', { message, userName, image });
+            }
+            // let imageUrl:string|undefined;
+            // if(image){
+            //     try{
+            //        const  res = await uploadImage(image)
+            //        imageUrl = res?.secure_url
+            //     }catch(error){
+            //         console.log(error)
+            //     }
+            // }
+>>>>>>> 4c60e5d8a7f7cb4cd1b10853a99e4f2b5de6b735
         }));
     });
 });

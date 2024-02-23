@@ -72,6 +72,12 @@ const campaignUsecase = (repository) => {
     const listCategory = () => __awaiter(void 0, void 0, void 0, function* () {
         return yield repository.listCategory();
     });
+    const getDashboardData = (creatorEmail) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.getDashboardData(creatorEmail);
+    });
+    const getPaymentData = (campaignId) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.getPaymentData(campaignId);
+    });
     return {
         listCampaigns,
         createBasics,
@@ -84,7 +90,9 @@ const campaignUsecase = (repository) => {
         addComment,
         listComments,
         getReward,
-        listCategory
+        listCategory,
+        getDashboardData,
+        getPaymentData
     };
 };
 exports.campaignUsecase = campaignUsecase;

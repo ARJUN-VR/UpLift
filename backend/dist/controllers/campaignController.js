@@ -111,6 +111,17 @@ const campaignController = (dbInterface, dbImplements) => {
         const list = yield (0, campaignUsecases_1.campaignUsecase)(dbRepositoryCampaign).listCategory();
         res.status(200).json({ message: 'fetched', list });
     }));
+    const getDashboardData = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const { creatorEmail } = req.params;
+        const data = yield (0, campaignUsecases_1.campaignUsecase)(dbRepositoryCampaign).getDashboardData(creatorEmail);
+        res.status(200).json({ message: 'data retrieved successfully', data });
+    }));
+    const getPaymentData = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const { campaignId } = req.params;
+        console.log(campaignId);
+        const paymentData = yield (0, campaignUsecases_1.campaignUsecase)(dbRepositoryCampaign).getPaymentData(campaignId);
+        res.status(200).json({ message: 'fetched successfully', paymentData });
+    }));
     return {
         listCampaigns,
         createBasics,
@@ -121,7 +132,9 @@ const campaignController = (dbInterface, dbImplements) => {
         addComment,
         listComments,
         getReward,
-        listCategory
+        listCategory,
+        getDashboardData,
+        getPaymentData
     };
 };
 exports.campaignController = campaignController;
