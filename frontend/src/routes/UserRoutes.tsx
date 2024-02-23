@@ -11,7 +11,8 @@ import { SinglePageView } from "../pages/userPages/SinglePageView"
 import { CategoryPage } from "../pages/userPages/CategoryPage"
 import { SuccessPage } from "../pages/userPages/SuccessPage"
 import { CommunityPage } from "../pages/userPages/CommunityPage"
-import { DasboardPage } from "../pages/userPages/DasboardPage"
+
+
 
 
 
@@ -31,6 +32,8 @@ export const UserRoutes = () => {
             <Route path="/category/:cat" element={<CategoryPage/>}/>
             <Route path="/success" element={<SuccessPage/>}/>
             <Route path = '/dashboard' element={<HomePage/>}/>
+            <Route path="/search" element={<HomePage/>}/>
+
 
             
 
@@ -43,6 +46,7 @@ export const UserRoutes = () => {
             <Route path='/create-campaign/reward' element={<CampaignPage/>}/>
             <Route path='/create-campaign/draft' element={<CampaignPage/>}/>
             <Route path="/community" element={<CommunityPage/>}/>
+
 
 
 

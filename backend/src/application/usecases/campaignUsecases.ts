@@ -85,6 +85,10 @@ export const campaignUsecase = (
     return await repository.getPaymentData(campaignId)
   }
 
+  const getSearchData = async()=>{
+    return await repository.getSearchData()
+  }
+
 
 
 
@@ -102,6 +106,7 @@ export const campaignUsecase = (
     getReward,
     listCategory,
     getDashboardData,
-    getPaymentData
+    getPaymentData,
+    getSearchData
   };
 };

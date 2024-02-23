@@ -153,6 +153,27 @@ const campaignDbMethods = () => {
     const getPaymentData = (campaignId) => __awaiter(void 0, void 0, void 0, function* () {
         return yield paymentSchema_1.Payment.find({ campaignId });
     });
+    const getSearchData = () => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            return yield basicSchema_1.Basics.aggregate([
+                {
+                    $match: {
+                        isVerified: true,
+                        isListed: true
+                    }
+                },
+                {
+                    $project: {
+                        title: 1,
+                        tagline: 1
+                    }
+                }
+            ]);
+        }
+        catch (error) {
+            console.log(error);
+        }
+    });
     return {
         getAllBasics,
         createBasics,
@@ -166,7 +187,8 @@ const campaignDbMethods = () => {
         getNotificationCount,
         listCategory,
         getDashboardData,
-        getPaymentData
+        getPaymentData,
+        getSearchData
     };
 };
 exports.campaignDbMethods = campaignDbMethods;

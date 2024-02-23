@@ -158,6 +158,29 @@ export const campaignDbMethods = () => {
   }
 
 
+  const getSearchData = async()=>{
+    try{
+      return await Basics.aggregate([
+        {
+         $match:{
+          isVerified:true,
+          isListed:true
+         }
+        },
+        {
+          $project:{
+            title:1,
+            tagline:1
+          }
+        }
+
+      ])
+    }catch(error){
+      console.log(error)
+    }
+  }
+
+
 
 
 
@@ -176,7 +199,8 @@ export const campaignDbMethods = () => {
     getNotificationCount,
     listCategory,
     getDashboardData,
-    getPaymentData
+    getPaymentData,
+    getSearchData
   };
 };
 

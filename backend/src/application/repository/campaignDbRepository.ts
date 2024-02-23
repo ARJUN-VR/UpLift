@@ -60,6 +60,10 @@ export const campaignDbInterface = (
     return await repository.getPaymentData(campaignId)
   }
 
+  const getSearchData = async()=>{
+    return await repository.getSearchData()
+  }
+
 
 
 
@@ -77,7 +81,8 @@ export const campaignDbInterface = (
     getNotificationCount,
     listCategory,
     getDashboardData,
-    getPaymentData
+    getPaymentData,
+    getSearchData
    
   };
 };
