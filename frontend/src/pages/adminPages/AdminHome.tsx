@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom"
 import SideBar from "../../components/adminComponents/SideBar"
 import { TableList } from "../../components/adminComponents/TableList"
-import { AdminCard } from "../../components/adminComponents/AdminCard"
+import { AdminCard } from "../../components/adminComponents/AdminDashboard"
 import { CampaignList } from "../../components/adminComponents/CampaignList"
 import { CampaignView } from "../../components/adminComponents/CampaignView"
 import { VerifiedCampaign } from "../../components/adminComponents/VerifiedCampaign"
