@@ -178,6 +178,14 @@ export const usersApiSlice = apiSlice.injectEndpoints({
               
             })
         }),
+        getSearchResult:builder.mutation({
+            query:(query)=>({
+                url:`${USER_URL}/search/${query}`,
+                method:'GET'
+
+              
+            })
+        }),
         logout:builder.mutation({
             query:()=>({
                 url:`${USER_URL}/logout`,
@@ -213,5 +221,6 @@ export const {
     useGetChatMutation,
     useEditProfileMutation,
     useGetDashboardDataMutation,
-    useGetPaymentDataMutation
+    useGetPaymentDataMutation,
+    useGetSearchResultMutation
 } = usersApiSlice

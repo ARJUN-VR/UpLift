@@ -85,6 +85,10 @@ export const campaignUsecase = (
     return await repository.getPaymentData(campaignId)
   }
 
+  const search = async(query:string)=>{
+    return await repository.search(query)
+  }
+
 
 
 
@@ -102,6 +106,7 @@ export const campaignUsecase = (
     getReward,
     listCategory,
     getDashboardData,
-    getPaymentData
+    getPaymentData,
+    search
   };
 };

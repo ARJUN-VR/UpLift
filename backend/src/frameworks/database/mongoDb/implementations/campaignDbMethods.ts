@@ -157,6 +157,15 @@ export const campaignDbMethods = () => {
     return await Payment.find({campaignId})
   }
 
+  const search = async(query:string)=>{
+    return await Basics.find({
+      $or:[
+        {title: {$regex:query,$options:'i'}},
+        {tagline:{$regex:query,$options:'i'}}
+      ]
+    })
+  }
+
 
 
 
@@ -176,7 +185,8 @@ export const campaignDbMethods = () => {
     getNotificationCount,
     listCategory,
     getDashboardData,
-    getPaymentData
+    getPaymentData,
+    search
   };
 };
 

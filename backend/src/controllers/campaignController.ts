@@ -158,6 +158,12 @@ export const campaignController = (
     res.status(200).json({message:'fetched successfully',paymentData})
   })
 
+  const getSearchResult = asyncHandler(async(req:Request,res:Response)=>{
+    const {query} = req.params;
+    const result = await campaignUsecase(dbRepositoryCampaign).search(query)
+    res.status(200).json({result})
+  })
+
 
 
 
@@ -174,7 +180,8 @@ export const campaignController = (
     getReward,
     listCategory,
     getDashboardData,
-    getPaymentData
+    getPaymentData,
+    getSearchResult
 
   };
 };

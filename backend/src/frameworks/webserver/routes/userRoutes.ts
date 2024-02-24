@@ -41,6 +41,7 @@ router.get('/reward/:basicId',campaigncontroller.getReward)
 router.get('/fetchthedata',campaigncontroller.listCategory)
 router.get('/dashboard/:creatorEmail',campaigncontroller.getDashboardData)
 router.get('/paymentData/:campaignId',campaigncontroller.getPaymentData)
+router.get('/search/:query',campaigncontroller.getSearchResult)
 
 export default router;
 
