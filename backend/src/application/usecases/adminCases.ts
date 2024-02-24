@@ -78,6 +78,17 @@ export const adminCases = (repository:ReturnType<AdminDbRepository>)=>{
     return await repository.editCategory(categoryId,newName)
    }
 
+   const dashboardCounts = async()=>{
+    return await repository.dashboardCounts()
+   }
+
+   const paymentBarData = async()=>{
+    return await repository.paymentBarData()
+   }
+   const pieChartData = async()=>{
+    return await repository.pieChartData()
+   }
+
    
 
     return {
@@ -92,7 +103,10 @@ export const adminCases = (repository:ReturnType<AdminDbRepository>)=>{
         findAdvanced,
         addCategory,
         handleCategoryAction,
-        editCategory
+        editCategory,
+        dashboardCounts,
+        paymentBarData,
+        pieChartData
        
         
   

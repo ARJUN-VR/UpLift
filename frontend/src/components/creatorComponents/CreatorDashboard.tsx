@@ -111,7 +111,7 @@ export const CreatorDashboard = () => {
 
         {!isLoading && !paymentLoading && (
           <div className=" bg-[#141414] ml-10 p-2 rounded-lg">
-            <PledgeChart />
+            <PledgeChart data={tableData} />
           </div>
         )}
       </div>

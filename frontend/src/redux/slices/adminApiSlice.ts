@@ -71,6 +71,27 @@ export const adminApiSlice = apiSlice.injectEndpoints({
                 body:data
             })
         }),
+        getDashBoardCounts:builder.mutation({
+            query:()=>({
+                url:`${ADMIN_URL}/dashboard`,
+                method:'GET'
+               
+            })
+        }),
+        getPaymentsData:builder.mutation({
+            query:()=>({
+                url:`${ADMIN_URL}/dashboard-payments`,
+                method:'GET'
+               
+            })
+        }),
+        getPieChart:builder.mutation({
+            query:()=>({
+                url:`${ADMIN_URL}/dashboard-pie`,
+                method:'GET'
+               
+            })
+        }),
         blockuser:builder.mutation({
             query:(email)=>({
                 url:`${ADMIN_URL}/blockuser?email=${email}`,
@@ -91,5 +112,8 @@ export const {
     useGetSingleCampaignMutation,
     useAddCategoryMutation,
     useBlockCategoryMutation,
-    useEditCategoryMutation
+    useEditCategoryMutation,
+    useGetDashBoardCountsMutation,
+    useGetPaymentsDataMutation,
+    useGetPieChartMutation
 } = adminApiSlice

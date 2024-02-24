@@ -14,6 +14,7 @@ const adminSchema_1 = require("../model/adminSchema");
 const advancedSchema_1 = require("../model/campaign/advancedSchema");
 const basicSchema_1 = require("../model/campaign/basicSchema");
 const categorySchema_1 = require("../model/categorySchema");
+const paymentSchema_1 = require("../model/paymentSchema");
 const userSchema_1 = require("../model/userSchema");
 const adminDbMethods = () => {
     const findByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () {
@@ -98,6 +99,67 @@ const adminDbMethods = () => {
             throw new Error('something went wrong');
         }
     });
+    const dashboardCounts = () => __awaiter(void 0, void 0, void 0, function* () {
+        var _a, _b, _c;
+        try {
+            const aggregatedData = yield basicSchema_1.Basics.aggregate([
+                {
+                    $match: {
+                        isVerified: true,
+                        isListed: true
+                    }
+                },
+                {
+                    $group: {
+                        _id: null,
+                        liveCampaignCount: { $sum: 1 },
+                        totalBackers: { $sum: "$backers" },
+                        totalAmount: { $sum: "$currentAmount" }
+                    }
+                }
+            ]);
+            return {
+                campaignCount: ((_a = aggregatedData[0]) === null || _a === void 0 ? void 0 : _a.liveCampaignCount) || 0,
+                backers: ((_b = aggregatedData[0]) === null || _b === void 0 ? void 0 : _b.totalBackers) || 0,
+                Amount: ((_c = aggregatedData[0]) === null || _c === void 0 ? void 0 : _c.totalAmount) || 0
+            };
+        }
+        catch (error) {
+            console.log(error);
+        }
+    });
+    const paymentBarData = () => __awaiter(void 0, void 0, void 0, function* () {
+        return yield paymentSchema_1.Payment.aggregate([
+            {
+                $project: {
+                    _id: 0,
+                    payment: 1,
+                    isCreatedAt: 1
+                }
+            }
+        ]);
+    });
+    const pieChartData = () => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const data = yield basicSchema_1.Basics.aggregate([
+                {
+                    $group: {
+                        _id: "$category",
+                        count: { $sum: 1 }
+                    }
+                }
+            ]);
+            // Transforming data into array of arrays with a fixed value for the first column
+            const result = data.map(item => ["Category: " + item._id, item.count]);
+            // Adding a fixed value for the first column in the first array
+            result.unshift(["Category", "Count"]);
+            return result;
+        }
+        catch (error) {
+            console.log(error);
+            return [];
+        }
+    });
     return {
         findByEmail,
         getUsers,
@@ -111,7 +173,10 @@ const adminDbMethods = () => {
         listCategory,
         unListCategory,
         checkListStatus,
-        editCategory
+        editCategory,
+        dashboardCounts,
+        paymentBarData,
+        pieChartData
     };
 };
 exports.adminDbMethods = adminDbMethods;

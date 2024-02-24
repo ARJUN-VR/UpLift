@@ -93,6 +93,18 @@ const adminController = (dbInterface, dbImplements) => {
         const data = yield (0, adminCases_1.adminCases)(dbRepsitoryAdmn).editCategory(categoryId, newName);
         res.status(200).json({ message: 'edit success', data });
     }));
+    const getDashboardCounts = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const data = yield (0, adminCases_1.adminCases)(dbRepsitoryAdmn).dashboardCounts();
+        res.status(200).json({ data });
+    }));
+    const getPaymentBarData = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const data = yield (0, adminCases_1.adminCases)(dbRepsitoryAdmn).paymentBarData();
+        res.status(200).json({ data });
+    }));
+    const getPieChartData = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const data = yield (0, adminCases_1.adminCases)(dbRepsitoryAdmn).pieChartData();
+        res.status(200).json({ data });
+    }));
     return {
         adminSignin,
         logout,
@@ -104,7 +116,10 @@ const adminController = (dbInterface, dbImplements) => {
         listLiveCampaigns,
         addCategory,
         categoryAction,
-        editCategory
+        editCategory,
+        getDashboardCounts,
+        getPaymentBarData,
+        getPieChartData
     };
 };
 exports.adminController = adminController;

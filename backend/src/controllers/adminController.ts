@@ -105,6 +105,25 @@ export const adminController = (
     res.status(200).json({message:'edit success',data})
   })
 
+  const getDashboardCounts = asyncHandler(async(req:Request,res:Response)=>{
+    const data = await adminCases(dbRepsitoryAdmn).dashboardCounts()
+    
+    res.status(200).json({data})
+  })
+
+  const getPaymentBarData = asyncHandler(async(req:Request,res:Response)=>{
+    const data = await adminCases(dbRepsitoryAdmn).paymentBarData()
+    res.status(200).json({data})
+  })
+
+  const getPieChartData = asyncHandler(async(req:Request,res:Response)=>{
+    const data = await adminCases(dbRepsitoryAdmn).pieChartData()
+    res.status(200).json({data})
+  })
+
+
+  
+
   return {
     adminSignin,
     logout,
@@ -116,6 +135,9 @@ export const adminController = (
     listLiveCampaigns,
     addCategory,
     categoryAction,
-    editCategory
+    editCategory,
+    getDashboardCounts,
+    getPaymentBarData,
+    getPieChartData
   };
 };

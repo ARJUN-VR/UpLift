@@ -2,6 +2,7 @@ import { Admin } from "../model/adminSchema";
 import { Advanced } from "../model/campaign/advancedSchema";
 import { Basics } from "../model/campaign/basicSchema";
 import { Category } from "../model/categorySchema";
+import { Payment } from "../model/paymentSchema";
 import { User } from "../model/userSchema";
 
 
@@ -103,6 +104,73 @@ export const adminDbMethods =()=>{
      }
 
 
+     const dashboardCounts = async()=>{
+      try{
+
+       const aggregatedData = await Basics.aggregate([
+        {
+          $match:{
+            isVerified:true,
+            isListed:true
+          }
+        },
+        {
+          $group:{
+            _id:null,
+            liveCampaignCount:{$sum:1},
+            totalBackers:{$sum:"$backers"},
+            totalAmount:{$sum:"$currentAmount"}
+          }
+        }
+       ])
+
+       return {
+        campaignCount:aggregatedData[0]?.liveCampaignCount || 0,
+        backers:aggregatedData[0]?.totalBackers || 0,
+        Amount:aggregatedData[0]?.totalAmount || 0
+       }
+
+      }catch(error){
+        console.log(error)
+      }
+     }
+
+     const paymentBarData = async()=>{
+     return  await Payment.aggregate([
+        {
+          $project:{
+            _id:0,
+            payment:1,
+            isCreatedAt:1
+          }
+        }
+      ])
+     }
+
+     const pieChartData = async () => {
+      try {
+          const data = await Basics.aggregate([
+              {
+                  $group: {
+                      _id: "$category",
+                      count: { $sum: 1 }
+                  }
+              }
+          ]);
+  
+          // Transforming data into array of arrays with a fixed value for the first column
+          const result = data.map(item => ["Category: " + item._id, item.count]);
+  
+          // Adding a fixed value for the first column in the first array
+          result.unshift(["Category", "Count"]);
+  
+          return result;
+      } catch (error) {
+          console.log(error);
+          return [];
+      }
+  };
+
     return {
         findByEmail,
         getUsers,
@@ -116,7 +184,10 @@ export const adminDbMethods =()=>{
         listCategory,
         unListCategory,
         checkListStatus,
-        editCategory
+        editCategory,
+        dashboardCounts,
+        paymentBarData,
+        pieChartData
     }
 }
 

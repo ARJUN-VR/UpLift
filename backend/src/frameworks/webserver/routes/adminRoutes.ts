@@ -19,6 +19,9 @@ adminRouter.get('/get-liveCampaigns',controller.listLiveCampaigns)
 adminRouter.post('/category',controller.addCategory)
 adminRouter.patch('/category-action',controller.categoryAction)
 adminRouter.patch('/edit-category',controller.editCategory)
+adminRouter.get('/dashboard',controller.getDashboardCounts)
+adminRouter.get('/dashboard-payments',controller.getPaymentBarData)
+adminRouter.get('/dashboard-pie',controller.getPieChartData)
 
 
 export default adminRouter

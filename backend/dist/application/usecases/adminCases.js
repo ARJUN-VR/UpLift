@@ -80,6 +80,15 @@ const adminCases = (repository) => {
     const editCategory = (categoryId, newName) => __awaiter(void 0, void 0, void 0, function* () {
         return yield repository.editCategory(categoryId, newName);
     });
+    const dashboardCounts = () => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.dashboardCounts();
+    });
+    const paymentBarData = () => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.paymentBarData();
+    });
+    const pieChartData = () => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.pieChartData();
+    });
     return {
         adminSignin,
         logout,
@@ -92,7 +101,10 @@ const adminCases = (repository) => {
         findAdvanced,
         addCategory,
         handleCategoryAction,
-        editCategory
+        editCategory,
+        dashboardCounts,
+        paymentBarData,
+        pieChartData
     };
 };
 exports.adminCases = adminCases;

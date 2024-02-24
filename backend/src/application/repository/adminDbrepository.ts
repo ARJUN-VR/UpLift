@@ -57,6 +57,18 @@ export const adminDbInterface = (repository:ReturnType<AdminDbMethods>) =>{
       return await repository.editCategory(categoryId,newName)
    }
 
+   const dashboardCounts = async()=>{
+      return await repository.dashboardCounts()
+   }
+
+   const paymentBarData = async()=>{
+      return await repository.paymentBarData()
+   }
+
+   const pieChartData = async()=>{
+      return await repository.pieChartData()
+   }
+
 
    return{
     findByEmail,
@@ -71,7 +83,10 @@ export const adminDbInterface = (repository:ReturnType<AdminDbMethods>) =>{
     listCategory,
     unListCategory,
     checkListStatus,
-    editCategory
+    editCategory,
+    dashboardCounts,
+    paymentBarData,
+    pieChartData
 
    }
 }
