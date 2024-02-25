@@ -122,6 +122,11 @@ const campaignController = (dbInterface, dbImplements) => {
         const paymentData = yield (0, campaignUsecases_1.campaignUsecase)(dbRepositoryCampaign).getPaymentData(campaignId);
         res.status(200).json({ message: 'fetched successfully', paymentData });
     }));
+    const getSearchResult = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const { query } = req.params;
+        const result = yield (0, campaignUsecases_1.campaignUsecase)(dbRepositoryCampaign).search(query);
+        res.status(200).json({ result });
+    }));
     return {
         listCampaigns,
         createBasics,
@@ -134,7 +139,8 @@ const campaignController = (dbInterface, dbImplements) => {
         getReward,
         listCategory,
         getDashboardData,
-        getPaymentData
+        getPaymentData,
+        getSearchResult
     };
 };
 exports.campaignController = campaignController;

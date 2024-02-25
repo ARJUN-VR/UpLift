@@ -69,6 +69,10 @@ export const adminDbInterface = (repository:ReturnType<AdminDbMethods>) =>{
       return await repository.pieChartData()
    }
 
+   const lineChartData = async()=>{
+      return await repository.lineChart()
+   }
+
 
    return{
     findByEmail,
@@ -86,7 +90,8 @@ export const adminDbInterface = (repository:ReturnType<AdminDbMethods>) =>{
     editCategory,
     dashboardCounts,
     paymentBarData,
-    pieChartData
+    pieChartData,
+    lineChartData
 
    }
 }

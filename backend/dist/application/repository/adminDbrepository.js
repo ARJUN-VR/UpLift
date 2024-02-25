@@ -59,6 +59,9 @@ const adminDbInterface = (repository) => {
     const pieChartData = () => __awaiter(void 0, void 0, void 0, function* () {
         return yield repository.pieChartData();
     });
+    const lineChartData = () => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.lineChart();
+    });
     return {
         findByEmail,
         getUsers,
@@ -75,7 +78,8 @@ const adminDbInterface = (repository) => {
         editCategory,
         dashboardCounts,
         paymentBarData,
-        pieChartData
+        pieChartData,
+        lineChartData
     };
 };
 exports.adminDbInterface = adminDbInterface;

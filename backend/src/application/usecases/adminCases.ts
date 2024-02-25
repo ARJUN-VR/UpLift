@@ -89,6 +89,10 @@ export const adminCases = (repository:ReturnType<AdminDbRepository>)=>{
     return await repository.pieChartData()
    }
 
+   const lineChartData = async()=>{
+    return await repository.lineChartData()
+   }
+
    
 
     return {
@@ -106,7 +110,8 @@ export const adminCases = (repository:ReturnType<AdminDbRepository>)=>{
         editCategory,
         dashboardCounts,
         paymentBarData,
-        pieChartData
+        pieChartData,
+        lineChartData
        
         
   

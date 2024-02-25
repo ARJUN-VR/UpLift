@@ -78,6 +78,9 @@ const campaignUsecase = (repository) => {
     const getPaymentData = (campaignId) => __awaiter(void 0, void 0, void 0, function* () {
         return yield repository.getPaymentData(campaignId);
     });
+    const search = (query) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.search(query);
+    });
     return {
         listCampaigns,
         createBasics,
@@ -92,7 +95,8 @@ const campaignUsecase = (repository) => {
         getReward,
         listCategory,
         getDashboardData,
-        getPaymentData
+        getPaymentData,
+        search
     };
 };
 exports.campaignUsecase = campaignUsecase;

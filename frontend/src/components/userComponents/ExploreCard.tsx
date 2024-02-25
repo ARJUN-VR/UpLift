@@ -19,7 +19,7 @@ export const ExploreCard = () => {
         <span className="text-[15px] ml-4  font-bold">Art</span>
       </div>
       <div
-        className="p-8  mt-4 flex items-center rounded-lg px-4 duration-300 cursor-pointer hover:bg-white text-gray hover:text-gray bg-[#AAD9BB] shadow-lg" onClick={()=>navigate('/category/:Game')}
+        className="p-8  mt-4 flex items-center rounded-lg px-4 duration-300 cursor-pointer hover:bg-white text-gray hover:text-gray bg-[#AAD9BB] shadow-lg" onClick={()=>navigate('/category/:Games')}
       >
         <i className="bi bi-house-door-fill"></i>
         <span className="text-[15px] ml-4  font-bold">Games</span>

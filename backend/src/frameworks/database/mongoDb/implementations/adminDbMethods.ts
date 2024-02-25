@@ -171,6 +171,35 @@ export const adminDbMethods =()=>{
       }
   };
 
+ 
+  const lineChart = async () => {
+    try {
+      const monthlyUserRegistrations = await User.aggregate([
+        {
+          $project: {
+            month: { $month: "$createdAt" },
+            year: { $year: "$createdAt" } 
+          }
+        },
+        {
+          $group: {
+            _id: { month: "$month", year: "$year" },
+            count: { $sum: 1 }
+          }
+        },
+        {
+          $sort: { "_id.year": 1, "_id.month": 1 } // Optionally, sort by year and month
+        }
+      ]);
+  
+      console.log(monthlyUserRegistrations);
+      return monthlyUserRegistrations;
+    } catch (error) {
+      console.error("Error fetching monthly user registrations:", error);
+      throw error;
+    }
+  };
+
     return {
         findByEmail,
         getUsers,
@@ -187,7 +216,8 @@ export const adminDbMethods =()=>{
         editCategory,
         dashboardCounts,
         paymentBarData,
-        pieChartData
+        pieChartData,
+        lineChart
     }
 }
 

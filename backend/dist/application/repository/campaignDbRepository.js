@@ -50,6 +50,9 @@ const campaignDbInterface = (repository) => {
     const getPaymentData = (campaignId) => __awaiter(void 0, void 0, void 0, function* () {
         return yield repository.getPaymentData(campaignId);
     });
+    const search = (query) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.search(query);
+    });
     return {
         listCampaigns,
         createBasics,
@@ -63,7 +66,8 @@ const campaignDbInterface = (repository) => {
         getNotificationCount,
         listCategory,
         getDashboardData,
-        getPaymentData
+        getPaymentData,
+        search
     };
 };
 exports.campaignDbInterface = campaignDbInterface;

@@ -105,6 +105,10 @@ const adminController = (dbInterface, dbImplements) => {
         const data = yield (0, adminCases_1.adminCases)(dbRepsitoryAdmn).pieChartData();
         res.status(200).json({ data });
     }));
+    const getLineChartData = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const data = yield (0, adminCases_1.adminCases)(dbRepsitoryAdmn).lineChartData();
+        res.status(200).json({ data });
+    }));
     return {
         adminSignin,
         logout,
@@ -119,7 +123,8 @@ const adminController = (dbInterface, dbImplements) => {
         editCategory,
         getDashboardCounts,
         getPaymentBarData,
-        getPieChartData
+        getPieChartData,
+        getLineChartData
     };
 };
 exports.adminController = adminController;

@@ -92,6 +92,13 @@ export const adminApiSlice = apiSlice.injectEndpoints({
                
             })
         }),
+        getLineChart:builder.mutation({
+            query:()=>({
+                url:`${ADMIN_URL}/dashboard-line`,
+                method:'GET'
+               
+            })
+        }),
         blockuser:builder.mutation({
             query:(email)=>({
                 url:`${ADMIN_URL}/blockuser?email=${email}`,
@@ -115,5 +122,6 @@ export const {
     useEditCategoryMutation,
     useGetDashBoardCountsMutation,
     useGetPaymentsDataMutation,
-    useGetPieChartMutation
+    useGetPieChartMutation,
+    useGetLineChartMutation
 } = adminApiSlice

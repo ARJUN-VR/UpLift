@@ -31,8 +31,10 @@ export const BarChartAdmin = () => {
   
 
   return (
-    <div className="bg-white rounded-xl">
-      <BarChart width={730} height={250} data={paymentData}>
+    <div className="bg-white rounded-xl ">
+      <span className="font-semibold text-md text-blue-500 ml-3">Daily amount raised</span>
+
+      <BarChart width={800} height={250} data={paymentData}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis 
         dataKey="isCreatedAt" 

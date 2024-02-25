@@ -89,6 +89,9 @@ const adminCases = (repository) => {
     const pieChartData = () => __awaiter(void 0, void 0, void 0, function* () {
         return yield repository.pieChartData();
     });
+    const lineChartData = () => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.lineChartData();
+    });
     return {
         adminSignin,
         logout,
@@ -104,7 +107,8 @@ const adminCases = (repository) => {
         editCategory,
         dashboardCounts,
         paymentBarData,
-        pieChartData
+        pieChartData,
+        lineChartData
     };
 };
 exports.adminCases = adminCases;

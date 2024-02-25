@@ -121,6 +121,11 @@ export const adminController = (
     res.status(200).json({data})
   })
 
+  const getLineChartData = asyncHandler(async(req:Request,res:Response)=>{
+    const data = await adminCases(dbRepsitoryAdmn).lineChartData()
+    res.status(200).json({data})
+  })
+
 
   
 
@@ -138,6 +143,7 @@ export const adminController = (
     editCategory,
     getDashboardCounts,
     getPaymentBarData,
-    getPieChartData
+    getPieChartData,
+    getLineChartData
   };
 };

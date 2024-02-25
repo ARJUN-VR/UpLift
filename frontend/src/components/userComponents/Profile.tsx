@@ -159,18 +159,9 @@ setEditEmail(email)
           <ul className="mt-3 divide-y rounded bg-gray-100 py-2 px-3 text-gray-600 shadow-sm hover:text-gray-700 hover:shadow">
             <li className="flex items-center py-3 text-sm">
               <span>Email</span>
-              {editMode ? (
-                <span className="ml-auto ">
-                  <input
-                    className="bg-gray-300 rounded-sm"
-                    type="text"
-                    value={editEmail}
-                    onChange={(e)=>setEditEmail(e.target.value)}
-                  />
-                </span>
-              ) : (
+             
                 <span className="ml-auto">{email}</span>
-              )}
+          
             </li>
             {editMode ? (
             <li className="flex items-center py-3 text-sm">

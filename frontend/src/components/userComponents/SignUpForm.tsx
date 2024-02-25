@@ -30,9 +30,13 @@ export const SignUpForm = () => {
 
   const registerHandler = async(event:React.FormEvent)=>{
     event.preventDefault()
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     if(password!==confirmPass){
       return toast.error('Passwords do not match')
 
+    }
+    if(!emailRegex.test(email)){
+      return toast.error('email validation failed')
     }
     try {
       const userData = await register({name,email,password}).unwrap()
@@ -54,7 +58,7 @@ export const SignUpForm = () => {
 <div className="flex flex-wrap">
   <div className="flex w-full flex-col md:w-1/2">
     <div className="flex justify-center pt-12 md:-mb-24 md:justify-start md:pl-12">
-      <a href="#" className="border-b-gray-700 border-b-4 pb-2 text-2xl font-bold text-gray-900"> UpLift . </a>
+      <a href="#" className="border-b-gray-700 border-b-4 pb-2 text-2xl font-bold text-gray-900"> UpLift .</a>
     </div>
     <div className="lg:w-[28rem] mx-auto my-auto flex flex-col justify-center pt-8 md:justify-start md:px-6 md:pt-0">
       <p className="text-center text-3xl font-bold">Welcome.</p>
@@ -113,7 +117,7 @@ export const SignUpForm = () => {
         </div>
         <div className="flex flex-col pt-4">
           <div className="focus-within:border-b-gray-500 relative flex overflow-hidden border-b-2 transition">
-            <input type="email" id="login-email" className="w-full flex-1 appearance-none border-gray-300 bg-white px-4 py-2 text-base text-gray-700 placeholder-gray-400 focus:outline-none" placeholder="Email" value={email} onChange={(event)=>setEmail(event.target.value)} />
+            <input type="text" id="login-email" className="w-full flex-1 appearance-none border-gray-300 bg-white px-4 py-2 text-base text-gray-700 placeholder-gray-400 focus:outline-none" placeholder="Email" value={email} onChange={(event)=>setEmail(event.target.value)} />
           </div>
         </div>
         <div className="mb-12 flex flex-col pt-4">

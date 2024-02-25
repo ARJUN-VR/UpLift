@@ -22,6 +22,7 @@ adminRouter.patch('/edit-category',controller.editCategory)
 adminRouter.get('/dashboard',controller.getDashboardCounts)
 adminRouter.get('/dashboard-payments',controller.getPaymentBarData)
 adminRouter.get('/dashboard-pie',controller.getPieChartData)
+adminRouter.get('/dashboard-line',controller.getLineChartData)
 
 
 export default adminRouter

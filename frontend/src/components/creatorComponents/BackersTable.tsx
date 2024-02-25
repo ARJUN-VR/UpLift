@@ -24,7 +24,7 @@ interface BackersTableProp{
     {BackersData.map((backer)=>(
  <tr>
  <td className="px-6 py-4 whitespace-nowrap">{backer.userEmail}</td>
- <td className="px-6 py-4 whitespace-nowrap">{backer.payment}</td>
+ <td className="px-6 py-4 whitespace-nowrap">₹{backer.payment}</td>
  <td className="px-6 py-4 whitespace-nowrap">{new Date(backer.isCreatedAt).toLocaleString()}</td>
 
 </tr>
