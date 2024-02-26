@@ -97,9 +97,10 @@ export const adminDbMethods =()=>{
      const editCategory = async(categoryId:string,newName:string)=>{
       try{
           return await Category.findOneAndUpdate({_id:categoryId},{$set:{name:newName}},{new:true})
-      }catch(error){
+      }catch(error:any){
         console.log(error)
-        throw new Error('something went wrong')
+        const msg = error.codeName 
+        throw new Error(msg)
       }
      }
 

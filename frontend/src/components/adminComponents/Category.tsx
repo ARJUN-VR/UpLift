@@ -73,7 +73,7 @@ export const Category = () => {
       setEditMode(false)
     }catch(error){
       console.log(error)
-      toast.error(error)
+      toast.error(error.data.message)
     }
 
   }
