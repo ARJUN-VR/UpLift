@@ -44,12 +44,13 @@ export const Profile = () => {
     const getData = async () => {
       try {
         const userData = await getProfile("");
+        console.log(userData,'userdatattta')
 
-        if (userData.error?.data?.message == "Access denied.") {
+        if (userData.error?.data?.message == "Access denied." || userData.error?.data?.message == 'token expired' || userData.error?.data?.message == 'Not authorized,no Token') {
           await logoutCall("").unwrap();
           dispatch(logout());
           navigate("/login");
-          toast.error("Access denied.");
+          toast.error(userData.error?.data.message);
         } else {
           setName(userData.data.userdata.name);
           setEmail(userData.data.userdata.email);

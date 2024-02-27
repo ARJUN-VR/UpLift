@@ -96,7 +96,8 @@ const adminDbMethods = () => {
         }
         catch (error) {
             console.log(error);
-            throw new Error('something went wrong');
+            const msg = error.codeName;
+            throw new Error(msg);
         }
     });
     const dashboardCounts = () => __awaiter(void 0, void 0, void 0, function* () {

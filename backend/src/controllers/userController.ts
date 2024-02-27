@@ -70,7 +70,9 @@ export const userController = (
   //access private
   const getProfile = asyncHandler(async (req: Request, res: Response) => {
     const email = req.user.email;
+    console.log(email,'email')
     const userdata = await userCases(dbRepositoryuser).findByEmail(email);
+    console.log(userdata,'userdata')
     res
       .status(200)
       .json({ message: "fetched user profile successully", userdata });

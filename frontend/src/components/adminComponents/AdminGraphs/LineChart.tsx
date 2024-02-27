@@ -40,7 +40,7 @@ export const LineChartAdmin = () => {
       <span className="font-semibold text-md text-blue-500 ml-3">Monthly user registration</span>
       
       <LineChart
-        width={1210}
+        width={1230}
         height={250}
         data={lineData}
         margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
