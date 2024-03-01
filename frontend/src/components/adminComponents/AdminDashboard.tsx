@@ -7,6 +7,7 @@ import { useGetDashBoardCountsMutation } from "../../redux/slices/adminApiSlice"
 import { LineChartAdmin } from "./AdminGraphs/LineChart";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLayerGroup, faUserGroup } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 export const AdminCard = () => {
   const [campaignCount, setCampaignCount] = useState<number>(0);
@@ -14,6 +15,8 @@ export const AdminCard = () => {
   const [Amount, setAmount] = useState<number>(0);
 
   const [getCounts] = useGetDashBoardCountsMutation();
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     const getData = async () => {
@@ -30,7 +33,7 @@ export const AdminCard = () => {
     <div className="bg-gray-300 p-8 w-full h-screen flex flex-col">
       {/* first layer  */}
 
-      <div className="grid grid-cols-3 gap-5">
+      <div className="grid grid-cols-3 gap-5" onClick={()=>navigate('/admin/campaigns')}>
         {/* Live Campaigns */}
         <div className="bg-white rounded-lg p-4 flex flex-col items-center justify-center">
           <span className="text-black font-semibold text-lg mb-2">

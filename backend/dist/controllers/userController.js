@@ -66,7 +66,9 @@ const userController = (dbInterface, dbImplements) => {
     //access private
     const getProfile = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const email = req.user.email;
+        console.log(email, 'email');
         const userdata = yield (0, userCases_1.userCases)(dbRepositoryuser).findByEmail(email);
+        console.log(userdata, 'userdata');
         res
             .status(200)
             .json({ message: "fetched user profile successully", userdata });

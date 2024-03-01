@@ -5,6 +5,7 @@ import { configKeys } from "../../database/mongoDb/config";
 import { UserDbInterFace } from "../../../application/repository/userDbrepository";
 import { UserDbMethods } from "../../database/mongoDb/implementations/userDbMethods";
 
+
 declare global {
   namespace Express {
     interface Request {
@@ -29,15 +30,17 @@ export const protect = (
             token,
             configKeys.JWT_KEY
           ) as JwtPayload;
-          if(decoded.exp && decoded.exp < Date.now()){
-            console.log('token expired')
-             throw new Error('token expired')
-          }
-          const userdata = await dbRepository.findById(decoded.userId);
+          // const dateCheck = Date.now().toString().slice(0,9)
+          // const dateFormat = parseInt(dateCheck)
+        //  if(decoded.exp && decoded.exp < dateFormat){
+        //   console.log(decoded.exp,'exp')
+        //   console.log(Date.now(),'date')
+        //   throw new Error('token expired')
+        //  }
 
+          const userdata = await dbRepository.findById(decoded.userId);
           if (userdata?.isBlocked) {
             const error = new Error("Access denied.");
-            console.log("blockedddd");
             throw error;
           } else {
             req.user = userdata;

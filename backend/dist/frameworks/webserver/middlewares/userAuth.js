@@ -20,19 +20,24 @@ const protect = (userDbInterface, dbImplements) => {
     const dbRepository = userDbInterface(dbImplements());
     return (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         const token = req.cookies.jwt;
-        console.log(token, 'token');
         if (token) {
             try {
-                console.log('inside the token');
                 const decoded = jsonwebtoken_1.default.verify(token, config_1.configKeys.JWT_KEY);
+                // const dateCheck = Date.now().toString().slice(0,9)
+                // const dateFormat = parseInt(dateCheck)
+                //  if(decoded.exp && decoded.exp < dateFormat){
+                //   console.log(decoded.exp,'exp')
+                //   console.log(Date.now(),'date')
+                //   throw new Error('token expired')
+                //  }
                 const userdata = yield dbRepository.findById(decoded.userId);
                 if (userdata === null || userdata === void 0 ? void 0 : userdata.isBlocked) {
-                    const error = new Error('Access denied.');
-                    console.log('blockedddd');
+                    const error = new Error("Access denied.");
                     throw error;
                 }
                 else {
                     req.user = userdata;
+                    console.log("successfully verified from userAuth");
                     next();
                 }
             }
@@ -41,7 +46,7 @@ const protect = (userDbInterface, dbImplements) => {
             }
         }
         else {
-            throw new Error('Not authorized,no Token');
+            throw new Error("Not authorized,no Token");
         }
     }));
 };
