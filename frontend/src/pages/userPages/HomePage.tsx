@@ -25,7 +25,7 @@ export const HomePage = () => {
 
   const navigate = useNavigate()
 
-  const {handleSearchQuery,searchQuery,searchResults} = useRealTimeSearch()
+  const {handleSearchQuery,searchResults} = useRealTimeSearch()
 
 
   console.log(searchResults)
