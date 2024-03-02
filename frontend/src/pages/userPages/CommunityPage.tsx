@@ -28,8 +28,8 @@ export const CommunityPage = () => {
     {
         userData?(
             <div className="bg-[#0c0c0c] min-h-screen ">
-    <Header/>
-    <div className="flex w-full space-x-2">
+  
+    <div className="flex w-full space-x-2 ">
      
       <Channels callback={channelProp}/>
       <ChatArea campaignId={id}/>
@@ -38,7 +38,7 @@ export const CommunityPage = () => {
  </div>
         ):(
             <div className="bg-[#0c0c0c] min-h-screen">
-            <Header/>
+         
             <div className="flex w-full space-x-2">
              
              <span className='text-white text-3xl'>Sign in to contribute</span>

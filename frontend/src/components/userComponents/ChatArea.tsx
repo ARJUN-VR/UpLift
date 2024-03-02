@@ -7,6 +7,8 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment, faImage } from "@fortawesome/free-solid-svg-icons";
 import Loader from "./Loader";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 const socket = io("http://localhost:8000");
 
@@ -23,6 +25,9 @@ export const ChatArea = ({ campaignId }) => {
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [makeChange, setMakeChange] = useState<boolean>(false);
 
+
+  const [isLive, setIsLive] = useState<boolean>(false)
+
   const [image, setImage] = useState<string>("");
 
   const imageRef = useRef<HTMLInputElement>(null);
@@ -35,10 +40,14 @@ export const ChatArea = ({ campaignId }) => {
   const [saveChat] = useSaveChatMutation();
   const [getChats,{isLoading}] = useGetChatMutation();
 
-  const userData = localStorage.getItem("userInfo");
-  const parsedData = JSON.parse(userData);
+ const {userInfo} = useSelector((state:RootState)=>state.auth)
 
-  const userName: string = parsedData.result.user.name;
+ const isCreator:boolean = userInfo.result.user.isCreator
+
+
+
+
+  const userName: string = userInfo.result.user.name
 
   let isChat: string = "";
   if (campaignId) {
@@ -102,7 +111,7 @@ export const ChatArea = ({ campaignId }) => {
   };
 
   return (
-    <div className="chat-area flex flex-col h-[645px] bg-gray-800 text-white w-full rounded-md">
+    <div className="chat-area flex flex-col h-[740px] bg-gray-800 text-white w-full rounded-xl">
       {/* chat list */}
       {isChat ? (
         <>
@@ -115,7 +124,17 @@ export const ChatArea = ({ campaignId }) => {
             }}
           >
             {/* listing all the chats */}
-            <div className="flex flex-col m-2 ">
+            <div className="flex flex-col rounded-xl ">
+              {/* group title */}
+              <div className="w-full bg-gray-700 h-20 mb-2 top-0 sticky flex items-center  pl-20 justify-between">
+              <span className="text-xl font-semibold">modue: Next-Gen Modular</span>
+              {
+                isCreator&&(
+                  <button className='mr-20 bg-red-500 text-white font-semibold w-20 rounded-md h-10' onClick={()=>setIsLive(true)}>Go live</button>
+
+                )
+              }
+              </div>
               {messages.map((data, index) => (
                 <div key={index} className="flex flex-col mb-2">
                   {data.image ? (

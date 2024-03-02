@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useGetChannelDataMutation } from '../../redux/slices/userApiSlice'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../redux/store'
 
 
 interface channelData{
@@ -16,12 +18,12 @@ export const Channels = ({callback}) => {
   const [isChannels,setIsChannels] = useState<boolean>(true)
 
 
-
- const userInfo = localStorage.getItem('userInfo')
- const parsedData = JSON.parse(userInfo)
+ const {userInfo} = useSelector((state:RootState)=>state.auth)
 
 
- const email = parsedData.result.user.email
+ const email = userInfo.result.user.email
+
+ 
 
 
  
@@ -52,9 +54,9 @@ export const Channels = ({callback}) => {
 
  
   return (
-    <div className='text-white  w-[30%] ml-10 '>
+    <div className='text-white  w-[30%] ml-10 mt-10'>
       <div className='mb-5'>
-      <span className='text-2xl font-semibold'>channels</span> 
+      <span className='text-2xl font-semibold'>CHANNELS</span> 
 
       </div>
       {isChannels?(
