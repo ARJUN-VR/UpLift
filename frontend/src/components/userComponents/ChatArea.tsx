@@ -9,6 +9,7 @@ import { faComment, faImage } from "@fortawesome/free-solid-svg-icons";
 import Loader from "./Loader";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import { CreatorLiveComponent } from "../creatorComponents/CreatorLiveComponent";
 
 const socket = io("http://localhost:8000");
 
@@ -18,7 +19,7 @@ interface MessageType {
   image?: string;
 }
 
-export const ChatArea = ({ campaignId }) => {
+export const ChatArea = ({ campaignId , handleLive}) => {
   console.log(campaignId);
 
   const [message2, setMessage2] = useState<string>("");
@@ -26,7 +27,7 @@ export const ChatArea = ({ campaignId }) => {
   const [makeChange, setMakeChange] = useState<boolean>(false);
 
 
-  const [isLive, setIsLive] = useState<boolean>(false)
+ 
 
   const [image, setImage] = useState<string>("");
 
@@ -110,6 +111,10 @@ export const ChatArea = ({ campaignId }) => {
     setFileToBase64(imgFile);
   };
 
+  const liveHandler = ()=>{
+    handleLive()
+  }
+
   return (
     <div className="chat-area flex flex-col h-[740px] bg-gray-800 text-white w-full rounded-xl">
       {/* chat list */}
@@ -130,7 +135,7 @@ export const ChatArea = ({ campaignId }) => {
               <span className="text-xl font-semibold">modue: Next-Gen Modular</span>
               {
                 isCreator&&(
-                  <button className='mr-20 bg-red-500 text-white font-semibold w-20 rounded-md h-10' onClick={()=>setIsLive(true)}>Go live</button>
+                  <button className='mr-20 bg-red-500 text-white font-semibold w-20 rounded-md h-10' onClick={liveHandler}>Go live</button>
 
                 )
               }

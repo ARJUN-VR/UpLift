@@ -17,6 +17,8 @@ export const Channels = ({callback}) => {
 
   const [isChannels,setIsChannels] = useState<boolean>(true)
 
+  const [selected,setSelected] = useState<string>('')
+
 
  const {userInfo} = useSelector((state:RootState)=>state.auth)
 
@@ -50,7 +52,9 @@ export const Channels = ({callback}) => {
 
 
 
- 
+ const handleSelection = (id:string)=>{
+  setSelected(id)
+ }
 
  
   return (
@@ -63,7 +67,7 @@ export const Channels = ({callback}) => {
         <>
         {
   channel.flat().map((data, index) => (
-    <div key={index} className='flex items-center w-full bg-gray-700 rounded-md p-2 mb-1' onClick={()=>callback(data._id)}>
+    <div key={index} className={`flex items-center w-full  rounded-md p-2 mb-1 ${selected===data._id?'bg-gray-700':'bg-gray-900'}`} onClick={()=>{callback(data._id);handleSelection(data._id)}}>
       <img src={data.image} alt={data.title} className='rounded-full mr-2' style={{ width: '70px', height: '70px' }} />
       <span className='line-clamp-1'>{data.title}</span>
     </div>
