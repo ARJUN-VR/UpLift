@@ -36,10 +36,10 @@ export const SignUpForm = () => {
       return toast.error("email validation failed");
     }
     try {
-      const userData = await register({ name, email, password }).unwrap();
+      await register({ name, email, password }).unwrap();
 
-      dispatch(setCredentials({ ...userData }));
-      navigate("/");
+      
+      navigate("/login");
       toast.success("registration success.");
     } catch (err) {
       toast.error(err?.data?.message || err.error);
@@ -74,14 +74,14 @@ export const SignUpForm = () => {
 
                   const reg = async () => {
                     try {
-                      const userData = await register({
+                       await register({
                         name,
                         email,
                         password,
                       }).unwrap();
 
-                      dispatch(setCredentials({ ...userData }));
-                      navigate("/");
+                      
+                      navigate("/login");
                       toast.success("registration success.");
                     } catch (err) {
                       toast.error(err?.data?.message || err.error);
