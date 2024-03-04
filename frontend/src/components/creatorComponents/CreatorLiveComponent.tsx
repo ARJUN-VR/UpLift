@@ -1,10 +1,18 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTowerBroadcast } from '@fortawesome/free-solid-svg-icons';
-import React, { useEffect, useRef, useState } from 'react'
 
-export const CreatorLiveComponent = ({isLIve}) => {
+import { useEffect, useRef, useState } from 'react';
+import io from 'socket.io-client'
+
+interface LIVEPROP{
+    isLive:boolean
+}
+
+const socket = io('http://localhost:8000')
+
+
+export const CreatorLiveComponent = ({isLive}:LIVEPROP) => {
     const [localStream,setLocalStream] = useState<MediaStream|undefined|null>()
 
+  
 
     const videoRef = useRef(null)
 
@@ -20,13 +28,17 @@ export const CreatorLiveComponent = ({isLIve}) => {
         }
     }
 
-   if(isLIve){
+   if(isLive){
     useEffect(()=>{
         getLocalData()
 
     },[])
    }
    console.log(localStream)
+
+   const handleJoined = ()=>{
+    console.log('new user joined')
+   }
 
   return (
     <div className='bg-gray-900 flex flex-col'>

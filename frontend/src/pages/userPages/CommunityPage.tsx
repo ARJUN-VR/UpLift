@@ -17,12 +17,13 @@ export const CommunityPage = () => {
   const handleLiveClick = async()=>{
     setIsLive(!isLive)
   }
+  
   return (
     <>
       {userData ? (
         isLive ? (
           <div>
-           <CreatorLiveComponent isLIve={isLive}/>
+           <CreatorLiveComponent isLive={isLive}/>
           </div>
         ) : (
           <div className="bg-[#0c0c0c] min-h-screen ">

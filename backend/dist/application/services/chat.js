@@ -17,6 +17,10 @@ const chatConnect = () => __awaiter(void 0, void 0, void 0, function* () {
         socket.on('chat', () => {
             console.log('chat');
         });
+        socket.on('onlive', (channel) => {
+            console.log(`a creator started live on ${channel} channel`);
+            socket.emit('started', channel);
+        });
         socket.on('send', (data) => __awaiter(void 0, void 0, void 0, function* () {
             const { message, userName, image } = data;
             if (!message) {

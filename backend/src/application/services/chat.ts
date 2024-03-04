@@ -8,6 +8,11 @@ export const chatConnect = async()=>{
         socket.on('chat',()=>{
           console.log('chat')
         })
+
+        socket.on('onlive',(channel:string)=>{
+          console.log(`a creator started live on ${channel} channel`)
+          io.emit('live',channel)
+        })
         socket.on('send',async(data)=>{
             const {message,userName,image} = data
 

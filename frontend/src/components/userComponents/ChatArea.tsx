@@ -19,15 +19,14 @@ interface MessageType {
   image?: string;
 }
 
-export const ChatArea = ({ campaignId , handleLive}) => {
+export const ChatArea = ({ campaignId, handleLive }) => {
   console.log(campaignId);
 
   const [message2, setMessage2] = useState<string>("");
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [makeChange, setMakeChange] = useState<boolean>(false);
 
-
- 
+  const [liveState, setLiveState] = useState<boolean>(false);
 
   const [image, setImage] = useState<string>("");
 
@@ -39,16 +38,13 @@ export const ChatArea = ({ campaignId , handleLive}) => {
   };
 
   const [saveChat] = useSaveChatMutation();
-  const [getChats,{isLoading}] = useGetChatMutation();
+  const [getChats, { isLoading }] = useGetChatMutation();
 
- const {userInfo} = useSelector((state:RootState)=>state.auth)
+  const { userInfo } = useSelector((state: RootState) => state.auth);
 
- const isCreator:boolean = userInfo.result.user.isCreator
+  const isCreator: boolean = userInfo.result.user.isCreator;
 
-
-
-
-  const userName: string = userInfo.result.user.name
+  const userName: string = userInfo.result.user.name;
 
   let isChat: string = "";
   if (campaignId) {
@@ -66,9 +62,12 @@ export const ChatArea = ({ campaignId , handleLive}) => {
 
     socket.on("message", (data) => {
       setMessages((prev) => [...prev, data]);
+      console.log(messages);
+      setLiveState(true);
+      console.log(liveState, "liveState");
       const message = data.message;
       const userName = data.userName;
-      const image = data.image
+      const image = data.image;
 
       if (campaignId) {
         const save = async () => {
@@ -76,7 +75,7 @@ export const ChatArea = ({ campaignId , handleLive}) => {
             campaignId,
             message,
             userName,
-            image
+            image,
           }).unwrap();
         };
         save();
@@ -111,9 +110,16 @@ export const ChatArea = ({ campaignId , handleLive}) => {
     setFileToBase64(imgFile);
   };
 
-  const liveHandler = ()=>{
-    handleLive()
-  }
+  const liveHandler = () => {
+    const channel = "main";
+    socket.emit("onlive", channel);
+    handleLive();
+  };
+
+ socket.on('live',()=>{
+  console.log('getting')
+  setLiveState(true)
+ })
 
   return (
     <div className="chat-area flex flex-col h-[740px] bg-gray-800 text-white w-full rounded-xl">
@@ -132,13 +138,25 @@ export const ChatArea = ({ campaignId , handleLive}) => {
             <div className="flex flex-col rounded-xl ">
               {/* group title */}
               <div className="w-full bg-gray-700 h-20 mb-2 top-0 sticky flex items-center  pl-20 justify-between">
-              <span className="text-xl font-semibold">modue: Next-Gen Modular</span>
-              {
-                isCreator&&(
-                  <button className='mr-20 bg-red-500 text-white font-semibold w-20 rounded-md h-10' onClick={liveHandler}>Go live</button>
-
-                )
-              }
+                <span className="text-xl font-semibold">
+                  modue: Next-Gen Modular
+                </span>
+                {isCreator && (
+                  <button
+                    className="mr-20 bg-red-500 text-white font-semibold w-20 rounded-md h-10"
+                    onClick={liveHandler}
+                  >
+                    Go live
+                  </button>
+                )}
+                {liveState && (
+                  <span
+                    className="mr-20 bg-red-500 text-white font-semibold w-20 rounded-md h-10"
+                    id="live"
+                  >
+                    creator on live
+                  </span>
+                )}
               </div>
               {messages.map((data, index) => (
                 <div key={index} className="flex flex-col mb-2">
@@ -176,11 +194,7 @@ export const ChatArea = ({ campaignId , handleLive}) => {
               />
             </div>
           )}
-          {
-            isLoading&&(
-              <Loader/>
-            )
-          }
+          {isLoading && <Loader />}
 
           {/* message input area */}
           <div className="input-area bg-gray-800 p-4 flex items-center">
@@ -193,7 +207,7 @@ export const ChatArea = ({ campaignId , handleLive}) => {
                 onChange={imageHandler}
               />
               <span className="ml-3" onClick={triggerImage}>
-                <FontAwesomeIcon icon={faImage}  />
+                <FontAwesomeIcon icon={faImage} />
               </span>
               <input
                 type="text"
