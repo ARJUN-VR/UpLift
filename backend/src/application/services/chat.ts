@@ -10,16 +10,18 @@ export const chatConnect = async()=>{
         })
 
         socket.on('joinRequest',(channel:string)=>{
-          console.log(`a creator started live on ${channel} channel`)
-          io.emit('join',channel)
+          console.log(`a creator started live on ${channel} channel check`)
+          io.emit('test',channel)
         })
         socket.on('send',async(data)=>{
-            const {message,userName,image} = data
+            const {message,userName,image,campaignId} = data
+
+            socket.join(campaignId)
 
             if(!message){
-              io.emit('message',{userName,image})
+              io.to(campaignId).emit('message',{userName,image})
             }else{
-              io.emit('message',{message,userName,image})
+              io.to(campaignId).emit('message',{message,userName,image})
 
             }
         })

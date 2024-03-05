@@ -9,7 +9,7 @@ import { faComment, faImage } from "@fortawesome/free-solid-svg-icons";
 import Loader from "./Loader";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { CreatorLiveComponent } from "../creatorComponents/CreatorLiveComponent";
+
 
 const socket = io("http://localhost:8000");
 
@@ -63,8 +63,6 @@ export const ChatArea = ({ campaignId, handleLive }) => {
     socket.on("message", (data) => {
       setMessages((prev) => [...prev, data]);
       console.log(messages);
-      setLiveState(true);
-      console.log(liveState, "liveState");
       const message = data.message;
       const userName = data.userName;
       const image = data.image;
@@ -88,7 +86,7 @@ export const ChatArea = ({ campaignId, handleLive }) => {
   }, [campaignId, getChats, saveChat, userName]);
 
   const sendMessage = (message: string) => {
-    socket.emit("send", { message: message, userName: userName, image: image });
+    socket.emit("send", { message: message, userName: userName, image: image,campaignId });
     setMessage2("");
     setMakeChange(!makeChange);
     setImage("");
@@ -116,10 +114,12 @@ export const ChatArea = ({ campaignId, handleLive }) => {
     handleLive();
   };
 
- socket.on('live',()=>{
-  console.log('getting')
-  setLiveState(true)
- })
+ useEffect(()=>{
+  socket.on('test',(channel:string)=>{
+    console.log('getting the call',channel)
+    setLiveState(true)
+  })
+ },[])
 
   return (
     <div className="chat-area flex flex-col h-[740px] bg-gray-800 text-white w-full rounded-xl">

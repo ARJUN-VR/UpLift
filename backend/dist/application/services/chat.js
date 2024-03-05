@@ -17,9 +17,9 @@ const chatConnect = () => __awaiter(void 0, void 0, void 0, function* () {
         socket.on('chat', () => {
             console.log('chat');
         });
-        socket.on('onlive', (channel) => {
+        socket.on('joinRequest', (channel) => {
             console.log(`a creator started live on ${channel} channel`);
-            socket.emit('started', channel);
+            app_1.io.emit('join', channel);
         });
         socket.on('send', (data) => __awaiter(void 0, void 0, void 0, function* () {
             const { message, userName, image } = data;
