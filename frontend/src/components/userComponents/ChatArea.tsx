@@ -26,6 +26,8 @@ export const ChatArea = ({ campaignId, handleLive }) => {
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [makeChange, setMakeChange] = useState<boolean>(false);
 
+  const [liveChannel,setLiveChannel] = useState<string>('')
+
   const [liveState, setLiveState] = useState<boolean>(false);
 
   const [image, setImage] = useState<string>("");
@@ -86,7 +88,7 @@ export const ChatArea = ({ campaignId, handleLive }) => {
   }, [campaignId, getChats, saveChat, userName]);
 
   const sendMessage = (message: string) => {
-    socket.emit("send", { message: message, userName: userName, image: image,campaignId });
+    socket.emit("send", { message: message, userName: userName, image: image,channel:campaignId });
     setMessage2("");
     setMakeChange(!makeChange);
     setImage("");
@@ -109,15 +111,15 @@ export const ChatArea = ({ campaignId, handleLive }) => {
   };
 
   const liveHandler = () => {
-    const channel = "main";
+    const channel = campaignId
     socket.emit("joinRequest", channel);
     handleLive();
   };
 
  useEffect(()=>{
-  socket.on('test',(channel:string)=>{
-    console.log('getting the call',channel)
-    setLiveState(true)
+  socket.on('invite',(channel:string)=>{
+
+    setLiveChannel(channel)  
   })
  },[])
 
@@ -149,7 +151,7 @@ export const ChatArea = ({ campaignId, handleLive }) => {
                     Go live
                   </button>
                 )}
-                {liveState && (
+                { liveChannel == campaignId && (
                   <span
                     className="mr-20 bg-red-500 text-white font-semibold w-20 rounded-md h-10"
                     id="live"
