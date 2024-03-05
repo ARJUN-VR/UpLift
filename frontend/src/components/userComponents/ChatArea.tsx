@@ -10,7 +10,6 @@ import Loader from "./Loader";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 
-
 const socket = io("http://localhost:8000");
 
 interface MessageType {
@@ -26,9 +25,7 @@ export const ChatArea = ({ campaignId, handleLive }) => {
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [makeChange, setMakeChange] = useState<boolean>(false);
 
-  const [liveChannel,setLiveChannel] = useState<string>('')
-
-  const [liveState, setLiveState] = useState<boolean>(false);
+  const [liveChannel, setLiveChannel] = useState<string>("");
 
   const [image, setImage] = useState<string>("");
 
@@ -88,7 +85,12 @@ export const ChatArea = ({ campaignId, handleLive }) => {
   }, [campaignId, getChats, saveChat, userName]);
 
   const sendMessage = (message: string) => {
-    socket.emit("send", { message: message, userName: userName, image: image,channel:campaignId });
+    socket.emit("send", {
+      message: message,
+      userName: userName,
+      image: image,
+      channel: campaignId,
+    });
     setMessage2("");
     setMakeChange(!makeChange);
     setImage("");
@@ -111,17 +113,24 @@ export const ChatArea = ({ campaignId, handleLive }) => {
   };
 
   const liveHandler = () => {
-    const channel = campaignId
+    const channel = campaignId;
     socket.emit("joinRequest", channel);
     handleLive();
   };
 
- useEffect(()=>{
-  socket.on('invite',(channel:string)=>{
+  useEffect(() => {
+    const handleInvite = (channel: string) => setLiveChannel(channel);
 
-    setLiveChannel(channel)  
-  })
- },[])
+    socket.on("invite", handleInvite);
+
+    return () => {
+      socket.off("invite", handleInvite);
+    };
+  }, []);
+
+  const joinHandler = () => {
+    socket.emit("joined");
+  };
 
   return (
     <div className="chat-area flex flex-col h-[740px] bg-gray-800 text-white w-full rounded-xl">
@@ -151,10 +160,11 @@ export const ChatArea = ({ campaignId, handleLive }) => {
                     Go live
                   </button>
                 )}
-                { liveChannel == campaignId && (
+                {liveChannel == campaignId && (
                   <span
-                    className="mr-20 bg-red-500 text-white font-semibold w-20 rounded-md h-10"
+                    className="mr-20 h-10 text-red-400"
                     id="live"
+                    onClick={joinHandler}
                   >
                     creator on live
                   </span>

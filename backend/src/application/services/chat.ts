@@ -13,6 +13,10 @@ export const chatConnect = async()=>{
           console.log(`a creator started live on ${channel} channel check`)
           io.emit('invite',channel)
         })
+
+        socket.on('joined',()=>{
+          io.emit('newjoin')
+        })
         socket.on('send',async(data)=>{
             const {message,userName,image,channel} = data
 
