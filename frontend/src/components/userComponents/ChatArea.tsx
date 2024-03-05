@@ -112,7 +112,7 @@ export const ChatArea = ({ campaignId, handleLive }) => {
 
   const liveHandler = () => {
     const channel = "main";
-    socket.emit("onlive", channel);
+    socket.emit("joinRequest", channel);
     handleLive();
   };
 
