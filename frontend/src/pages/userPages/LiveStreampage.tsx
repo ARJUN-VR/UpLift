@@ -5,7 +5,6 @@ import { LiveStreamComponent } from '../../components/userComponents/LiveStreamC
 
 export const LiveStreampage = () => {
   const url = useLocation()
-  console.log('url:',url)
   return (
     <div>
       {
