@@ -9,6 +9,7 @@ import { faComment, faImage } from "@fortawesome/free-solid-svg-icons";
 import Loader from "./Loader";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import { useNavigate } from "react-router-dom";
 
 const socket = io("http://localhost:8000");
 
@@ -18,7 +19,12 @@ interface MessageType {
   image?: string;
 }
 
-export const ChatArea = ({ campaignId, handleLive }) => {
+interface CHATPROP{
+  campaignId:string
+}
+
+
+export const ChatArea = ({ campaignId}:CHATPROP) => {
   console.log(campaignId);
 
   const [message2, setMessage2] = useState<string>("");
@@ -29,12 +35,18 @@ export const ChatArea = ({ campaignId, handleLive }) => {
 
   const [image, setImage] = useState<string>("");
 
+
+
   const imageRef = useRef<HTMLInputElement>(null);
 
   const triggerImage = () => {
     console.log("works");
     imageRef.current?.click();
   };
+
+  const navigate = useNavigate()
+
+
 
   const [saveChat] = useSaveChatMutation();
   const [getChats, { isLoading }] = useGetChatMutation();
@@ -115,7 +127,8 @@ export const ChatArea = ({ campaignId, handleLive }) => {
   const liveHandler = () => {
     const channel = campaignId;
     socket.emit("joinRequest", channel);
-    handleLive();
+    navigate('/liveHost')
+    
   };
 
   useEffect(() => {
@@ -130,6 +143,7 @@ export const ChatArea = ({ campaignId, handleLive }) => {
 
   const joinHandler = () => {
     socket.emit("joined");
+    navigate('/live');
   };
 
   return (

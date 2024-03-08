@@ -1,10 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { toast } from "react-toastify";
+
 import io from "socket.io-client";
 
-interface LIVEPROP {
-  isLive: boolean;
-}
+
 
 const socket = io("http://localhost:8000");
 
@@ -17,7 +15,7 @@ const servers = {
 }
 
 
-export const CreatorLiveComponent = ({ isLive }: LIVEPROP) => {
+export const CreatorLiveComponent = () => {
   const [localStream, setLocalStream] = useState<
     MediaStream | undefined | null
   >();
@@ -46,24 +44,30 @@ export const CreatorLiveComponent = ({ isLive }: LIVEPROP) => {
       console.error("Error accessing media devices:", error);
     }
   };
+  useEffect(()=>{
+    getLocalData()
+  },[])
 
-  if (isLive) {
-    useEffect(() => {
-      getLocalData();
-    }, []);
-  }
 
+  let peerConnection:RTCPeerConnection;
   const createPeerConnection = async()=>{
-    const peerConnection = new RTCPeerConnection(servers)
+     peerConnection = new RTCPeerConnection(servers)
     localStream?.getTracks().forEach((track)=>{
         peerConnection.addTrack(track,localStream)
     })
+    peerConnection.onicecandidate = (event)=>{
+      if(event.candidate){
+        socket.emit('ice',event.candidate)
+      }
+
+    }
   }
-
-
-
+ 
   const createOffer = async()=>{
     await createPeerConnection()
+    const offer = await peerConnection.createOffer()
+    await peerConnection.setLocalDescription(offer)
+    socket.emit('offer',{'type':'offer','offer':offer})
   }
 
   const handleJoin = async() => {

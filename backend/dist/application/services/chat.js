@@ -18,16 +18,20 @@ const chatConnect = () => __awaiter(void 0, void 0, void 0, function* () {
             console.log('chat');
         });
         socket.on('joinRequest', (channel) => {
-            console.log(`a creator started live on ${channel} channel`);
-            app_1.io.emit('join', channel);
+            console.log(`a creator started live on ${channel} channel check`);
+            app_1.io.emit('invite', channel);
+        });
+        socket.on('joined', () => {
+            app_1.io.emit('newjoin');
         });
         socket.on('send', (data) => __awaiter(void 0, void 0, void 0, function* () {
-            const { message, userName, image } = data;
+            const { message, userName, image, channel } = data;
+            socket.join(channel);
             if (!message) {
-                app_1.io.emit('message', { userName, image });
+                app_1.io.to(channel).emit('message', { userName, image });
             }
             else {
-                app_1.io.emit('message', { message, userName, image });
+                app_1.io.to(channel).emit('message', { message, userName, image });
             }
         }));
     });
