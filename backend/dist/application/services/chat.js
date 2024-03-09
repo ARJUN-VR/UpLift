@@ -24,6 +24,15 @@ const chatConnect = () => __awaiter(void 0, void 0, void 0, function* () {
         socket.on('joined', () => {
             app_1.io.emit('newjoin');
         });
+        socket.on('offer', (offer) => {
+            app_1.io.emit('offersent', offer);
+        });
+        socket.on('answer', (answer) => {
+            app_1.io.emit('answersent', answer);
+        });
+        socket.on('ice', (candidate) => {
+            app_1.io.emit('icesent', candidate);
+        });
         socket.on('send', (data) => __awaiter(void 0, void 0, void 0, function* () {
             const { message, userName, image, channel } = data;
             socket.join(channel);

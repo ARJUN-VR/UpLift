@@ -24,6 +24,9 @@ export const chatConnect = async()=>{
         socket.on('answer',(answer:RTCSessionDescriptionInit)=>{
           io.emit('answersent',answer)
         })
+        socket.on('ice',(candidate:RTCIceCandidate)=>{
+          io.emit('icesent',candidate)
+        })
         socket.on('send',async(data)=>{
             const {message,userName,image,channel} = data
 

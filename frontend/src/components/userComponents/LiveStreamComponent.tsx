@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { connect } from "react-redux";
 import { io } from "socket.io-client";
 
 export const LiveStreamComponent = () => {
@@ -25,20 +26,17 @@ useEffect(()=>{
     socket.off('offer',handleOffer)
   }
 },[])
+let peerConnection:RTCPeerConnection;
 
 const handleOffer =async(offer:RTCSessionDescriptionInit)=>{
   try {
     console.log('offer:',offer)
-    const peerConnection = new RTCPeerConnection(servers)
+     peerConnection = new RTCPeerConnection(servers)
     await peerConnection.setRemoteDescription(offer)
     const answer = await peerConnection.createAnswer()
     await peerConnection.setLocalDescription(answer)
     socket.emit('answer',answer)
-    peerConnection.onicecandidate= (event)=>{
-      if(event.candidate){
-        socket.emit('ice',event.candidate)
-      }
-    }
+    
 
     peerConnection.ontrack= (event)=>{
       setRemoteStream(event.streams[0])
@@ -50,6 +48,20 @@ const handleOffer =async(offer:RTCSessionDescriptionInit)=>{
   }
 
 }
+useEffect(()=>{
+  socket.on('icesent',(candidate:RTCIceCandidate)=>{
+    console.log('ice candidate:',candidate)
+
+    const connect =()=>{
+      if(peerConnection){
+        peerConnection.addIceCandidate(candidate)
+        console.log('candidate:',candidate)
+      }
+    }
+    connect()
+  })
+  socket.off('icesent',connect)
+},[])
   
   return (
     <div className="bg-gray-900 flex flex-col">

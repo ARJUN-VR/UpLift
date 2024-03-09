@@ -43,11 +43,14 @@ export const CreatorLiveComponent = () => {
 
     const createPeerConnection = async () => {
         peerConnectionRef.current = new RTCPeerConnection(servers);
+        console.log('works')
         localStream?.getTracks().forEach((track) => {
             peerConnectionRef.current?.addTrack(track, localStream);
         });
         peerConnectionRef.current.onicecandidate = (event) => {
+          console.log('2')
             if (event.candidate) {
+              console.log('3')
                 socket.emit('ice', event.candidate);
             }
         };
@@ -75,18 +78,12 @@ export const CreatorLiveComponent = () => {
     }, []);
 
     const addAnswer = async (answer: RTCSessionDescriptionInit) => {
-      console.log('answer:', answer);
-      if (peerConnectionRef.current) {
-          try {
-              await peerConnectionRef.current.setRemoteDescription(new RTCSessionDescription(answer));
-          } catch (error) {
-              console.error('Error setting remote description:', error);
-          }
-      } else {
-          console.error('RTCPeerConnection is not initialized.');
-      }
-  };
-  
+        console.log('answer:', answer);
+        // console.log('peerconnection:', peerConnectionRef.current);
+        // if(!peerConnectionRef.current?.currentRemoteDescription){
+        //   peerConnectionRef.current?.setRemoteDescription(answer)
+        // }
+    };
 
     return (
         <div className="bg-gray-900 flex flex-col">
@@ -95,6 +92,7 @@ export const CreatorLiveComponent = () => {
                     <video ref={videoRef} autoPlay className="w-full h-screen" />
                 </div>
             )}
+            <button onClick={createPeerConnection} className="bg-red-800 w-40 h-40" >create peerconnection </button>
         </div>
     );
 };
