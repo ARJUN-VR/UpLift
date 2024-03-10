@@ -4,95 +4,142 @@ import io from "socket.io-client";
 const socket = io("http://localhost:8000");
 
 const servers = {
-    iceServers:[
-        {
-            urls:['stun:stun1.l.google.com:19302','stun:stun2.l.google.com:19302']
-        }
-    ]
+  iceServers: [
+    {
+      urls: ["stun:stun1.l.google.com:19302", "stun:stun2.l.google.com:19302"],
+    },
+  ],
 };
 
 export const CreatorLiveComponent = () => {
-    const [localStream, setLocalStream] = useState<MediaStream | undefined | null>();
-    const peerConnectionRef = useRef<RTCPeerConnection>();
+  const peerConnectionRef = useRef<RTCPeerConnection>();
+  const localStreamRef = useRef<MediaStream>();
 
-    useEffect(() => {
-        socket.on("newjoin", handleJoin);
+  useEffect(() => {
+    socket.on("newjoin", handleJoin);
 
-        return () => {
-            socket.off("newjoin", handleJoin);
-        };
-    }, []);
-
-    const videoRef = useRef<HTMLVideoElement>(null);
-
-    const getLocalData = async () => {
-        try {
-            const stream: MediaStream | null = await navigator.mediaDevices.getUserMedia({ video: true });
-            setLocalStream(stream);
-            if (videoRef.current && stream) {
-                videoRef.current.srcObject = stream;
-            }
-        } catch (error) {
-            console.error("Error accessing media devices:", error);
-        }
+    return () => {
+      socket.off("newjoin", handleJoin);
     };
+  }, []);
 
-    useEffect(() => {
-        getLocalData();
-    }, []);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-    const createPeerConnection = async () => {
-        peerConnectionRef.current = new RTCPeerConnection(servers);
-        console.log('works')
-        localStream?.getTracks().forEach((track) => {
-            peerConnectionRef.current?.addTrack(track, localStream);
+  const getLocalData = async () => {
+    try {
+      const stream: MediaStream | null =
+        await navigator.mediaDevices.getUserMedia({ video: true });
+      localStreamRef.current = stream;
+      if (videoRef.current && localStreamRef.current) {
+        videoRef.current.srcObject = localStreamRef.current;
+      }
+    } catch (error) {
+      console.error("Error accessing media devices:", error);
+    }
+  };
+
+  useEffect(() => {
+    getLocalData();
+  }, []);
+
+  const createPeerConnection = async () => {
+    try {
+      peerConnectionRef.current = new RTCPeerConnection(servers);
+      console.log("stream:", localStreamRef.current);
+      peerConnectionRef.current.onicegatheringstatechange = async () => {
+        console.log("ice state", peerConnectionRef.current?.iceGatheringState);
+      };
+
+      console.log("works");
+      if (localStreamRef.current) {
+        const tracks = localStreamRef.current.getTracks();
+        tracks.forEach((track) => {
+          peerConnectionRef.current?.addTrack(track, localStreamRef.current!);
         });
-        peerConnectionRef.current.onicecandidate = (event) => {
-          console.log('2')
-            if (event.candidate) {
-              console.log('3')
-                socket.emit('ice', event.candidate);
-            }
-        };
-    };
+        console.log("inside");
+      }
 
-    const createOffer = async () => {
-        await createPeerConnection();
-        const offer = await peerConnectionRef.current?.createOffer();
-        if (offer) {
-            await peerConnectionRef.current?.setLocalDescription(offer);
-            socket.emit('offer', offer);
+      peerConnectionRef.current.onicecandidate = (event) => {
+        if (event.candidate) {
+          socket.emit("ice", event.candidate);
         }
-    };
+      };
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
 
-    const handleJoin = async () => {
-        console.log("new user joined");
-        await createOffer();
-    };
+  const createOffer = async () => {
+    console.log("a");
+    await createPeerConnection();
+    console.log("b");
 
-    useEffect(() => {
-        socket.on('answersent', (answer) => {
-            addAnswer(answer);
-        });
-        socket.off('answersent', addAnswer);
-    }, []);
+    console.log('state:',peerConnectionRef.current?.signalingState)
+    const offer = await peerConnectionRef.current?.createOffer();
+    if (offer) {
+  console.log('state:',peerConnectionRef.current?.signalingState)
 
-    const addAnswer = async (answer: RTCSessionDescriptionInit) => {
-        console.log('answer:', answer);
-        // console.log('peerconnection:', peerConnectionRef.current);
-        // if(!peerConnectionRef.current?.currentRemoteDescription){
-        //   peerConnectionRef.current?.setRemoteDescription(answer)
-        // }
-    };
+      await peerConnectionRef.current?.setLocalDescription(offer);
+      socket.emit("offer", offer);
+    }
+  };
 
-    return (
-        <div className="bg-gray-900 flex flex-col">
-            {localStream && (
-                <div className="w-[50%] ml-20">
-                    <video ref={videoRef} autoPlay className="w-full h-screen" />
-                </div>
-            )}
-            <button onClick={createPeerConnection} className="bg-red-800 w-40 h-40" >create peerconnection </button>
+  const handleJoin = async () => {
+    console.log("new user joined");
+    await createOffer();
+  };
+  console.log(videoRef, "videoRef");
+
+  useEffect(() => {
+    socket.on("answersent", (answer) => {
+      console.log('gettign...')
+      addAnswer(answer);
+    });
+    socket.off("answersent", addAnswer);
+  }, []);
+  const addAnswer = async (answer: RTCSessionDescriptionInit) => {
+    try{
+      console.log("answer:", answer);
+      console.log('peerconnection:', peerConnectionRef.current);
+  console.log('state:',peerConnectionRef.current?.signalingState)
+
+      if(!peerConnectionRef.current?.currentRemoteDescription){
+        try{
+          console.log(peerConnectionRef.current?.connectionState)
+          if(peerConnectionRef.current?.signalingState === 'have-remote-offer' || peerConnectionRef.current?.connectionState === 'connecting'){
+
+            console.log('getitjkgsdf')
+            peerConnectionRef.current?.setRemoteDescription(answer)
+          }
+
+          
+        }catch(error){
+          console.log(error)
+        }
+
+      }
+    }catch(error){
+      console.log(error)
+    }
+
+  };
+
+  peerConnectionRef.current?.addEventListener('connectionstatechange',event =>{
+    if(peerConnectionRef.current?.connectionState === 'connected'){
+      console.log('peers connected')
+    }else{
+      console.log(peerConnectionRef.current?.connectionState,'connection state')
+    }
+  })
+
+  return (
+    <div className="bg-gray-900 flex flex-col">
+      <button>hellrogffcfvghtgfgfrfffhhfrdfffrffd</button>
+      {localStreamRef.current && (
+        <div className="w-[50%] ml-20">
+          <video ref={videoRef} autoPlay className="w-full h-screen" />
         </div>
-    );
+      )}
+    </div>
+  );
 };

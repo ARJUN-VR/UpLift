@@ -25,12 +25,15 @@ const chatConnect = () => __awaiter(void 0, void 0, void 0, function* () {
             app_1.io.emit('newjoin');
         });
         socket.on('offer', (offer) => {
+            console.log('offer sent success');
             app_1.io.emit('offersent', offer);
         });
         socket.on('answer', (answer) => {
+            console.log('getting');
             app_1.io.emit('answersent', answer);
         });
         socket.on('ice', (candidate) => {
+            console.log('ice is triggering');
             app_1.io.emit('icesent', candidate);
         });
         socket.on('send', (data) => __awaiter(void 0, void 0, void 0, function* () {

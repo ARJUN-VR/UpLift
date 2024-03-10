@@ -18,13 +18,16 @@ export const chatConnect = async()=>{
           io.emit('newjoin')
         })
         socket.on('offer',(offer:RTCSessionDescriptionInit)=>{
+          console.log('offer sent success')
           io.emit('offersent',offer)
 
         })
         socket.on('answer',(answer:RTCSessionDescriptionInit)=>{
+          console.log('getting')
           io.emit('answersent',answer)
         })
         socket.on('ice',(candidate:RTCIceCandidate)=>{
+          console.log('ice is triggering')
           io.emit('icesent',candidate)
         })
         socket.on('send',async(data)=>{
