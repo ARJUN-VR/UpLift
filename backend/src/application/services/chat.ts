@@ -22,6 +22,7 @@ export const chatConnect = async()=>{
           io.emit('offersent',offer)
 
         })
+
         socket.on('answer',(answer:RTCSessionDescriptionInit)=>{
           console.log('getting')
           io.emit('answersent',answer)

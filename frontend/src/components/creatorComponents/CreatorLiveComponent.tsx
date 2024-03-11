@@ -28,7 +28,7 @@ export const CreatorLiveComponent = () => {
   const getLocalData = async () => {
     try {
       const stream: MediaStream | null =
-        await navigator.mediaDevices.getUserMedia({ video: true });
+        await navigator.mediaDevices.getUserMedia({ video: true,audio:true });
       localStreamRef.current = stream;
       if (videoRef.current && localStreamRef.current) {
         videoRef.current.srcObject = localStreamRef.current;
@@ -54,7 +54,10 @@ export const CreatorLiveComponent = () => {
       if (localStreamRef.current) {
         const tracks = localStreamRef.current.getTracks();
         tracks.forEach((track) => {
+          console.log('tracks:',track)
           peerConnectionRef.current?.addTrack(track, localStreamRef.current!);
+          console.log('tracks:',track)
+
         });
         console.log("inside");
       }
@@ -70,9 +73,8 @@ export const CreatorLiveComponent = () => {
   };
 
   const createOffer = async () => {
-    console.log("a");
+
     await createPeerConnection();
-    console.log("b");
 
     console.log('state:',peerConnectionRef.current?.signalingState)
     const offer = await peerConnectionRef.current?.createOffer();
@@ -88,20 +90,21 @@ export const CreatorLiveComponent = () => {
     console.log("new user joined");
     await createOffer();
   };
-  console.log(videoRef, "videoRef");
+
 
   useEffect(() => {
     socket.on("answersent", (answer) => {
-      console.log('gettign...')
       addAnswer(answer);
     });
     socket.off("answersent", addAnswer);
   }, []);
+
+
+
   const addAnswer = async (answer: RTCSessionDescriptionInit) => {
     try{
       console.log("answer:", answer);
-      console.log('peerconnection:', peerConnectionRef.current);
-  console.log('state:',peerConnectionRef.current?.signalingState)
+      console.log('state:',peerConnectionRef.current?.signalingState)
 
       if(!peerConnectionRef.current?.currentRemoteDescription){
         try{
@@ -110,6 +113,11 @@ export const CreatorLiveComponent = () => {
 
             console.log('getitjkgsdf')
             peerConnectionRef.current?.setRemoteDescription(answer)
+            setTimeout(()=>{
+              console.log(peerConnectionRef.current?.connectionState)
+
+            },3000)
+        
           }
 
           
@@ -124,13 +132,6 @@ export const CreatorLiveComponent = () => {
 
   };
 
-  peerConnectionRef.current?.addEventListener('connectionstatechange',event =>{
-    if(peerConnectionRef.current?.connectionState === 'connected'){
-      console.log('peers connected')
-    }else{
-      console.log(peerConnectionRef.current?.connectionState,'connection state')
-    }
-  })
 
   return (
     <div className="bg-gray-900 flex flex-col">

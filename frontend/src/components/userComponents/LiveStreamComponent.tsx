@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { io } from "socket.io-client";
 
 export const LiveStreamComponent = () => {
   const [remoteStream,setRemoteStream] = useState<MediaStream|null>(null)
+  const peerConnectionRef = useRef<RTCPeerConnection>()
 
   const socket = io("http://localhost:8000");
 
@@ -14,7 +15,7 @@ export const LiveStreamComponent = () => {
         }
     ]
 }
-let peerConnection:RTCPeerConnection;
+
 
 useEffect(()=>{
  
@@ -31,10 +32,13 @@ useEffect(()=>{
 const handleOffer =async(offer:RTCSessionDescriptionInit)=>{
   try {
     console.log('offer:',offer)
-    peerConnection = new RTCPeerConnection(servers)
-    console.log('state:',peerConnection?.signalingState)
-    await peerConnection.setRemoteDescription(offer)
-    console.log('state:',peerConnection?.signalingState)
+    peerConnectionRef.current = new RTCPeerConnection(servers)
+    console.log('state:',peerConnectionRef.current?.signalingState)
+    console.log('connectin state:',peerConnectionRef.current.connectionState)
+    await peerConnectionRef.current.setRemoteDescription(offer)
+    console.log('state:',peerConnectionRef.current?.signalingState)
+    console.log('connectin state:',peerConnectionRef.current.connectionState)
+
 
     await createAnswer()
 
@@ -48,21 +52,42 @@ const handleOffer =async(offer:RTCSessionDescriptionInit)=>{
 
 const createAnswer =async()=>{
   try{
-    console.log('in')
-    const answer = await peerConnection.createAnswer()
-    console.log('in2')
-  console.log('state:',peerConnection?.signalingState)
-    await peerConnection.setLocalDescription(answer)
-  console.log('state:',peerConnection.signalingState)
 
-    console.log('in3')
+    const answer = await peerConnectionRef.current?.createAnswer()
+  console.log('state:',peerConnectionRef.current?.signalingState)
+
+  console.log(peerConnectionRef.current,'poedfjlsa')
+
+    await peerConnectionRef.current?.setLocalDescription(answer)
+  console.log('state:',peerConnectionRef.current?.signalingState)
+  console.log('connectin state:',peerConnectionRef.current?.connectionState)
+
+  if(peerConnectionRef.current){
+    console.log('enehf')
+    peerConnectionRef.current.ontrack = (event)=>{
+      console.log('new track added;',event.track)
+    }
+  }
+
+  console.log(peerConnectionRef.current,'just checking')
+
+
   
     socket.emit('answer',answer)
-  
-    peerConnection.ontrack = (event) => {
-      console.log('getting in...')
-      setRemoteStream(event.streams[0]);
-    };
+
+
+    if(peerConnectionRef.current){
+      console.log('getting in.....')
+      peerConnectionRef.current.ontrack = (event) => {
+        console.log('ontrack event triggered');
+        if (event.streams && event.streams.length > 0) {
+          console.log('Remote stream received:', event.streams[0]);
+          setRemoteStream(event.streams[0]);
+        }
+      };
+    }
+
+    console.log(remoteStream,'remotestream')
   }catch(error){
     console.log(error)
   }
@@ -73,14 +98,18 @@ const createAnswer =async()=>{
 
 
 
+
+
+
+
 useEffect(()=>{
   socket.on('icesent',(candidate:RTCIceCandidate)=>{
     console.log('ice candidate:',candidate)
 
     const connect =()=>{
       try{
-        if(peerConnection){
-          peerConnection.addIceCandidate(candidate)
+        if(peerConnectionRef.current){
+          peerConnectionRef.current.addIceCandidate(candidate)
           console.log('candidate:',candidate)
         }
       }catch(error){
@@ -92,6 +121,7 @@ useEffect(()=>{
   })
   socket.off('icesent',connect)
 },[])
+
 
   
   return (
