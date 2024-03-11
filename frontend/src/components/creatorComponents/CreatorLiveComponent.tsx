@@ -28,7 +28,7 @@ export const CreatorLiveComponent = () => {
   const getLocalData = async () => {
     try {
       const stream: MediaStream | null =
-        await navigator.mediaDevices.getUserMedia({ video: true,audio:true });
+        await navigator.mediaDevices.getUserMedia({ video: true });
       localStreamRef.current = stream;
       if (videoRef.current && localStreamRef.current) {
         videoRef.current.srcObject = localStreamRef.current;
@@ -116,7 +116,7 @@ export const CreatorLiveComponent = () => {
             setTimeout(()=>{
               console.log(peerConnectionRef.current?.connectionState)
 
-            },3000)
+            },7000)
         
           }
 
