@@ -11,6 +11,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { logout } from "../../redux/reducers/userReducers";
+import Loader from "./Loader";
 
 export const Profile = () => {
   const [name, setName] = useState<string>("");
@@ -28,7 +29,7 @@ export const Profile = () => {
 
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const [getProfile] = useGetProfileMutation();
+  const [getProfile,{isLoading}] = useGetProfileMutation();
   const [updateProfile] = useEditProfileMutation()
   const [logoutCall] = useLogoutMutation();
 
@@ -201,6 +202,13 @@ setEditEmail(email)
             <></>
           )}
         </div>
+        {
+          isLoading &&(
+            <div>
+              <Loader/>
+            </div>
+          )
+        }
       </div>
       <div className="w-[700px] h-[500px] bg-violet-200 flex gap-x-3 mt-8 ml-10 rounded-2xl">
         <div className="bg-gray-800 w-full rounded-2xl flex gap-x-48 pt-4">

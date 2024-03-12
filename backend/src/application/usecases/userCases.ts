@@ -50,10 +50,14 @@ export const userCases = (repository: ReturnType<UserDbInterFace>) => {
   };
 
   const userSignout = (res: any) => {
-    res.cookie("jwt", "", {
+    res.cookie("accessToken", "", {
       httpOnly: true,
       expires: new Date(0),
     });
+    res.cookie('refreshToken','',{
+      httpOnly:true,
+      expires: new Date(0)
+    })
   };
 
   const updateProfile = async (req: any) => {

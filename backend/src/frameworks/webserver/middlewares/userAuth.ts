@@ -22,12 +22,10 @@ export const protect = (
   return asyncHandler(
     async (req: Request, res: Response, next: NextFunction) => {
       const accessToken = req.cookies.accessToken;
-      console.log("accesToken:", accessToken);
 
       const renewToken = async () => {
         const refreshToken = req.cookies.refreshToken;
         if (!refreshToken) {
-          console.log("works");
           return res.json({ message: "no refresh token" });
         } else {
           try {
@@ -37,12 +35,19 @@ export const protect = (
             ) as JwtPayload;
 
             const userId = decoded.userId;
-            console.log(userId, "userId");
-            const accessToken = jwt.sign({ userId }, configKeys.ACCESS_KEY, {
-              expiresIn: "1m",
-            });
-            res.cookie("accessToken", accessToken, { maxAge: 600000 });
-            next();
+            const userdata = await dbRepository.findById(userId);
+            if (userdata?.isBlocked) {
+              const error = new Error("Access denied.");
+              throw error;
+            } else {
+              const accessToken = jwt.sign({ userId }, configKeys.ACCESS_KEY, {
+                expiresIn: "5m",
+              });
+              req.user = userdata;
+              res.cookie("accessToken", accessToken, { maxAge: 5 * 60 * 1000 });
+              next();
+            }
+
           } catch (error) {
             console.log(error);
           }
@@ -66,8 +71,7 @@ export const protect = (
         } catch (error) {
           next(error);
         }
-      } else {
-        console.log("here");
+      } else {  
         await renewToken();
       }
     }
