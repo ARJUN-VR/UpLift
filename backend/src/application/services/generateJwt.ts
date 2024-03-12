@@ -4,18 +4,33 @@ import { userInterface } from '../../entities/User';
 
 
 const generateToken = async(res:any,user:userInterface)=>{
-    const userId=user._id
-    const Token = jwt.sign({userId},configKeys.JWT_KEY,{
-        expiresIn:'30d'
-    });
-    res.cookie('jwt',Token,{
-        httponly:true,
-        secure:configKeys.NODE_ENV!=='development',
-        samesite:true,
-        maxAge : 30 * 24 * 60 * 60 * 1000
-    
-    })
+    try{
+        const userId=user._id
+        const accessToken = jwt.sign({userId},configKeys.ACCESS_KEY,{
+            expiresIn:'1m'
+        });
+        const refreshToken = jwt.sign({userId},configKeys.REFRESH_KEY,{
+            expiresIn:'2m'
+        })
 
+        res.cookie('accessToken',accessToken,{
+            httponly:true,
+            secure:configKeys.NODE_ENV!=='development',
+            samesite:true,
+            maxAge : 60000
+        
+        })
+        res.cookie('refreshToken',refreshToken,{
+            httponly:true,
+            secure:configKeys.NODE_ENV!=='development',
+            samesite:true,
+            maxAge: 120000
+        })
+    
+    }catch(error){
+        console.log('error in jwt generation:',error)
+    }
+   
 
 }
 

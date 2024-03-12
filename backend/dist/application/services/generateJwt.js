@@ -15,15 +15,29 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const config_1 = require("../../frameworks/database/mongoDb/config");
 const generateToken = (res, user) => __awaiter(void 0, void 0, void 0, function* () {
-    const userId = user._id;
-    const Token = jsonwebtoken_1.default.sign({ userId }, config_1.configKeys.JWT_KEY, {
-        expiresIn: '30d'
-    });
-    res.cookie('jwt', Token, {
-        httponly: true,
-        secure: config_1.configKeys.NODE_ENV !== 'development',
-        samesite: true,
-        maxAge: 30 * 24 * 60 * 60 * 1000
-    });
+    try {
+        const userId = user._id;
+        const accessToken = jsonwebtoken_1.default.sign({ userId }, config_1.configKeys.ACCESS_KEY, {
+            expiresIn: '1m'
+        });
+        const refreshToken = jsonwebtoken_1.default.sign({ userId }, config_1.configKeys.REFRESH_KEY, {
+            expiresIn: '2m'
+        });
+        res.cookie('accessToken', accessToken, {
+            httponly: true,
+            secure: config_1.configKeys.NODE_ENV !== 'development',
+            samesite: true,
+            maxAge: 60000
+        });
+        res.cookie('refreshToken', refreshToken, {
+            httponly: true,
+            secure: config_1.configKeys.NODE_ENV !== 'development',
+            samesite: true,
+            maxAge: 120000
+        });
+    }
+    catch (error) {
+        console.log('error in jwt generation:', error);
+    }
 });
 exports.default = generateToken;

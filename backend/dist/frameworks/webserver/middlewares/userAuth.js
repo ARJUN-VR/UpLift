@@ -19,17 +19,33 @@ const config_1 = require("../../database/mongoDb/config");
 const protect = (userDbInterface, dbImplements) => {
     const dbRepository = userDbInterface(dbImplements());
     return (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-        const token = req.cookies.jwt;
-        if (token) {
+        const accessToken = req.cookies.accessToken;
+        console.log("accesToken:", accessToken);
+        const renewToken = () => __awaiter(void 0, void 0, void 0, function* () {
+            const refreshToken = req.cookies.refreshToken;
+            if (!refreshToken) {
+                console.log("works");
+                return res.json({ message: "no refresh token" });
+            }
+            else {
+                try {
+                    const decoded = jsonwebtoken_1.default.verify(refreshToken, config_1.configKeys.REFRESH_KEY);
+                    const userId = decoded.userId;
+                    console.log(userId, "userId");
+                    const accessToken = jsonwebtoken_1.default.sign({ userId }, config_1.configKeys.ACCESS_KEY, {
+                        expiresIn: "1m",
+                    });
+                    res.cookie("accessToken", accessToken, { maxAge: 600000 });
+                    next();
+                }
+                catch (error) {
+                    console.log(error);
+                }
+            }
+        });
+        if (accessToken) {
             try {
-                const decoded = jsonwebtoken_1.default.verify(token, config_1.configKeys.JWT_KEY);
-                // const dateCheck = Date.now().toString().slice(0,9)
-                // const dateFormat = parseInt(dateCheck)
-                //  if(decoded.exp && decoded.exp < dateFormat){
-                //   console.log(decoded.exp,'exp')
-                //   console.log(Date.now(),'date')
-                //   throw new Error('token expired')
-                //  }
+                const decoded = jsonwebtoken_1.default.verify(accessToken, config_1.configKeys.ACCESS_KEY);
                 const userdata = yield dbRepository.findById(decoded.userId);
                 if (userdata === null || userdata === void 0 ? void 0 : userdata.isBlocked) {
                     const error = new Error("Access denied.");
@@ -37,7 +53,6 @@ const protect = (userDbInterface, dbImplements) => {
                 }
                 else {
                     req.user = userdata;
-                    console.log("successfully verified from userAuth");
                     next();
                 }
             }
@@ -46,7 +61,8 @@ const protect = (userDbInterface, dbImplements) => {
             }
         }
         else {
-            throw new Error("Not authorized,no Token");
+            console.log("here");
+            yield renewToken();
         }
     }));
 };

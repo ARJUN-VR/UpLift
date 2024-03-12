@@ -46,7 +46,7 @@ export const Profile = () => {
         const userData = await getProfile("");
         console.log(userData,'userdatattta')
 
-        if (userData.error?.data?.message == "Access denied." || userData.error?.data?.message == 'token expired' || userData.error?.data?.message == 'Not authorized,no Token') {
+        if (userData.error?.data?.message == "Access denied." || userData.error?.data?.message == 'token expired' || userData.error?.data?.message == 'Not authorized,no Token' ||userData.data?.message == 'no refresh token') {
           await logoutCall("").unwrap();
           dispatch(logout());
           navigate("/login");

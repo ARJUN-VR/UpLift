@@ -16,7 +16,7 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const config_1 = require("../../frameworks/database/mongoDb/config");
 const generateAdminToken = (res, admin) => __awaiter(void 0, void 0, void 0, function* () {
     const Id = admin._id;
-    const Token = jsonwebtoken_1.default.sign({ Id }, config_1.configKeys.JWT_KEY, {
+    const Token = jsonwebtoken_1.default.sign({ Id }, config_1.configKeys.ACCESS_KEY, {
         expiresIn: '10d'
     });
     res.cookie('adminJwt', Token, {

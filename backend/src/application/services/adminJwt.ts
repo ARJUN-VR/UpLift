@@ -5,7 +5,7 @@ import { configKeys } from "../../frameworks/database/mongoDb/config";
 
 const generateAdminToken = async(res:any,admin:AdminInterface)=>{
     const Id = admin._id
-    const Token = Jwt.sign({Id},configKeys.JWT_KEY,{
+    const Token = Jwt.sign({Id},configKeys.ACCESS_KEY,{
         expiresIn:'10d'
     });
     res.cookie('adminJwt',Token,{
