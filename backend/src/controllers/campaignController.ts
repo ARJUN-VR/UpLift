@@ -164,6 +164,12 @@ export const campaignController = (
     res.status(200).json({result})
   })
 
+  const HandleLIve = asyncHandler(async(req:Request,res:Response)=>{
+    const {campaignId} = req.body;
+    const result = await campaignUsecase(dbRepositoryCampaign).HandleLIve(campaignId)
+    res.status(200).json({message:'succesfuly updated',result})
+  })
+
 
 
 
@@ -181,7 +187,8 @@ export const campaignController = (
     listCategory,
     getDashboardData,
     getPaymentData,
-    getSearchResult
+    getSearchResult,
+    HandleLIve
 
   };
 };

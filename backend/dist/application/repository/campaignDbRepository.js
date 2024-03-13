@@ -53,6 +53,9 @@ const campaignDbInterface = (repository) => {
     const search = (query) => __awaiter(void 0, void 0, void 0, function* () {
         return yield repository.search(query);
     });
+    const HandleLIve = (campaignId) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield repository.HandleLIve(campaignId);
+    });
     return {
         listCampaigns,
         createBasics,
@@ -67,7 +70,8 @@ const campaignDbInterface = (repository) => {
         listCategory,
         getDashboardData,
         getPaymentData,
-        search
+        search,
+        HandleLIve
     };
 };
 exports.campaignDbInterface = campaignDbInterface;

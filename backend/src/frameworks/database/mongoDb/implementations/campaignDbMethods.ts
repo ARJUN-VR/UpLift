@@ -167,9 +167,23 @@ export const campaignDbMethods = () => {
   }
 
 
-
-
-
+  const HandleLIve = async (campaignId: string) => {
+    try {
+      const data = await Basics.findOne(
+        { _id: campaignId }
+      );
+      if(data){
+        data.isLive = !data?.isLive
+        await data.save()
+        return data
+      }else{
+        return {success:false}
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      throw error; 
+    }
+  };
 
 
   return {
@@ -186,7 +200,8 @@ export const campaignDbMethods = () => {
     listCategory,
     getDashboardData,
     getPaymentData,
-    search
+    search,
+    HandleLIve
   };
 };
 

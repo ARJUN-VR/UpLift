@@ -13,6 +13,15 @@ export const signaling = () => {
         io.emit('newjoin')
     })
 
+    socket.on('call',(event)=>{
+      io.emit('callSent',event)
+    })
+
+    socket.on('liveMessage',(data)=>{
+      const {message,userName} = data
+      io.emit('incoming',{message,userName})
+    })
+
 
   };
 

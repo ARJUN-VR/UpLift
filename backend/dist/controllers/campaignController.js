@@ -127,6 +127,11 @@ const campaignController = (dbInterface, dbImplements) => {
         const result = yield (0, campaignUsecases_1.campaignUsecase)(dbRepositoryCampaign).search(query);
         res.status(200).json({ result });
     }));
+    const HandleLIve = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const { campaignId } = req.body;
+        const result = yield (0, campaignUsecases_1.campaignUsecase)(dbRepositoryCampaign).HandleLIve(campaignId);
+        res.status(200).json({ message: 'succesfuly updated', result });
+    }));
     return {
         listCampaigns,
         createBasics,
@@ -140,7 +145,8 @@ const campaignController = (dbInterface, dbImplements) => {
         listCategory,
         getDashboardData,
         getPaymentData,
-        getSearchResult
+        getSearchResult,
+        HandleLIve
     };
 };
 exports.campaignController = campaignController;

@@ -148,7 +148,7 @@ export const ChatArea = ({ campaignId}:CHATPROP) => {
 
   const joinHandler = () => {
     socket.emit("joined");
-    navigate('/live');
+    navigate('/liveHost');
   };
 
   return (

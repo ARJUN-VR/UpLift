@@ -64,6 +64,10 @@ export const campaignDbInterface = (
     return await repository.search(query)
   }
 
+  const HandleLIve = async(campaignId:string)=>{
+    return await repository.HandleLIve(campaignId)
+  }
+
 
 
 
@@ -81,7 +85,8 @@ export const campaignDbInterface = (
     listCategory,
     getDashboardData,
     getPaymentData,
-    search
+    search,
+    HandleLIve
    
   };
 };

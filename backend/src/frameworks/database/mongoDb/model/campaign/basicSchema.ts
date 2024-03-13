@@ -52,6 +52,11 @@ const basicSchama = new Schema({
         type:Boolean,
         requried:false,
         default:false
+    },
+    isLive:{
+        type:Boolean,
+        required:false,
+        default:false
     }
 },
 {timestamps:true}

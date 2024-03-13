@@ -161,6 +161,24 @@ const campaignDbMethods = () => {
             ]
         });
     });
+    const HandleLIve = (campaignId) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const data = yield basicSchema_1.Basics.findOneAndUpdate({ _id: campaignId }, { $set: { isLive: { $ne: "$isLive" } } });
+            if (data) {
+                data.isLive = !(data === null || data === void 0 ? void 0 : data.isLive);
+                yield data.save();
+                return data;
+            }
+            else {
+                return { success: false };
+            }
+        }
+        catch (error) {
+            // Handle error
+            console.error("Error:", error);
+            throw error; // Throw error for further handling if needed
+        }
+    });
     return {
         getAllBasics,
         createBasics,
@@ -175,7 +193,8 @@ const campaignDbMethods = () => {
         listCategory,
         getDashboardData,
         getPaymentData,
-        search
+        search,
+        HandleLIve
     };
 };
 exports.campaignDbMethods = campaignDbMethods;
