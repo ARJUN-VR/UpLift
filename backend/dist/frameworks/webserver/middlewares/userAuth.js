@@ -20,23 +20,28 @@ const protect = (userDbInterface, dbImplements) => {
     const dbRepository = userDbInterface(dbImplements());
     return (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         const accessToken = req.cookies.accessToken;
-        console.log("accesToken:", accessToken);
         const renewToken = () => __awaiter(void 0, void 0, void 0, function* () {
             const refreshToken = req.cookies.refreshToken;
             if (!refreshToken) {
-                console.log("works");
                 return res.json({ message: "no refresh token" });
             }
             else {
                 try {
                     const decoded = jsonwebtoken_1.default.verify(refreshToken, config_1.configKeys.REFRESH_KEY);
                     const userId = decoded.userId;
-                    console.log(userId, "userId");
-                    const accessToken = jsonwebtoken_1.default.sign({ userId }, config_1.configKeys.ACCESS_KEY, {
-                        expiresIn: "1m",
-                    });
-                    res.cookie("accessToken", accessToken, { maxAge: 600000 });
-                    next();
+                    const userdata = yield dbRepository.findById(userId);
+                    if (userdata === null || userdata === void 0 ? void 0 : userdata.isBlocked) {
+                        const error = new Error("Access denied.");
+                        throw error;
+                    }
+                    else {
+                        const accessToken = jsonwebtoken_1.default.sign({ userId }, config_1.configKeys.ACCESS_KEY, {
+                            expiresIn: "5m",
+                        });
+                        req.user = userdata;
+                        res.cookie("accessToken", accessToken, { maxAge: 5 * 60 * 1000 });
+                        next();
+                    }
                 }
                 catch (error) {
                     console.log(error);
@@ -61,7 +66,6 @@ const protect = (userDbInterface, dbImplements) => {
             }
         }
         else {
-            console.log("here");
             yield renewToken();
         }
     }));

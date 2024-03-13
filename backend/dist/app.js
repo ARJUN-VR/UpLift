@@ -14,6 +14,7 @@ const cloudinaryConfig_1 = __importDefault(require("./application/services/cloud
 const errorHandler_1 = __importDefault(require("./frameworks/webserver/middlewares/errorHandler"));
 const socket_io_1 = require("socket.io");
 const chat_1 = require("./application/services/chat");
+const signaling_1 = require("./application/services/signaling");
 const app = (0, express_1.default)();
 const server = http_1.default.createServer(app);
 exports.io = new socket_io_1.Server(server, {
@@ -42,6 +43,7 @@ exports.io = new socket_io_1.Server(server, {
 //   })
 // })
 (0, chat_1.chatConnect)();
+(0, signaling_1.signaling)();
 (0, connection_1.connectDb)();
 cloudinaryConfig_1.default;
 (0, express_2.default)(app);

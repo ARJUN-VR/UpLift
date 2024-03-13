@@ -50,9 +50,13 @@ const userCases = (repository) => {
         }
     });
     const userSignout = (res) => {
-        res.cookie("jwt", "", {
+        res.cookie("accessToken", "", {
             httpOnly: true,
             expires: new Date(0),
+        });
+        res.cookie('refreshToken', '', {
+            httpOnly: true,
+            expires: new Date(0)
         });
     };
     const updateProfile = (req) => __awaiter(void 0, void 0, void 0, function* () {

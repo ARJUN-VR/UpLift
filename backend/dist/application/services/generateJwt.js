@@ -18,22 +18,22 @@ const generateToken = (res, user) => __awaiter(void 0, void 0, void 0, function*
     try {
         const userId = user._id;
         const accessToken = jsonwebtoken_1.default.sign({ userId }, config_1.configKeys.ACCESS_KEY, {
-            expiresIn: '1m'
+            expiresIn: '5m'
         });
         const refreshToken = jsonwebtoken_1.default.sign({ userId }, config_1.configKeys.REFRESH_KEY, {
-            expiresIn: '2m'
+            expiresIn: '10d'
         });
         res.cookie('accessToken', accessToken, {
             httponly: true,
             secure: config_1.configKeys.NODE_ENV !== 'development',
             samesite: true,
-            maxAge: 60000
+            maxAge: 5 * 60 * 1000
         });
         res.cookie('refreshToken', refreshToken, {
             httponly: true,
             secure: config_1.configKeys.NODE_ENV !== 'development',
             samesite: true,
-            maxAge: 120000
+            maxAge: 10 * 24 * 60 * 60 * 1000
         });
     }
     catch (error) {

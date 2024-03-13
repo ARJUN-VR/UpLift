@@ -132,9 +132,14 @@ export const ChatArea = ({ campaignId}:CHATPROP) => {
   };
 
   useEffect(() => {
-    const handleInvite = (channel: string) => setLiveChannel(channel);
+    const handleInvite = (channel: string) => {
+      setLiveChannel(channel);
+      console.log('getting the call')
+      console.log('channel:',channel)
+    }
 
     socket.on("invite", handleInvite);
+  
 
     return () => {
       socket.off("invite", handleInvite);

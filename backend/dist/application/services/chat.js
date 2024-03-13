@@ -12,29 +12,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.chatConnect = void 0;
 const app_1 = require("../../app");
 const chatConnect = () => __awaiter(void 0, void 0, void 0, function* () {
-    app_1.io.on('connection', (socket) => {
+    // Establish connection and set up event listeners
+    const connectionHandler = (socket) => {
         console.log('user entered chat section');
+        // Add event listeners
         socket.on('chat', () => {
             console.log('chat');
-        });
-        socket.on('joinRequest', (channel) => {
-            console.log(`a creator started live on ${channel} channel check`);
-            app_1.io.emit('invite', channel);
-        });
-        socket.on('joined', () => {
-            app_1.io.emit('newjoin');
-        });
-        socket.on('offer', (offer) => {
-            console.log('offer sent success');
-            app_1.io.emit('offersent', offer);
-        });
-        socket.on('answer', (answer) => {
-            console.log('getting');
-            app_1.io.emit('answersent', answer);
-        });
-        socket.on('ice', (candidate) => {
-            console.log('ice is triggering');
-            app_1.io.emit('icesent', candidate);
         });
         socket.on('send', (data) => __awaiter(void 0, void 0, void 0, function* () {
             const { message, userName, image, channel } = data;
@@ -46,6 +29,12 @@ const chatConnect = () => __awaiter(void 0, void 0, void 0, function* () {
                 app_1.io.to(channel).emit('message', { message, userName, image });
             }
         }));
-    });
+    };
+    app_1.io.on('connection', connectionHandler);
+    // Return a cleanup function
+    return () => {
+        // Clean up event listeners or any other resources if necessary
+        app_1.io.off('connection', connectionHandler); // This removes the specific 'connection' event listener
+    };
 });
 exports.chatConnect = chatConnect;

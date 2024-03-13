@@ -8,6 +8,7 @@ import cloudinary from "./application/services/cloudinaryConfig";
 import handleError from "./frameworks/webserver/middlewares/errorHandler";
 import {Server,Socket} from 'socket.io'
 import { chatConnect } from "./application/services/chat";
+import { signaling } from "./application/services/signaling";
 
 const app: Application = express();
 
@@ -44,6 +45,7 @@ export const io = new Server(server, {
 // })
 
 chatConnect()
+signaling()
 
 connectDb();
 
