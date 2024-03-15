@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import io from "socket.io-client";
 import { RootState } from "../../redux/store";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const socket = io("http://localhost:8000");
 
@@ -34,10 +36,10 @@ export const CreatorLiveComponent = () => {
 
   const userName: string = userInfo.result.user.name;
 
-  // const isCreator: boolean = userInfo.result.user.isCreator;
-  let isCreator = false
-  isCreator = userInfo.result.user.isCreator;
-  console.log(isCreator)
+  const isCreator: boolean = userInfo.result.user.isCreator;
+  // let isCreator = false
+  // isCreator = userInfo.result.user.isCreator;
+  // console.log(isCreator)
 
 
   let peerConnection:RTCPeerConnection|undefined;
@@ -45,16 +47,8 @@ export const CreatorLiveComponent = () => {
   const remoteVideoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
-    if (!isCreator) {
-      console.log(isCreator,'dfdff')
-
-      return; // Exit early if not the creator
-    }
-    
-  
     const getMedia = async () => {
       try {
-        console.log(isCreator,'dfdff')
         const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
@@ -117,8 +111,7 @@ export const CreatorLiveComponent = () => {
     remoteStream = new MediaStream()
 
 
-   
-
+  
     if(remoteVideoRef.current){
       remoteVideoRef.current.srcObject = remoteStream
     }
@@ -231,7 +224,48 @@ export const CreatorLiveComponent = () => {
     }
   },[])
  
-  const viewersCount = 20
+
+  const naviagate = useNavigate()
+
+  const handleEndlive = ()=>{
+    if(localStream){
+      localStream.getTracks().forEach(track => track.stop())
+    }
+    socket.emit('leave')
+    
+    naviagate(-1)
+    setTimeout(()=>{
+      window.location.reload()
+    },200)
+
+    toast.info('live has ended')
+
+  }
+
+  let liveEnded:boolean;
+
+  useEffect(()=>{
+    const leaveHandler = ()=>{
+      if(localStream){
+        localStream.getTracks().forEach(track => track.stop())
+      }
+      liveEnded = true
+      naviagate(-1)
+      setTimeout(()=>{
+        window.location.reload()
+      },200)
+
+    toast.info('live has ended')
+
+
+    }
+    socket.on('leaveSent',leaveHandler)
+
+    return ()=>{
+
+      socket.off('leaveHandler',leaveHandler)
+    }
+  },[])
 
 
 
@@ -243,17 +277,15 @@ export const CreatorLiveComponent = () => {
   {/* Live video section */}
   <div className="relative flex-grow">
     {/* Viewers count */}
-    <div className="absolute top-2 right-10 mt-5 text-white bg-blue-500 h-10 rounded-lg w-28 flex justify-center items-center">Viewers: {viewersCount}</div>
+    {/* <div className="absolute top-2 right-10 mt-5 text-white bg-blue-500 h-10 rounded-lg w-28 flex justify-center items-center">Viewers: {viewersCount}</div> */}
     <div className="flex justify-center items-center h-full p-5">
-      {
-        isCreator ?(
-          <>
+    
      {localStream && (
         <video ref={videoRef} autoPlay className="w-full h-full">
           Your browser does not support the video tag.
         </video>
       )}
-          </>
+          {/* </>
         ):(
           <>
                    <video ref={remoteVideoRef} autoPlay className="w-full h-full">
@@ -262,13 +294,17 @@ export const CreatorLiveComponent = () => {
                 
     
 
-          </>
-        )
-      }
+          </> */}
+   
  
     </div>
     {/* End Live button */}
-    <button className="absolute top-2 left-16 mt-5 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600" >End Live</button>
+    {
+      isCreator &&(
+        <button className="absolute top-2 left-16 mt-5 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600" onClick={handleEndlive} >End Live</button>
+
+      )
+    }
   </div>
 
   {/* Live chat section */}
@@ -286,7 +322,7 @@ export const CreatorLiveComponent = () => {
     </div>
     {/* Typing area */}
     <div className="flex items-center mt-4 mb-3">
-      <input type="text" className="flex-1 rounded-md border border-gray-600 px-14 py-2 mr-2 bg-gray-800 text-white" placeholder="Type your message..." onChange={(e)=>setMessage(e.target.value)} value={message} />
+      <input type="text" className="flex-1 rounded-md border border-gray-600 px-4 py-2 mr-2 bg-gray-800 text-white" placeholder="Type your message..." onChange={(e)=>setMessage(e.target.value)} value={message} />
       <button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600" onClick={liveMessageHandler}>Send</button>
     </div>
   </div>

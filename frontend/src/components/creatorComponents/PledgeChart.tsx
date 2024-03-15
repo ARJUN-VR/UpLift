@@ -17,7 +17,7 @@ console.log(data)
 
         <LineChart width={530} height={190} data={data}>
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="isCreatedAt" tickFormatter={(tick)=>format(new Date(tick),'MM/dd/yyyy')} />
+        {/* <XAxis dataKey="isCreatedAt" tickFormatter={(tick)=>format(new Date(tick),'MM/dd/yyyy')} /> */}
         <YAxis/>
         <Legend />
         <Tooltip/>

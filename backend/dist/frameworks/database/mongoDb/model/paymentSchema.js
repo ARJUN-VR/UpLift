@@ -6,5 +6,5 @@ const paymentSchema = new mongoose_1.Schema({
     campaignId: String,
     userEmail: String,
     payment: Number
-}, { timestamps: true });
+}, { timestamps: { createdAt: 'isCreatedAt', updatedAt: false } });
 exports.Payment = (0, mongoose_1.model)('Payment', paymentSchema);

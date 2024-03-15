@@ -15,6 +15,9 @@ const signaling = () => {
         socket.on('call', (event) => {
             app_1.io.emit('callSent', event);
         });
+        socket.on('leave', () => {
+            app_1.io.emit('leaveSent');
+        });
         socket.on('liveMessage', (data) => {
             const { message, userName } = data;
             app_1.io.emit('incoming', { message, userName });

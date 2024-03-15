@@ -163,7 +163,7 @@ const campaignDbMethods = () => {
     });
     const HandleLIve = (campaignId) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const data = yield basicSchema_1.Basics.findOneAndUpdate({ _id: campaignId }, { $set: { isLive: { $ne: "$isLive" } } });
+            const data = yield basicSchema_1.Basics.findOne({ _id: campaignId });
             if (data) {
                 data.isLive = !(data === null || data === void 0 ? void 0 : data.isLive);
                 yield data.save();
@@ -174,9 +174,8 @@ const campaignDbMethods = () => {
             }
         }
         catch (error) {
-            // Handle error
             console.error("Error:", error);
-            throw error; // Throw error for further handling if needed
+            throw error;
         }
     });
     return {
