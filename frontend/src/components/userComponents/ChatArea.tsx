@@ -5,11 +5,13 @@ import {
   useSaveChatMutation,
 } from "../../redux/slices/userApiSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faComment, faImage } from "@fortawesome/free-solid-svg-icons";
+import { faComment, faFaceSmile, faImage } from "@fortawesome/free-solid-svg-icons";
 import Loader from "./Loader";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { useNavigate } from "react-router-dom";
+import data from '@emoji-mart/data'
+import Picker from '@emoji-mart/react'
 
 const socket = io("http://localhost:8000");
 
@@ -34,6 +36,14 @@ export const ChatArea = ({ campaignId}:CHATPROP) => {
   const [liveChannel, setLiveChannel] = useState<string>("");
 
   const [image, setImage] = useState<string>("");
+
+  const [isVisible,setIsVisible] = useState<boolean>(false)
+
+ 
+
+  const addEmoji = (emoji:string)=>{
+    setMessage2(message2 + emoji)
+  }
 
 
 
@@ -228,6 +238,14 @@ export const ChatArea = ({ campaignId}:CHATPROP) => {
           {isLoading && <Loader />}
 
           {/* message input area */}
+          {
+            isVisible &&(
+              <span className="ml-2 z-20">
+              <Picker data={data} onEmojiSelect={(e)=>addEmoji(e.native)}/>
+              </span>
+            )
+          }
+
           <div className="input-area bg-gray-800 p-4 flex items-center">
             <div className="bg-gray-700 w-full rounded-md">
               <input
@@ -240,6 +258,11 @@ export const ChatArea = ({ campaignId}:CHATPROP) => {
               <span className="ml-3" onClick={triggerImage}>
                 <FontAwesomeIcon icon={faImage} />
               </span>
+              <span className="ml-3" onClick={()=>setIsVisible(!isVisible)}>
+              <FontAwesomeIcon icon={faFaceSmile} />
+
+              </span>
+ 
               <input
                 type="text"
                 placeholder="Type your message..."
@@ -248,6 +271,8 @@ export const ChatArea = ({ campaignId}:CHATPROP) => {
                 value={message2}
               />
             </div>
+
+
 
             <button
               className="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-md text-white ml-3"
