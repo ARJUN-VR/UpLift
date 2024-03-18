@@ -5,13 +5,17 @@ import {
   useSaveChatMutation,
 } from "../../redux/slices/userApiSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faComment, faFaceSmile, faImage } from "@fortawesome/free-solid-svg-icons";
+import {
+  faComment,
+  faFaceSmile,
+  faImage,
+} from "@fortawesome/free-solid-svg-icons";
 import Loader from "./Loader";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { useNavigate } from "react-router-dom";
-import data from '@emoji-mart/data'
-import Picker from '@emoji-mart/react'
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
 
 const socket = io("http://localhost:8000");
 
@@ -21,12 +25,13 @@ interface MessageType {
   image?: string;
 }
 
-interface CHATPROP{
-  campaignId:string
+interface CHATPROP {
+  campaignId: string;
+  title:string;
+  groupIcon:string
 }
 
-
-export const ChatArea = ({ campaignId}:CHATPROP) => {
+export const ChatArea = ({ campaignId ,title,groupIcon}: CHATPROP) => {
   console.log(campaignId);
 
   const [message2, setMessage2] = useState<string>("");
@@ -36,16 +41,13 @@ export const ChatArea = ({ campaignId}:CHATPROP) => {
   const [liveChannel, setLiveChannel] = useState<string>("");
 
   const [image, setImage] = useState<string>("");
+  const [video, setVideo] = useState<string>("");
 
-  const [isVisible,setIsVisible] = useState<boolean>(false)
+  const [isVisible, setIsVisible] = useState<boolean>(false);
 
- 
-
-  const addEmoji = (emoji:string)=>{
-    setMessage2(message2 + emoji)
-  }
-
-
+  const addEmoji = (emoji: string) => {
+    setMessage2(message2 + emoji);
+  };
 
   const imageRef = useRef<HTMLInputElement>(null);
 
@@ -54,9 +56,7 @@ export const ChatArea = ({ campaignId}:CHATPROP) => {
     imageRef.current?.click();
   };
 
-  const navigate = useNavigate()
-
-
+  const navigate = useNavigate();
 
   const [saveChat] = useSaveChatMutation();
   const [getChats, { isLoading }] = useGetChatMutation();
@@ -84,9 +84,8 @@ export const ChatArea = ({ campaignId}:CHATPROP) => {
     socket.on("message", (data) => {
       setMessages((prev) => [...prev, data]);
       console.log(messages);
-      const message = data.message;
-      const userName = data.userName;
-      const image = data.image;
+
+      const { message, userName, image, video } = data;
 
       if (campaignId) {
         const save = async () => {
@@ -95,6 +94,7 @@ export const ChatArea = ({ campaignId}:CHATPROP) => {
             message,
             userName,
             image,
+            video,
           }).unwrap();
         };
         save();
@@ -107,54 +107,81 @@ export const ChatArea = ({ campaignId}:CHATPROP) => {
   }, [campaignId, getChats, saveChat, userName]);
 
   const sendMessage = (message: string) => {
+    console.log('clicked the button')
+    console.log('emit video:',video)
     socket.emit("send", {
       message: message,
       userName: userName,
       image: image,
+      video: video,
       channel: campaignId,
     });
+    console.log("video here:", video);
     setMessage2("");
     setMakeChange(!makeChange);
     setImage("");
+    setVideo("");
   };
 
-  const imageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const imgFile = e.target?.files?.[0];
-    if(imgFile?.type.startsWith('image')){
-      console.log('its an image')
-    }else{
-      console.log('its a video')
-    }
+  const imageHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const imageFile: File | undefined = e.target.files?.[0];
+    setFileToBase64(imageFile, setImage);
+  };
 
-    const setFileToBase64 = (file: File | undefined) => {
+  const videoHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const videoFile: File | undefined = e.target.files?.[0];
+    console.log(videoFile, "getting video file");
+    setFileToBase64(videoFile, setVideo);
+  };
+
+  const filesHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    try {
+      const selectdFile = e.target.files?.[0];
+      if (selectdFile?.type.startsWith("image")) {
+        imageHandler(e);
+      } else if (selectdFile?.type.startsWith("video")) {
+        console.log("getiitnggs f");
+        videoHandler(e);
+      } else {
+        console.log("error in filesHandler");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const setFileToBase64 = async (
+    file: File | undefined,
+    setInput: React.Dispatch<React.SetStateAction<string>>
+  ) => {
+    try {
       const reader = new FileReader();
-      reader.onloadend = () => {
+      reader.onload = () => {
         const base64String = reader.result as string;
-        setImage(base64String);
+        setInput(base64String);
       };
       if (file) {
         reader.readAsDataURL(file);
       }
-    };
-    setFileToBase64(imgFile);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const liveHandler = () => {
     const channel = campaignId;
     socket.emit("joinRequest", channel);
-    navigate('/liveHost')
-    
+    navigate("/liveHost");
   };
 
   useEffect(() => {
     const handleInvite = (channel: string) => {
       setLiveChannel(channel);
-      console.log('getting the call')
-      console.log('channel:',channel)
-    }
+      console.log("getting the call");
+      console.log("channel:", channel);
+    };
 
     socket.on("invite", handleInvite);
-  
 
     return () => {
       socket.off("invite", handleInvite);
@@ -163,8 +190,10 @@ export const ChatArea = ({ campaignId}:CHATPROP) => {
 
   const joinHandler = () => {
     socket.emit("joined");
-    navigate('/liveHost');
+    navigate("/liveHost");
   };
+
+  console.log('video:',video)
 
   return (
     <div className="chat-area flex flex-col h-[740px] bg-gray-800 text-white w-full rounded-xl">
@@ -180,15 +209,19 @@ export const ChatArea = ({ campaignId}:CHATPROP) => {
             }}
           >
             {/* listing all the chats */}
-            <div className="flex flex-col rounded-xl ">
-              {/* group title */}
-              <div className="w-full bg-gray-700 h-20 mb-2 top-0 sticky flex items-center  pl-20 justify-between">
-                <span className="text-xl font-semibold">
-                  modue: Next-Gen Modular
+            <div className="flex flex-col rounded-xl  ">
+              <div className=" bg-gray-700 h-20 mb-2 top-0 sticky flex items-center">
+              <div className="w-[80%] bg-gray-700 h-20 mb-2 top-0 sticky flex items-center  p-10  ">
+                <img src={groupIcon} alt="" className='rounded-full  h-16 w-16' />
+                <span className="text-xl font-semibold ml-10">
+                  {title}
                 </span>
+                </div>
+                <div className="w-[20%] bg-gray-700 h-20 flex justify-center items-center">
                 {isCreator && (
+
                   <button
-                    className="mr-20 bg-red-500 text-white font-semibold w-20 rounded-md h-10"
+                    className=" bg-red-500 text-white font-semibold w-20 rounded-md h-10 "
                     onClick={liveHandler}
                   >
                     Go live
@@ -204,6 +237,10 @@ export const ChatArea = ({ campaignId}:CHATPROP) => {
                   </span>
                 )}
               </div>
+
+              </div>
+              {/* group title */}
+             
               {messages.map((data, index) => (
                 <div key={index} className="flex flex-col mb-2">
                   {data.image ? (
@@ -240,16 +277,25 @@ export const ChatArea = ({ campaignId}:CHATPROP) => {
               />
             </div>
           )}
+          {video && (
+            <div className="h-auto w-96">
+
+              <video
+                src={`${video}`}
+                className="w-full h-full overflow-hidden"
+                autoPlay
+                controls
+              ></video>
+            </div>
+          )}
           {isLoading && <Loader />}
 
           {/* message input area */}
-          {
-            isVisible &&(
-              <span className="ml-2 z-20">
-              <Picker data={data} onEmojiSelect={(e)=>addEmoji(e.native)}/>
-              </span>
-            )
-          }
+          {isVisible && (
+            <span className="ml-2 z-20">
+              <Picker data={data} onEmojiSelect={(e) => addEmoji(e.native)} />
+            </span>
+          )}
 
           <div className="input-area bg-gray-800 p-4 flex items-center">
             <div className="bg-gray-700 w-full rounded-md">
@@ -258,16 +304,15 @@ export const ChatArea = ({ campaignId}:CHATPROP) => {
                 style={{ display: "none" }}
                 ref={imageRef}
                 accept="image/*,video/*"
-                onChange={imageHandler}
+                onChange={filesHandler}
               />
               <span className="ml-3" onClick={triggerImage}>
                 <FontAwesomeIcon icon={faImage} />
               </span>
-              <span className="ml-3" onClick={()=>setIsVisible(!isVisible)}>
-              <FontAwesomeIcon icon={faFaceSmile} />
-
+              <span className="ml-3" onClick={() => setIsVisible(!isVisible)}>
+                <FontAwesomeIcon icon={faFaceSmile} />
               </span>
- 
+
               <input
                 type="text"
                 placeholder="Type your message..."
@@ -276,8 +321,6 @@ export const ChatArea = ({ campaignId}:CHATPROP) => {
                 value={message2}
               />
             </div>
-
-
 
             <button
               className="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-md text-white ml-3"

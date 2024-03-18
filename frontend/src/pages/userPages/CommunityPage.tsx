@@ -8,10 +8,14 @@ export const CommunityPage = () => {
   const userData = localStorage.getItem("userInfo");
 
   const [id, setId] = useState<string>("");
+  const [title,setTitle] = useState<string>('')
+  const [groupIcon,setGroupIcon] = useState<string>('')
 
 
-  const channelProp = (value: string) => {
-    setId(value);
+  const channelProp = (id:string,title:string,image:string) => {
+    setId(id);
+    setTitle(title)
+    setGroupIcon(image)
   };
 
 
@@ -23,7 +27,7 @@ export const CommunityPage = () => {
           <div className="bg-[#0c0c0c] min-h-screen ">
             <div className="flex w-full space-x-2 ">
               <Channels callback={channelProp} />
-              <ChatArea campaignId={id}/>
+              <ChatArea campaignId={id} groupIcon={groupIcon} title={title}/>
             </div>
           </div>
       

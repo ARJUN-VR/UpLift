@@ -154,12 +154,15 @@ export const userCases = (repository: ReturnType<UserDbInterFace>) => {
 
   const saveChat = async(chat:ChatInterface)=>{
     if(chat.image){
-      try{
+   
        const imageRes =  await uploadImage(chat.image)
        chat.image = imageRes?.secure_url
-      }catch(error){
-        console.log(error)
-      }
+
+    }else if(chat.video){
+      const videoRes =  await cloudinary.v2.uploader.upload(chat.video, {
+        resource_type: "video",
+      });
+      chat.video = videoRes?.secure_url   
     }
     return await repository.saveChat(chat)
   }

@@ -25,10 +25,6 @@ export const Channels = ({callback}) => {
 
  const email = userInfo.result.user.email
 
- 
-
-
- 
 
  const [fetchChannel] = useGetChannelDataMutation()
  
@@ -50,8 +46,6 @@ export const Channels = ({callback}) => {
  },[fetchChannel,email])
 
 
-
-
  const handleSelection = (id:string)=>{
   setSelected(id)
  }
@@ -67,7 +61,7 @@ export const Channels = ({callback}) => {
         <>
         {
   channel.flat().map((data, index) => (
-    <div key={index} className={`flex items-center w-full  rounded-md p-2 mb-1 ${selected===data._id?'bg-gray-700':'bg-gray-900'}`} onClick={()=>{callback(data._id);handleSelection(data._id)}}>
+    <div key={index} className={`flex items-center w-full  rounded-md p-2 mb-1 ${selected===data._id?'bg-gray-700':'bg-gray-900'}`} onClick={()=>{callback(data._id,data.title,data.image);handleSelection(data._id)}}>
       <img src={data.image} alt={data.title} className='rounded-full mr-2' style={{ width: '70px', height: '70px' }} />
       <span className='line-clamp-1'>{data.title}</span>
     </div>

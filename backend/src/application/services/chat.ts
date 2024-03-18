@@ -2,21 +2,26 @@ import { io } from "../../app";
 import { Socket } from "socket.io";
 
 export const chatConnect = async () => {
-  // Establish connection and set up event listeners
+
   const connectionHandler = (socket: Socket) => {
-      console.log('user entered chat section');
-      // Add event listeners
+      console.log('user entered chat section');   
       socket.on('chat', () => {
           console.log('chat');
       });
       socket.on('send', async (data) => {
-          const { message, userName, image, channel } = data;
+        console.log('getting the call')
+          const { message, userName, image, video, channel } = data;
+          console.log('video:',video,userName)
 
           socket.join(channel);
 
           if (!message) {
               io.to(channel).emit('message', { userName, image });
-          } else {
+          }else if(!message&&!image){
+            io.to(channel).emit('message',{userName,video})
+          } else if(video&&!image){
+            io.to(channel).emit('message',{userName,video,message})
+            } else {
               io.to(channel).emit('message', { message, userName, image });
           }
       });
@@ -24,10 +29,10 @@ export const chatConnect = async () => {
 
   io.on('connection', connectionHandler);
 
-  // Return a cleanup function
+
   return () => {
-      // Clean up event listeners or any other resources if necessary
-      io.off('connection', connectionHandler); // This removes the specific 'connection' event listener
+    
+      io.off('connection', connectionHandler); 
   };
 };
 
