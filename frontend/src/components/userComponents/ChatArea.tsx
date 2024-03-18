@@ -120,6 +120,11 @@ export const ChatArea = ({ campaignId}:CHATPROP) => {
 
   const imageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const imgFile = e.target?.files?.[0];
+    if(imgFile?.type.startsWith('image')){
+      console.log('its an image')
+    }else{
+      console.log('its a video')
+    }
 
     const setFileToBase64 = (file: File | undefined) => {
       const reader = new FileReader();
@@ -252,7 +257,7 @@ export const ChatArea = ({ campaignId}:CHATPROP) => {
                 type="file"
                 style={{ display: "none" }}
                 ref={imageRef}
-                accept="image/*"
+                accept="image/*,video/*"
                 onChange={imageHandler}
               />
               <span className="ml-3" onClick={triggerImage}>
