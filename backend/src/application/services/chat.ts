@@ -2,42 +2,55 @@ import { io } from "../../app";
 import { Socket } from "socket.io";
 
 export const chatConnect = async () => {
-
   const connectionHandler = (socket: Socket) => {
-      console.log('user entered chat section');   
-      socket.on('chat', () => {
-          console.log('chat');
-      });
-      socket.on('send', async (data) => {
-        console.log('getting the call')
-          const { message, userName, image, video, channel } = data;
-          console.log('video:',video,userName)
+    try {
+     
+      socket.on('reqIn',(data)=>{
+        const {email,id:channel} = data
+        socket.join(channel)
+        console.log('works')
+        const roomSockets = io.sockets.adapter.rooms.get(channel);
+        console.log(roomSockets);
+        io.to(channel).emit('res',email)
+      })
 
-          socket.join(channel);
+      socket.on("send", (data) => {
+        const { message, userName, image, video, channel } = data;
 
-          if (!message) {
-              io.to(channel).emit('message', { userName, image });
-          }else if(!message&&!image){
-            io.to(channel).emit('message',{userName,video})
-          } else if(video&&!image){
-            io.to(channel).emit('message',{userName,video,message})
-            } else {
-              io.to(channel).emit('message', { message, userName, image });
-          }
+        const roomSockets = io.sockets.adapter.rooms.get(channel);
+        console.log(roomSockets); // This will log all sockets in the room 'room1'
+
+    
+        if (!message) {
+          io.to(channel).emit("message", { userName, image });
+          console.log('a')
+
+        } else if (!message && !image) {
+          io.to(channel).emit("message", { userName, video });
+          console.log('b')
+
+        } else if (video && !image) {
+          io.to(channel).emit("message", { userName, video, message });
+          console.log('c')
+
+        } else {
+          io.to(channel).emit("message", { message, userName, image });
+          console.log('d')
+
+        }
       });
+      socket.on("typing", (channel, userName) => {
+        console.log("getting the typing event", channel, userName);
+        io.to(channel).emit("isTyping", userName);
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  io.on('connection', connectionHandler);
-
+  io.on("connection", connectionHandler);
 
   return () => {
-    
-      io.off('connection', connectionHandler); 
+    io.off("connection", connectionHandler);
   };
 };
-
-
-
-
-  
-  

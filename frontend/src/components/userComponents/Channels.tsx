@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useGetChannelDataMutation } from '../../redux/slices/userApiSlice'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
+import { io } from 'socket.io-client'
+import { toast } from 'react-toastify'
 
 
 interface channelData{
@@ -9,6 +11,8 @@ interface channelData{
   title:string,
   image:string
 }
+
+const socket = io('http://localhost:8000')
 
 export const Channels = ({callback}) => {
 
@@ -50,6 +54,18 @@ export const Channels = ({callback}) => {
   setSelected(id)
  }
 
+ useEffect(()=>{
+  socket.on('res',(data)=>{
+    toast.success(data)
+  })
+},[])
+
+const initialJoin = async(id:string)=>{
+  socket.emit('reqIn',{email,id})
+}
+
+
+
  
   return (
     <div className='text-white  w-[30%] ml-10 mt-10'>
@@ -61,7 +77,7 @@ export const Channels = ({callback}) => {
         <>
         {
   channel.flat().map((data, index) => (
-    <div key={index} className={`flex items-center w-full  rounded-md p-2 mb-1 ${selected===data._id?'bg-gray-700':'bg-gray-900'}`} onClick={()=>{callback(data._id,data.title,data.image);handleSelection(data._id)}}>
+    <div key={index} className={`flex items-center w-full  rounded-md p-2 mb-1 ${selected===data._id?'bg-gray-700':'bg-gray-900'}`} onClick={()=>{callback(data._id,data.title,data.image);handleSelection(data._id);initialJoin(data._id)}}>
       <img src={data.image} alt={data.title} className='rounded-full mr-2' style={{ width: '70px', height: '70px' }} />
       <span className='line-clamp-1'>{data.title}</span>
     </div>

@@ -16,6 +16,7 @@ import { RootState } from "../../redux/store";
 import { useNavigate } from "react-router-dom";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
+import { toast } from "react-toastify";
 
 const socket = io("http://localhost:8000");
 
@@ -23,6 +24,7 @@ interface MessageType {
   message: string;
   userName?: string;
   image?: string;
+  video?:string
 }
 
 interface CHATPROP {
@@ -44,6 +46,8 @@ export const ChatArea = ({ campaignId ,title,groupIcon}: CHATPROP) => {
   const [video, setVideo] = useState<string>("");
 
   const [isVisible, setIsVisible] = useState<boolean>(false);
+
+  const [isTypingUserName,setIsTypingUserName] = useState<string>('')
 
   const addEmoji = (emoji: string) => {
     setMessage2(message2 + emoji);
@@ -86,6 +90,7 @@ export const ChatArea = ({ campaignId ,title,groupIcon}: CHATPROP) => {
       console.log(messages);
 
       const { message, userName, image, video } = data;
+      
 
       if (campaignId) {
         const save = async () => {
@@ -107,20 +112,24 @@ export const ChatArea = ({ campaignId ,title,groupIcon}: CHATPROP) => {
   }, [campaignId, getChats, saveChat, userName]);
 
   const sendMessage = (message: string) => {
-    console.log('clicked the button')
-    console.log('emit video:',video)
-    socket.emit("send", {
-      message: message,
-      userName: userName,
-      image: image,
-      video: video,
-      channel: campaignId,
-    });
-    console.log("video here:", video);
-    setMessage2("");
-    setMakeChange(!makeChange);
-    setImage("");
-    setVideo("");
+    try{
+      socket.emit("send", {
+        message: message,
+        userName: userName,
+        image: image,
+        video: video,
+        channel: campaignId,
+      });
+      console.log("video here:", video);
+      setMessage2("");
+      setMakeChange(!makeChange);
+      setImage("");
+      setVideo("");
+    }catch(error){
+      console.log('error from data sendMessage:',error)
+    }
+
+
   };
 
   const imageHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -193,7 +202,34 @@ export const ChatArea = ({ campaignId ,title,groupIcon}: CHATPROP) => {
     navigate("/liveHost");
   };
 
-  console.log('video:',video)
+  const emitTyping = async()=>{
+    socket.emit('typing',campaignId,userName)
+  }
+
+  useEffect(()=>{
+    const typingDetector = (typingUserName:string)=>{
+      console.log('works',typingUserName)
+        setIsTypingUserName(typingUserName)
+    }
+    socket.on('isTyping',typingDetector)
+
+    return ()=>{
+      socket.off('isTyping',typingDetector)
+    }
+
+  },[])
+
+
+  useEffect(()=>{
+    socket.on('res',(data)=>{
+      console.log('getting the response')
+      toast.success(data)
+    })
+  },[])
+
+
+
+
 
   return (
     <div className="chat-area flex flex-col h-[740px] bg-gray-800 text-white w-full rounded-xl">
@@ -211,10 +247,14 @@ export const ChatArea = ({ campaignId ,title,groupIcon}: CHATPROP) => {
             {/* listing all the chats */}
             <div className="flex flex-col rounded-xl  ">
               <div className=" bg-gray-700 h-20 mb-2 top-0 sticky flex items-center">
-              <div className="w-[80%] bg-gray-700 h-20 mb-2 top-0 sticky flex items-center  p-10  ">
-                <img src={groupIcon} alt="" className='rounded-full  h-16 w-16' />
-                <span className="text-xl font-semibold ml-10">
+              <div className="w-[80%] bg-gray-700 h-20 mb-2 top-0 sticky flex items-center pl-10">
+                <img src={groupIcon} alt="" className='rounded-full  h-16 w-16 mt-2' />
+                <span className="text-xl font-semibold ml-10 flex flex-col">
                   {title}
+                  {isTypingUserName&& (
+                    <span className="text-sm mt-2">{`${isTypingUserName} is typing...`}</span>
+                  )}
+
                 </span>
                 </div>
                 <div className="w-[20%] bg-gray-700 h-20 flex justify-center items-center">
@@ -226,6 +266,7 @@ export const ChatArea = ({ campaignId ,title,groupIcon}: CHATPROP) => {
                   >
                     Go live
                   </button>
+                  
                 )}
                 {liveChannel == campaignId && (
                   <span
@@ -242,7 +283,7 @@ export const ChatArea = ({ campaignId ,title,groupIcon}: CHATPROP) => {
               {/* group title */}
              
               {messages.map((data, index) => (
-                <div key={index} className="flex flex-col mb-2">
+                <div key={index} className="flex flex-col mb-2 pl-5">
                   {data.image ? (
                     <div className="bg-gray-600 rounded-md  max-w-[80%] self-start">
                       <div className="text-sm font-semibold text-gray-200 py-1">
@@ -319,6 +360,7 @@ export const ChatArea = ({ campaignId ,title,groupIcon}: CHATPROP) => {
                 className="flex-grow px-4 py-2 rounded-md border-none outline-none text-white bg-gray-700 mr-2"
                 onChange={(e) => setMessage2(e.target.value)}
                 value={message2}
+                onInput={emitTyping}
               />
             </div>
 

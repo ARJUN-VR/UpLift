@@ -12,29 +12,46 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.chatConnect = void 0;
 const app_1 = require("../../app");
 const chatConnect = () => __awaiter(void 0, void 0, void 0, function* () {
-    // Establish connection and set up event listeners
     const connectionHandler = (socket) => {
-        console.log('user entered chat section');
-        // Add event listeners
-        socket.on('chat', () => {
-            console.log('chat');
-        });
-        socket.on('send', (data) => __awaiter(void 0, void 0, void 0, function* () {
-            const { message, userName, image, channel } = data;
-            socket.join(channel);
-            if (!message) {
-                app_1.io.to(channel).emit('message', { userName, image });
-            }
-            else {
-                app_1.io.to(channel).emit('message', { message, userName, image });
-            }
-        }));
+        try {
+            socket.on("joinChannel", (data) => __awaiter(void 0, void 0, void 0, function* () {
+                const { id: channel, email } = data;
+                console.log(`Socket ID: ${socket.id}`);
+                socket.join('room1');
+                console.log(`joined on ${channel}`);
+                const roomSockets = app_1.io.sockets.adapter.rooms.get('room1');
+                console.log(roomSockets); // This will log all sockets in the room 'room1'
+                app_1.io.to('room1').emit("userEntered", { email });
+                console.log('emitted');
+            }));
+            socket.on("send", (data) => {
+                const { message, userName, image, video, channel } = data;
+                socket.join(channel);
+                if (!message) {
+                    app_1.io.to(channel).emit("message", { userName, image });
+                }
+                else if (!message && !image) {
+                    app_1.io.to(channel).emit("message", { userName, video });
+                }
+                else if (video && !image) {
+                    app_1.io.to(channel).emit("message", { userName, video, message });
+                }
+                else {
+                    app_1.io.to(channel).emit("message", { message, userName, image });
+                }
+            });
+            socket.on("typing", (channel, userName) => {
+                console.log("getting the typing event", channel, userName);
+                app_1.io.to(channel).emit("isTyping", userName);
+            });
+        }
+        catch (error) {
+            console.log(error);
+        }
     };
-    app_1.io.on('connection', connectionHandler);
-    // Return a cleanup function
+    app_1.io.on("connection", connectionHandler);
     return () => {
-        // Clean up event listeners or any other resources if necessary
-        app_1.io.off('connection', connectionHandler); // This removes the specific 'connection' event listener
+        app_1.io.off("connection", connectionHandler);
     };
 });
 exports.chatConnect = chatConnect;
