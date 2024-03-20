@@ -14,30 +14,33 @@ const app_1 = require("../../app");
 const chatConnect = () => __awaiter(void 0, void 0, void 0, function* () {
     const connectionHandler = (socket) => {
         try {
-            socket.on("joinChannel", (data) => __awaiter(void 0, void 0, void 0, function* () {
-                const { id: channel, email } = data;
-                console.log(`Socket ID: ${socket.id}`);
-                socket.join('room1');
-                console.log(`joined on ${channel}`);
-                const roomSockets = app_1.io.sockets.adapter.rooms.get('room1');
-                console.log(roomSockets); // This will log all sockets in the room 'room1'
-                app_1.io.to('room1').emit("userEntered", { email });
-                console.log('emitted');
-            }));
+            socket.on('reqIn', (data) => {
+                const { email, id: channel } = data;
+                socket.join(channel);
+                console.log('works');
+                const roomSockets = app_1.io.sockets.adapter.rooms.get(channel);
+                console.log(roomSockets);
+                app_1.io.to(channel).emit('res', email);
+            });
             socket.on("send", (data) => {
                 const { message, userName, image, video, channel } = data;
-                socket.join(channel);
+                const roomSockets = app_1.io.sockets.adapter.rooms.get(channel);
+                console.log(roomSockets);
                 if (!message) {
                     app_1.io.to(channel).emit("message", { userName, image });
+                    console.log('a');
                 }
                 else if (!message && !image) {
                     app_1.io.to(channel).emit("message", { userName, video });
+                    console.log('b');
                 }
                 else if (video && !image) {
                     app_1.io.to(channel).emit("message", { userName, video, message });
+                    console.log('c');
                 }
                 else {
                     app_1.io.to(channel).emit("message", { message, userName, image });
+                    console.log('d');
                 }
             });
             socket.on("typing", (channel, userName) => {

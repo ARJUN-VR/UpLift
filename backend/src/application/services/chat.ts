@@ -18,7 +18,9 @@ export const chatConnect = async () => {
         const { message, userName, image, video, channel } = data;
 
         const roomSockets = io.sockets.adapter.rooms.get(channel);
-        console.log(roomSockets); // This will log all sockets in the room 'room1'
+        console.log(roomSockets);
+
+        socket.join(channel)
 
     
         if (!message) {

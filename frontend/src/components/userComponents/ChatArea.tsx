@@ -54,6 +54,7 @@ export const ChatArea = ({ campaignId ,title,groupIcon}: CHATPROP) => {
   };
 
   const imageRef = useRef<HTMLInputElement>(null);
+  const scroll = useRef<HTMLDivElement>(null);
 
   const triggerImage = () => {
     console.log("works");
@@ -227,12 +228,21 @@ export const ChatArea = ({ campaignId ,title,groupIcon}: CHATPROP) => {
     })
   },[])
 
+  useEffect(() => {
+    // Scroll to the bottom of the chat area when messages change
+    if (scroll.current) {
+        scroll.current.scrollTo({
+            top: scroll.current.scrollHeight,
+            behavior: 'instant'
+        });
+    }
+}, [messages]);
 
 
 
 
   return (
-    <div className="chat-area flex flex-col h-[740px] bg-gray-800 text-white w-full rounded-xl">
+    <div className="chat-area flex flex-col h-[740px] bg-gray-800 text-white w-full rounded-xl scroll-smooth">
       {/* chat list */}
       {isChat ? (
         <>
@@ -243,6 +253,8 @@ export const ChatArea = ({ campaignId ,title,groupIcon}: CHATPROP) => {
               msOverflowStyle: "none",
               "::-webkit-scrollbar": { display: "none" },
             }}
+            ref={scroll} 
+ 
           >
             {/* listing all the chats */}
             <div className="flex flex-col rounded-xl  ">
@@ -257,7 +269,7 @@ export const ChatArea = ({ campaignId ,title,groupIcon}: CHATPROP) => {
 
                 </span>
                 </div>
-                <div className="w-[20%] bg-gray-700 h-20 flex justify-center items-center">
+                <div className="w-[20%] bg-gray-700 h-20 flex justify-center items-center" >
                 {isCreator && (
 
                   <button
@@ -281,9 +293,9 @@ export const ChatArea = ({ campaignId ,title,groupIcon}: CHATPROP) => {
 
               </div>
               {/* group title */}
-             
+
               {messages.map((data, index) => (
-                <div key={index} className="flex flex-col mb-2 pl-5">
+                <div key={index} className="flex flex-col mb-2 pl-5" >
                   {data.image ? (
                     <div className="bg-gray-600 rounded-md  max-w-[80%] self-start">
                       <div className="text-sm font-semibold text-gray-200 py-1">
@@ -306,6 +318,9 @@ export const ChatArea = ({ campaignId ,title,groupIcon}: CHATPROP) => {
                   )}
                 </div>
               ))}
+        
+             
+             
             </div>
           </div>
           {/* selected image div */}
