@@ -86,7 +86,7 @@ export const ChatArea = ({ campaignId ,title,groupIcon}: CHATPROP) => {
 
     fetchChats();
 
-    socket.on("message", (data) => {
+    socket.on("recieveMessage", (data) => {
       setMessages((prev) => [...prev, data]);
       console.log(messages);
 
@@ -114,12 +114,13 @@ export const ChatArea = ({ campaignId ,title,groupIcon}: CHATPROP) => {
 
   const sendMessage = (message: string) => {
     try{
-      socket.emit("send", {
+      socket.emit("message", {
         message: message,
         userName: userName,
         image: image,
         video: video,
         channel: campaignId,
+        room:room
       });
       console.log("video here:", video);
       setMessage2("");
@@ -238,6 +239,41 @@ export const ChatArea = ({ campaignId ,title,groupIcon}: CHATPROP) => {
     }
 }, [messages]);
 
+useEffect(()=>{
+  const test = ()=>{
+      toast.success('joined successfully')
+  }
+  test()
+
+  socket.on('joined',test)
+
+  return ()=>{
+    socket.off('joined',test)
+  }
+
+
+
+},[])
+
+const room = 'room1'
+
+
+const joinRoom = async(campaignId:string)=>{
+  socket.emit('join',campaignId)
+}
+
+
+useEffect(()=>{
+  socket.on('Rmessage',(room)=>{
+    toast.success(`got message in ${room}`)
+  })
+},[])
+
+if(campaignId){
+  console.log('cam:',campaignId)
+  joinRoom(campaignId)
+
+}
 
 
 
@@ -266,6 +302,7 @@ export const ChatArea = ({ campaignId ,title,groupIcon}: CHATPROP) => {
                   {isTypingUserName&& (
                     <span className="text-sm mt-2">{`${isTypingUserName} is typing...`}</span>
                   )}
+                  {/* <div onClick={()=>joinRoom(room)}>join room</div> */}
 
                 </span>
                 </div>

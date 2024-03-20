@@ -169,7 +169,6 @@ export const userController = (
 
  const saveChat = asyncHandler(async(req:Request,res:Response)=>{
   const chat:ChatInterface = req.body;
-  console.log(chat,'world')
   const data = await userCases(dbRepositoryuser).saveChat(chat)
   res.status(200).json({data})
  })
