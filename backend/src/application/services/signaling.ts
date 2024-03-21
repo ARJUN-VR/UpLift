@@ -21,9 +21,9 @@ export const signaling = () => {
       io.emit('leaveSent')
     })
 
-    socket.on('liveMessage',(data)=>{
-      const {message,userName} = data
-      io.emit('incoming',{message,userName})
+    socket.on('liveMessage',(data):void=>{
+      const {message,userName,formattedTime} = data
+      io.emit('incoming',{message,userName,formattedTime})
     })
 
 

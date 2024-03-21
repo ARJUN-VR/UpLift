@@ -17,7 +17,8 @@ const servers = {
 
 export interface MessagesInterface  {
   userName:string;
-  message:string
+  message:string;
+  formattedTime:number;
 
 }
 
@@ -199,19 +200,22 @@ export const CreatorLiveComponent = () => {
     await createOffer()
   }
 
-  const liveMessageHandler = async()=>{
+  const liveMessageHandler = async () => {
     try {
-
-      socket.emit('liveMessage',{message,userName})
-      setMessage('')
-
-
-      
+      const time = new Date(); // Create a new Date object for the current time
+      const formattedTime = time.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true // This ensures that the time is displayed in 12-hour format with AM/PM
+      });
+  
+      socket.emit('liveMessage', { message, userName, formattedTime });
+      setMessage('');
+  
     } catch (error) {
-      console.log(error)
-      
+      console.log(error);
     }
-  }
+  };
 
   useEffect(()=>{
     const chatBundler = async(data:MessagesInterface)=>{
@@ -315,9 +319,14 @@ export const CreatorLiveComponent = () => {
       {/* Messages */}
       {messages.map((data, index) => (
         <div key={index} className="flex flex-col p-3 rounded-lg mb-2">
-          <span className="text-blue-500 font-semibold">{data.userName}</span>
-          <span className="text-gray-200">{data.message}</span>
-        </div>
+  <div className="flex justify-between">
+    <span className="text-blue-500 font-semibold">{data.userName}</span>
+    <span className="text-gray-400">{data.formattedTime}</span>
+  </div>
+  <span className="text-gray-200">{data.message}</span>
+</div>
+
+
       ))}
     </div>
     {/* Typing area */}

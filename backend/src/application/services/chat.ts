@@ -17,7 +17,16 @@ export const chatConnect = async () => {
       socket.on('message',(data):void=>{
         const {channel,message,userName,image,video } = data
         console.log('room:',channel)
-        io.to(channel).emit('recieveMessage',{channel,message,userName})
+        if(message){
+          console.log('in the message');
+          
+
+          io.to(channel).emit('recieveMessage',{channel,message,userName})
+        }else if(video){
+          console.log('works');
+          
+          io.to(channel).emit('recieveMessage',{channel,userName,video})
+        }
 
       })
 
