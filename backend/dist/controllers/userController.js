@@ -149,7 +149,6 @@ const userController = (dbInterface, dbImplements) => {
     }));
     const saveChat = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const chat = req.body;
-        console.log(chat, 'world');
         const data = yield (0, userCases_1.userCases)(dbRepositoryuser).saveChat(chat);
         res.status(200).json({ data });
     }));

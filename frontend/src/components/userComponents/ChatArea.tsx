@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
 import {
   useGetChatMutation,
@@ -108,7 +108,7 @@ export const ChatArea = ({ campaignId ,title,groupIcon}: CHATPROP) => {
     });
 
     return () => {
-      socket.off("message");
+      socket.off("recieveMessage");
     };
   }, [campaignId, getChats, saveChat, userName]);
 
@@ -205,7 +205,7 @@ export const ChatArea = ({ campaignId ,title,groupIcon}: CHATPROP) => {
   };
 
   const emitTyping = async()=>{
-    socket.emit('typing',campaignId,userName)
+    socket.emit('typing',{campaignId,userName})
   }
 
   useEffect(()=>{
@@ -213,13 +213,24 @@ export const ChatArea = ({ campaignId ,title,groupIcon}: CHATPROP) => {
       console.log('works',typingUserName)
         setIsTypingUserName(typingUserName)
     }
+    const clearTyping = ()=>{
+      setTimeout(()=>{
+        setIsTypingUserName('')
+      },500)
+    }
     socket.on('isTyping',typingDetector)
+    socket.on('typingEnded',clearTyping)
+    
+
 
     return ()=>{
       socket.off('isTyping',typingDetector)
+      socket.off('typingEnded',clearTyping)
+
+  
     }
 
-  },[])
+  },[]) 
 
 
   useEffect(()=>{
@@ -239,21 +250,21 @@ export const ChatArea = ({ campaignId ,title,groupIcon}: CHATPROP) => {
     }
 }, [messages]);
 
-useEffect(()=>{
-  const test = ()=>{
-      toast.success('joined successfully')
-  }
-  test()
+// useEffect(()=>{
+//   const test = ()=>{
+//       toast.success('joined successfully')
+//   }
+//   test()
 
-  socket.on('joined',test)
+//   socket.on('joined',test)
 
-  return ()=>{
-    socket.off('joined',test)
-  }
+//   return ()=>{
+//     socket.off('joined',test)
+//   }
 
 
 
-},[])
+// },[])
 
 const room = 'room1'
 
@@ -269,10 +280,15 @@ useEffect(()=>{
   })
 },[])
 
-if(campaignId){
-  console.log('cam:',campaignId)
-  joinRoom(campaignId)
+// useCallback(() => {
+  if (campaignId) {
+    console.log('cam:', campaignId);
+    joinRoom(campaignId);
+  }
+// }, [campaignId]);
 
+const handleKeyRelease = ()=>{
+  socket.emit('ended',{campaignId})
 }
 
 
@@ -413,6 +429,7 @@ if(campaignId){
                 onChange={(e) => setMessage2(e.target.value)}
                 value={message2}
                 onInput={emitTyping}
+                onKeyUp={handleKeyRelease}
               />
             </div>
 

@@ -15,10 +15,24 @@ export const chatConnect = async () => {
       })
 
       socket.on('message',(data):void=>{
-        const {channel } = data
+        const {channel,message,userName,image,video } = data
         console.log('room:',channel)
-        io.to(channel).emit('Rmessage',channel)
+        io.to(channel).emit('recieveMessage',{channel,message,userName})
 
+      })
+
+      socket.on('typing',(data):void=>{
+
+        const {userName,campaignId:channel} = data
+        console.log('typing:',userName,channel)
+        socket.broadcast.to(channel).emit('isTyping',userName)
+        
+
+      })
+
+      socket.on('ended',(data):void=>{
+        const {campaignId:channel} = data
+        socket.broadcast.to(channel).emit('typingEnded')
       })
      
 

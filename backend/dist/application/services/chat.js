@@ -14,38 +14,15 @@ const app_1 = require("../../app");
 const chatConnect = () => __awaiter(void 0, void 0, void 0, function* () {
     const connectionHandler = (socket) => {
         try {
-            socket.on('reqIn', (data) => {
-                const { email, id: channel } = data;
-                socket.join(channel);
-                console.log('works');
-                const roomSockets = app_1.io.sockets.adapter.rooms.get(channel);
-                console.log(roomSockets);
-                app_1.io.to(channel).emit('res', email);
+            socket.on('join', (room) => {
+                socket.join(room);
+                console.log('roomId:', room);
+                app_1.io.to(room).emit('joined');
             });
-            socket.on("send", (data) => {
-                const { message, userName, image, video, channel } = data;
-                const roomSockets = app_1.io.sockets.adapter.rooms.get(channel);
-                console.log(roomSockets);
-                if (!message) {
-                    app_1.io.to(channel).emit("message", { userName, image });
-                    console.log('a');
-                }
-                else if (!message && !image) {
-                    app_1.io.to(channel).emit("message", { userName, video });
-                    console.log('b');
-                }
-                else if (video && !image) {
-                    app_1.io.to(channel).emit("message", { userName, video, message });
-                    console.log('c');
-                }
-                else {
-                    app_1.io.to(channel).emit("message", { message, userName, image });
-                    console.log('d');
-                }
-            });
-            socket.on("typing", (channel, userName) => {
-                console.log("getting the typing event", channel, userName);
-                app_1.io.to(channel).emit("isTyping", userName);
+            socket.on('message', (data) => {
+                const { channel } = data;
+                console.log('room:', channel);
+                app_1.io.to(channel).emit('Rmessage', channel);
             });
         }
         catch (error) {
