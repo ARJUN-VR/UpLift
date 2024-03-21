@@ -13,6 +13,8 @@ export const Payment = ({ close , name, desc,campaignId}) => {
 
 
 
+
+  
   const handlePayment = async () => {
     try {
 

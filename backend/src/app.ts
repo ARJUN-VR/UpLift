@@ -10,6 +10,10 @@ import {Server,Socket} from 'socket.io'
 import { chatConnect } from "./application/services/chat";
 import { signaling } from "./application/services/signaling";
 
+import path from "path"
+const currentWorkingDir = path.resolve();
+const parentDir = path.dirname(currentWorkingDir)
+
 const app: Application = express();
 
 const server = http.createServer(app);
@@ -23,6 +27,20 @@ export const io = new Server(server, {
   });
 
 
+  const enviornment = "production"
+
+  if (enviornment === 'production') { 
+      const __dirname = path.resolve();
+      app.use(express.static(path.join(parentDir, '/Client/dist')));
+    
+      app.get('*', (req, res) =>
+        res.sendFile(path.resolve(parentDir, 'Client', 'dist', 'index.html'))
+      );
+    } else {
+      app.get('/', (req, res) => {
+        res.send('API is running....');
+      });
+    }
 
 chatConnect()
 signaling()
