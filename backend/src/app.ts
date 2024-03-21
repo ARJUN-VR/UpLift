@@ -22,27 +22,7 @@ export const io = new Server(server, {
     }
   });
 
-// io.on('connection',(socket:Socket)=>{
-//     console.log('an user connected')
 
-//     socket.emit('hello','world')
-
-  
-//     socket.on('disconnect',()=>{
-//         console.log('user disconnected')
-//     })
-// })
-
-// io.on('connection',(socket:Socket)=>{
-//   console.log('user entered chat section')
-//   socket.on('chat',()=>{
-//     console.log('chat')
-//   })
-//   socket.on('send',(message)=>{
-//     io.emit('message',message)
-//     console.log('works',message)
-//   })
-// })
 
 chatConnect()
 signaling()

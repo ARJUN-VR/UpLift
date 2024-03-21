@@ -5,7 +5,7 @@ import { RootState } from "../../redux/store";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-const socket = io("http://localhost:8000");
+const socket = io(import.meta.env.VITE_SERVER_URL);
 
 const servers = {
   iceServers: [
@@ -246,14 +246,14 @@ export const CreatorLiveComponent = () => {
 
   }
 
-  let liveEnded:boolean;
+  
 
   useEffect(()=>{
     const leaveHandler = ()=>{
       if(localStream){
         localStream.getTracks().forEach(track => track.stop())
       }
-      liveEnded = true
+
       naviagate(-1)
       setTimeout(()=>{
         window.location.reload()

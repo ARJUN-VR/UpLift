@@ -2,10 +2,9 @@ import  { useState } from "react";
 import { Channels } from "../../components/userComponents/Channels";
 
 import { ChatArea } from "../../components/userComponents/ChatArea";
-import { io } from "socket.io-client";
 
 
-const socket = io("http://localhost:8000");
+
 
 
 export const CommunityPage = () => {

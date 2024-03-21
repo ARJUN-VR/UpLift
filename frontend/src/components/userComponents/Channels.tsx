@@ -6,7 +6,7 @@ import { io } from "socket.io-client";
 import { toast } from "react-toastify";
 
 
-const socket = io("http://localhost:8000");
+const socket = io(import.meta.env.VITE_SERVER_URL);
 
 interface channelData {
   _id: string;

@@ -5,7 +5,7 @@ import { io } from "socket.io-client";
 export const LiveStreamComponent = () => {
 
 
-  const socket = io("http://localhost:8000");
+
 
   const servers = {
     iceServers:[

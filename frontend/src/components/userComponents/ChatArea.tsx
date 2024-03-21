@@ -18,7 +18,9 @@ import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import { toast } from "react-toastify";
 
-const socket = io("http://localhost:8000");
+const socket = io(import.meta.env.VITE_SERVER_URL);
+
+
 
 interface MessageType {
   message: string;
