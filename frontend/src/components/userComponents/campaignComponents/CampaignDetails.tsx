@@ -2,14 +2,14 @@
 import { Campaign } from '../../../utils'
 
 
-interface CampaignDetailsProps{
+export interface CampaignDetailsProps{
     campaign:Campaign,
     navigate:(url:string)=>void
      
 }
 
  const CampaignDetails = ({campaign,navigate}:CampaignDetailsProps) => {
-const goal = parseInt(campaign.target)
+const goal = campaign.target
 const percentage: number = parseFloat(((campaign.currentAmount / goal) * 100).toFixed(1));
 
   return (

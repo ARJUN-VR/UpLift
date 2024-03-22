@@ -22,6 +22,12 @@ export interface MessagesInterface  {
 
 }
 
+interface EventData{
+  type:string;
+  data:RTCSessionDescriptionInit | RTCIceCandidateInit
+  
+}
+
 export const CreatorLiveComponent = () => {
 
   const [localStream,setLocalStream] = useState<MediaStream>()
@@ -65,34 +71,46 @@ export const CreatorLiveComponent = () => {
   }, []); // <-- Empty dependency array to run this effect only once when component mounts
   
   
-  useEffect(()=>{
-    const callHandler = async(event)=>{
+  useEffect(() => {
+    const callHandler = async (event: EventData) => {
       try {
-     
-          if(event.type=='candidate'){
-            if(peerConnection){
-              console.log('entering...')
-              peerConnection.addIceCandidate(event.data)
-            }
-
-          }else if(event.type == 'offer'){
-            await createAnswer(event.data)
-          }else if(event.type == 'answer'){
-            await addAnwer(event.data)
+        if (event.type === 'candidate') {
+          if (peerConnection && isRTCIceCandidateInit(event.data)) {
+            console.log('entering...');
+            await peerConnection.addIceCandidate(event.data);
           }
-        
+        } else if (event.type === 'offer') {
+          if (isRTCSessionDescriptionInit(event.data)) {
+            await createAnswer(event.data);
+          }
+        } else if (event.type === 'answer') {
+          if (isRTCSessionDescriptionInit(event.data)) {
+            await addAnwer(event.data);
+          }
+        }
       } catch (error) {
-        console.log('error',error)
-        
+        console.error('Error:', error);
       }
-    
-    }
-    socket.on('callSent',callHandler)
-    return ()=>{
-      socket.off('callSent',callHandler)
-    }
-  },[])
-
+    };
+  
+    // Subscribe to 'callSent' event
+    socket.on('callSent', callHandler);
+  
+    // Unsubscribe from 'callSent' event on component unmount
+    return () => {
+      socket.off('callSent', callHandler);
+    };
+  }, []);
+  
+  // Type guards to check the type of event.data
+  function isRTCIceCandidateInit(data: RTCSessionDescriptionInit | RTCIceCandidateInit): data is RTCIceCandidateInit {
+    return (data as RTCIceCandidateInit).candidate !== undefined;
+  }
+  
+  function isRTCSessionDescriptionInit(data: RTCSessionDescriptionInit | RTCIceCandidateInit): data is RTCSessionDescriptionInit {
+    return (data as RTCSessionDescriptionInit).type !== undefined;
+  }
+  
 
 
   useEffect(() => {

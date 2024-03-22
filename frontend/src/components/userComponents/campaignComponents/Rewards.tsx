@@ -1,9 +1,10 @@
 import React, { useRef, useState } from 'react'
 import { Input } from './Input'
 import { useCreateRewardMutation } from '../../../redux/slices/userApiSlice'
-import { toast } from 'react-toastify'
+
 import { useNavigate } from 'react-router-dom'
 import Loader from '../Loader'
+
 
 
 export const Rewards = () => {
@@ -59,8 +60,7 @@ export const Rewards = () => {
         navigate('/create-campaign/draft')
 
         
-      } catch (error) {
-        toast.error(error?.data?.message)
+      } catch (error:unknown) {
         console.log(error)
       }
 

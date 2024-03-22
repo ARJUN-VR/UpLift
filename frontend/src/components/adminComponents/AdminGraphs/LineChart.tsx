@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import {
   LineChart,
   CartesianGrid,
@@ -11,6 +11,11 @@ import {
 } from "recharts";
 import { useGetLineChartMutation } from "../../../redux/slices/adminApiSlice";
 
+interface TransformedItem {
+  _id: {
+    month: number;
+    year: number;
+  }}
 export const LineChartAdmin = () => {
   const [getLineData] = useGetLineChartMutation();
   const [lineData, setLineData] = useState([]);
@@ -21,7 +26,7 @@ export const LineChartAdmin = () => {
         const data = await getLineData("").unwrap();
         console.log(data);
         // Transforming data to include a new field 'monthYear'
-        const transformedData = data.data.map((item) => ({
+        const transformedData = data.data.map((item:TransformedItem) => ({
           ...item,
           monthYear: `${item._id.month}/${item._id.year}`,
         }));

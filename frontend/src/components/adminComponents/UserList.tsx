@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAdmingetusersMutation, useBlockuserMutation } from "../../redux/slices/adminApiSlice";
 import { toast } from "react-toastify";
+import { ErrorResult, SuccessResult } from "../../utils";
 
 export interface User {
   _id?: string;
@@ -8,48 +9,57 @@ export interface User {
   email: string;
   password: string;
   createdAt: Date;
-  isBlocked:boolean
+  isBlocked:boolean;
 }
+
+
+
+type Result = SuccessResult | ErrorResult;
 
 export const UserList = () => {
   const [users, setUsers] = useState<User[]>([]);
-  const [state,setState] = useState<boolean>(false)
-  console.log(users)
-
-
-
-  
+  const [state, setState] = useState<boolean>(false);
+  console.log(users);
 
   const [getUsers] = useAdmingetusersMutation();
-  const [block] = useBlockuserMutation()
+  const [block] = useBlockuserMutation();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const userData = await getUsers("").unwrap();
         setUsers(userData.users);
-       
       } catch (error) {
         console.log(error);
       }
     };
     fetchData();
-  }, [state,getUsers]);
-  
+  }, [state, getUsers]);
 
-  const blockUser = async(email:string)=>{
-        const result =  await block(email)
-        console.log(result)
-        const user :User = result.data?.user
-        console.log(user,'userer')
-        setState(!state)
-          
-          if(user.isBlocked){
-            toast.success('user blocked.')
-          }else{
-            toast.success('user unblocked.')
-          }
-  }
+  const blockUser = async (email: string) => {
+    try {
+      const result: Result = await block(email);
+      console.log('result:', result);
+
+      if ('data' in result) {
+        const user: User = result.data.user;
+        setState(!state);
+
+        if (user.isBlocked) {
+          toast.success('User blocked.');
+        } else {
+          toast.success('User unblocked.');
+        }
+      } else {
+        // Handle error
+        console.error('Error:', result.error);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+
  
 
   return (

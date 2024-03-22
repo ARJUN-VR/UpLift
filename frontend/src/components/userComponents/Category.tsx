@@ -13,7 +13,7 @@ export const Category = () => {
   const {cat} = useParams()
   const pass = cat?.slice(1)
 
-  const [getCategory,{isLoading}] = useGetCategoryMutation()
+  const [getCategory] = useGetCategoryMutation()
 
 
   useEffect(() => {

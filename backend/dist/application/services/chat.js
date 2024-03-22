@@ -20,9 +20,25 @@ const chatConnect = () => __awaiter(void 0, void 0, void 0, function* () {
                 app_1.io.to(room).emit('joined');
             });
             socket.on('message', (data) => {
-                const { channel } = data;
+                const { channel, message, userName, image, video } = data;
                 console.log('room:', channel);
-                app_1.io.to(channel).emit('Rmessage', channel);
+                if (message) {
+                    console.log('in the message');
+                    app_1.io.to(channel).emit('recieveMessage', { channel, message, userName });
+                }
+                else if (video) {
+                    console.log('works');
+                    app_1.io.to(channel).emit('recieveMessage', { channel, userName, video });
+                }
+            });
+            socket.on('typing', (data) => {
+                const { userName, campaignId: channel } = data;
+                console.log('typing:', userName, channel);
+                socket.broadcast.to(channel).emit('isTyping', userName);
+            });
+            socket.on('ended', (data) => {
+                const { campaignId: channel } = data;
+                socket.broadcast.to(channel).emit('typingEnded');
             });
         }
         catch (error) {

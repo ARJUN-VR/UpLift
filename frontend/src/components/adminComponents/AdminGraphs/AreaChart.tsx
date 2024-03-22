@@ -1,4 +1,4 @@
-import React from 'react'
+
 import { Area, AreaChart, CartesianGrid, Tooltip, XAxis, YAxis } from 'recharts'
 
 export const AreaChartAdmin = () => {

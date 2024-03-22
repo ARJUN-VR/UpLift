@@ -1,7 +1,14 @@
 import { useState } from "react";
 import { RewardCard } from "./RewardCard";
 
-export const Payment = ({ close , name, desc,campaignId}) => {
+interface PaymentProp{
+  close:()=>void;
+  name:string;
+  desc:string;
+  campaignId:string
+}
+
+export const Payment = ({ close , name, desc,campaignId}:PaymentProp) => {
 
   const [amount,setAmount] = useState<number>(0)
 

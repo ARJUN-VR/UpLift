@@ -30,12 +30,13 @@ export const io = new Server(server, {
   const enviornment = "production"
 
   if (enviornment === 'production') { 
-      const __dirname = path.resolve();
-      app.use(express.static(path.join(parentDir, '/Client/dist')));
+      path.resolve();
+      app.use(express.static(path.join(parentDir, '/frontend/dist')));
     
       app.get('*', (req, res) =>
-        res.sendFile(path.resolve(parentDir, 'Client', 'dist', 'index.html'))
+        res.sendFile(path.resolve(parentDir, 'frontend', 'dist', 'index.html'))
       );
+   
     } else {
       app.get('/', (req, res) => {
         res.send('API is running....');

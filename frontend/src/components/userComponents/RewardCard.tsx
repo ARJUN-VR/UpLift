@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { useGetRewardMutation } from "../../redux/slices/userApiSlice";
 import { useParams } from "react-router-dom";
 

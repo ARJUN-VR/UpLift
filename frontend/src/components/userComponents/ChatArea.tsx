@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {  useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
 import {
   useGetChatMutation,
@@ -18,7 +18,9 @@ import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import { toast } from "react-toastify";
 
-const socket = io(import.meta.env.VITE_SERVER_URL);
+import './chat.css'
+
+const socket = io(import.meta.env.VITE_SERVER_URL);  
 
 
 
@@ -305,7 +307,7 @@ const handleKeyRelease = ()=>{
             style={{
               scrollbarWidth: "none",
               msOverflowStyle: "none",
-              "::-webkit-scrollbar": { display: "none" },
+              
             }}
             ref={scroll} 
  
@@ -404,7 +406,7 @@ const handleKeyRelease = ()=>{
           {/* message input area */}
           {isVisible && (
             <span className="ml-2 z-20">
-              <Picker data={data} onEmojiSelect={(e) => addEmoji(e.native)} />
+              <Picker data={data} onEmojiSelect={(e:any) => addEmoji(e.native)} />
             </span>
           )}
 

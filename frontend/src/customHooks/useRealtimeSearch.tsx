@@ -1,9 +1,10 @@
 import {useState,useEffect} from 'react'
 import { useGetSearchResultMutation } from '../redux/slices/userApiSlice';
+import { Campaign } from '../utils';
 
 const useRealTimeSearch = ()=>{
     const [searchQuery,setSearchQuery] = useState<string>('')
-    const [searchResults,setResults] = useState<string[]>([]);
+    const [searchResults,setResults] = useState<Campaign[]>([]);
 
     const  [search] = useGetSearchResultMutation()
 

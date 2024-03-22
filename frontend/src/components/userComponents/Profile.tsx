@@ -13,6 +13,43 @@ import { toast } from "react-toastify";
 import { logout } from "../../redux/reducers/userReducers";
 import Loader from "./Loader";
 
+
+
+// interface UserData {
+//   _id: string;
+//   name: string;
+//   email: string;
+//   password: string;
+//   image: string;
+//   isBlocked: boolean;
+//   createdAt: string;
+//   updatedAt: string;
+//   __v: number;
+//   isCreator: boolean;
+// }
+
+// interface SuccessResponse {
+//   data: {
+//     message: string;
+//     userdata: UserData;
+//   };
+// }
+
+
+// type UserDataInterface = SuccessResponse | ErrorResponse;
+
+// interface ErrorResponse {
+//   error: {
+//     message: string;
+//     status?: number;
+//     data?: {
+//       message?: string;
+//     };
+//   };
+// }
+
+
+
 export const Profile = () => {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -44,26 +81,38 @@ export const Profile = () => {
     }
     const getData = async () => {
       try {
-        const userData = await getProfile("");
-        console.log(userData,'userdatattta')
-
-        if (userData.error?.data?.message == "Access denied." || userData.error?.data?.message == 'token expired' || userData.error?.data?.message == 'Not authorized,no Token' ||userData.data?.message == 'no refresh token') {
-          await logoutCall("").unwrap();
-          dispatch(logout());
-          navigate("/login");
-          toast.error(userData.error?.data.message);
-        } else {
-          setName(userData.data.userdata.name);
-          setEmail(userData.data.userdata.email);
-          setImage(userData.data.userdata.image)
-          const date = userData.data.userdata.createdAt;
-          const modifiedDate = new Date(date).toDateString();
-
+        const response = await getProfile("");
+    
+        if ('error' in response) {
+          const { message } = response.error as { message: string };
+    
+          if (
+            message === "Access denied." ||
+            message === 'token expired' ||
+            message === 'Not authorized, no Token' ||
+            message === 'no refresh token'
+          ) {
+            await logoutCall("").unwrap();
+            dispatch(logout());
+            navigate("/login");
+            toast.error(message);
+          } else {
+            console.log(response.error);
+            toast.error(message || "An error occurred");
+          }
+        } else if ('data' in response) {
+          const { name, email, image, createdAt } = response.data.userdata;
+    
+          setName(name);
+          setEmail(email);
+          setImage(image);
+          const modifiedDate = new Date(createdAt).toDateString();
+    
           setDate(modifiedDate);
         }
-      } catch (err) {
+      } catch (err: any) {
         console.log(err);
-        toast.error(err?.data?.message || err.error);
+        toast.error(err.message || "An error occurred");
       }
     };
     getData();

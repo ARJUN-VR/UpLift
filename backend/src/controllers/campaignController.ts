@@ -21,6 +21,7 @@ export const campaignController = (
     const basicDetails = await campaignUsecase(
       dbRepositoryCampaign
     ).listCampaigns();
+    console.log('basicDetails:',basicDetails)
     res.status(200).json({ basicDetails });
   });
 

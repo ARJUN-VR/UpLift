@@ -26,7 +26,8 @@ export const EmailVerification = () => {
        }
         
       }catch(err){
-        toast.error(err.data?.message || err.message)
+        
+        console.log(err)
       }
     
       

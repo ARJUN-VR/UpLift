@@ -1,8 +1,13 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import React from "react";
 
-export const Header = ({handleSearchQuery}) => {
+interface QueryProp{
+  handleSearchQuery: (query: string) => void;
+}
+
+export const Header = ({handleSearchQuery}:QueryProp) => {
   const navigate = useNavigate()
 
   const handleChange = (event:React.ChangeEvent<HTMLInputElement>)=>{

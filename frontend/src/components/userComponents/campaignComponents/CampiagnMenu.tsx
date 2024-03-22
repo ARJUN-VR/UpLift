@@ -1,10 +1,15 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useGetCampaignMutation } from "../../../redux/slices/userApiSlice";
 import { useParams } from "react-router-dom";
-import { toast } from "react-toastify";
+
 
 import { CommentBox } from "./CommentBox";
 import { Payment } from "../Payment";
+import { CampDataResponse} from "../../../utils";
+
+
+
+
 
 export const CampiagnMenu = () => {
   const [title, setTitle] = useState<string>("");
@@ -24,7 +29,7 @@ export const CampiagnMenu = () => {
 
   const [campaignid, setCampaignid] = useState<string>('')
 
-  const [GetCampaign, { isLoading }] = useGetCampaignMutation();
+  const [GetCampaign] = useGetCampaignMutation();
 
   let campaignId: string | undefined;
 
@@ -41,21 +46,32 @@ export const CampiagnMenu = () => {
   useEffect(() => {
     const getCampaign = async () => {
       try {
-        const campData = await GetCampaign(campaignId);
-        localStorage.removeItem("basicId");
-        const advancedData = campData?.data?.campaign[0].advancedData[0];
-        const rewardData = campData.data.campaign[0].rewardData[0];
+        const campData:CampDataResponse = await GetCampaign(campaignId);
+     
+          console.log('campData:',campData)
+  
+          localStorage.removeItem("basicId");
+          if ('data' in campData) {
+            const advancedData = campData.data.campaign[0].advancedData[0];
+            
+          setTitle(campData?.data?.campaign[0].title);
+          setTagline(campData?.data?.campaign[0].tagline);
+          setGoal(campData?.data?.campaign[0].target);
+          setCurrentAmount(campData?.data?.campaign[0].currentAmount);
+          setBackers(campData?.data?.campaign[0].backers);
+          setDate(campData?.data?.campaign[0].duration);
+          setVideo(advancedData?.video);
+         setThumbnail(advancedData?.thumbnail);
+          setStory(advancedData?.story)
+          setCampaignid(campData?.data?.campaign[0]._id)
+            // Continue with your logic here
+          } else {
+            console.error('Error fetching campaign:', campData.error);
+          }
+       
+  
+       
 
-        setTitle(campData?.data?.campaign[0].title);
-        setTagline(campData?.data?.campaign[0].tagline);
-        setGoal(campData?.data?.campaign[0].target);
-        setCurrentAmount(campData?.data?.campaign[0].currentAmount);
-        setBackers(campData?.data?.campaign[0].backers);
-        setDate(campData?.data?.campaign[0].duration);
-        setVideo(advancedData?.video);
-        setThumbnail(advancedData?.thumbnail);
-        setStory(advancedData?.story)
-        setCampaignid(campData?.data?.campaign[0]._id)
       } catch (error) {
         // toast.error("error in campaignmenu");
         console.log(error);

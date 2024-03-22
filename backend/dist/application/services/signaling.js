@@ -19,8 +19,8 @@ const signaling = () => {
             app_1.io.emit('leaveSent');
         });
         socket.on('liveMessage', (data) => {
-            const { message, userName } = data;
-            app_1.io.emit('incoming', { message, userName });
+            const { message, userName, formattedTime } = data;
+            app_1.io.emit('incoming', { message, userName, formattedTime });
         });
     };
     app_1.io.on("connection", signalinghandler);

@@ -3,6 +3,7 @@ import { useGetCampaignsMutation } from "../../redux/slices/userApiSlice";
 import { useNavigate } from "react-router-dom";
 import { Carousel } from "./Carousel";
 import { ExploreCard } from "./ExploreCard";
+import { ErrorResult } from "../../utils";
 
 export interface Campaign {
   _id: string;
@@ -17,6 +18,13 @@ export interface Campaign {
   userEmail: string;
   currentAmount:number
 }
+interface DetailInterface{
+  data:{
+    basicDetails:Campaign[]
+  }
+}
+
+type Result = DetailInterface | ErrorResult
 const CampaignDetails = lazy(
   () => import("../userComponents/campaignComponents/CampaignDetails")
 );
@@ -30,10 +38,13 @@ export const Content = () => {
   useEffect(() => {
     const list = async () => {
       try {
-        const details = await getCampaign("");
-        console.log(details)
-        const list = details.data.basicDetails;
-        setCampaigns(list);
+        const details:Result = await getCampaign("");
+        console.log('campaigndetails:',details)
+        if('data' in details){
+          const list = details.data.basicDetails;
+          setCampaigns(list);
+        }
+
       } catch (error) {
         console.log(error);
       }

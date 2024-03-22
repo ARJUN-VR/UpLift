@@ -6,7 +6,7 @@ import { CampiagnMenu } from "../../components/userComponents/campaignComponents
 export const SinglePageView = () => {
   return (
     <div className="bg-[#0c0c0c] flex flex-col min-h-screen">
-      <Header />
+      <Header handleSearchQuery={()=>{}} />
       <div className="flex">
         <div className="sticky">
           <SideBar />

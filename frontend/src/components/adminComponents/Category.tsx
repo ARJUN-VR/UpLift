@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   useAddCategoryMutation,
   useBlockCategoryMutation,
@@ -10,6 +10,9 @@ import { useListCategoryMutation } from "../../redux/slices/userApiSlice";
 import { catlist } from "../userComponents/campaignComponents/Basics";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import { CustomError } from "../../utils";
+
+
 
 export const Category = () => {
   const [name, setName] = useState<string>("");
@@ -43,8 +46,14 @@ export const Category = () => {
       setName("");
       toast.success("category added");
     } catch (error) {
-      toast.error(error?.data?.message);
-      console.log(error);
+      if (error instanceof Error) {
+        // If error is of type Error, you can safely access its properties
+        toast.error((error as CustomError)?.data?.message); // Using 'any' assertion here
+        console.log(error);
+    } else {
+        // Handle other types of errors here
+        console.error("An error occurred:", error);
+    }
     }
   };
 
@@ -61,8 +70,14 @@ export const Category = () => {
         toast.success("category blocked");
       }
     } catch (error) {
-      toast.error(error?.data?.message);
-      console.log(error);
+      if (error instanceof Error) {
+        // If error is of type Error, you can safely access its properties
+        toast.error((error as CustomError)?.data?.message); // Using 'any' assertion here
+        console.log(error);
+    } else {
+        // Handle other types of errors here
+        console.error("An error occurred:", error);
+    }
     }
   };
 
@@ -71,12 +86,18 @@ export const Category = () => {
       await editCategory({categoryId,newName}).unwrap()
       toast.success('changed')
       setEditMode(false)
-    }catch(error){
-      console.log(error)
-      toast.error(error.data.message)
-    }
+    }catch (error) {
+      if (error instanceof Error) {
+          // If error is of type Error, you can safely access its properties
+          toast.error((error as CustomError)?.data?.message); // Using 'any' assertion here
+          console.log(error);
+      } else {
+          // Handle other types of errors here
+          console.error("An error occurred:", error);
+      }
 
   }
+}
 
   return (
     <div className="w-full mt-10 p-6 rounded-lg">

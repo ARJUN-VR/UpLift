@@ -2,12 +2,25 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useGetSingleCampaignMutation } from '../../redux/slices/adminApiSlice'
+import { BasicInterface, CampaignViewAdvancedInterface } from '../../utils';
+
+
+
+
 
 export const CampaignView = () => {
-  const [basics,setBasics] = useState([])
-  const [advanced,setAdvanced] = useState([])
-  const [video , setVideo] = useState<string>('https://res.cloudinary.com/dpuzhf0j2/video/upload/v1705247189/ocvbm2thcvqyiglr989l.mp4')
-  const [thumbnail,setThumbnail] = useState<string>('https://res.cloudinary.com/dpuzhf0j2/image/upload/v1705344561/s4snady8h6udzbolt9yx.webp')
+  const [basics, setBasics] = useState<BasicInterface>({
+    title: '',
+    category: '',
+    tagline: '',
+    story: '',
+    location: ''
+  });
+  const [advanced, setAdvanced] = useState<CampaignViewAdvancedInterface>({
+    thumbnail: '',
+    story: ''
+  });
+  const [video ] = useState<string>('https://res.cloudinary.com/dpuzhf0j2/video/upload/v1705247189/ocvbm2thcvqyiglr989l.mp4')
 
   const [getSingleCampaign] = useGetSingleCampaignMutation()
 
@@ -23,6 +36,8 @@ export const CampaignView = () => {
       
       const basicDetails = data.basicData[0]
       const advancedDetails = data.advancedData[0]
+
+      console.log('basicss:',basicDetails)
      
       setBasics(basicDetails)
       setAdvanced(advancedDetails)

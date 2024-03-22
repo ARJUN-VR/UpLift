@@ -1,19 +1,16 @@
-import { useEffect, useRef, useState } from "react";
-import { connect } from "react-redux";
-import { io } from "socket.io-client";
 
 export const LiveStreamComponent = () => {
 
 
 
 
-  const servers = {
-    iceServers:[
-        {
-            urls:['stun:stun1.l.google.com:19302','stun:stun2.l.google.com:19302']
-        }
-    ]
-}
+//   const servers = {
+//     iceServers:[
+//         {
+//             urls:['stun:stun1.l.google.com:19302','stun:stun2.l.google.com:19302']
+//         }
+//     ]
+// }
 
 
   

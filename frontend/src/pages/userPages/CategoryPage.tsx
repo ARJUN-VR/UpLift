@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react'
+import { Suspense } from 'react'
 import { Header } from '../../components/userComponents/Header'
 import { SideBar } from '../../components/userComponents/SideBar'
 import { Category } from '../../components/userComponents/Category'

@@ -9,6 +9,19 @@ import { GoogleOAuthProvider,GoogleLogin } from '@react-oauth/google';
 import {jwtDecode} from 'jwt-decode'
 
 
+export interface CustomErrorForm {
+  data?: {
+    message?: string;
+  };
+  error?: string;
+}
+
+export interface DecodedInterface{
+  name?:string
+  email:string;
+  sub:string
+
+}
 
 export const SignInForm = () => {
   const [email,setEmail] = useState<string>('')
@@ -17,7 +30,7 @@ export const SignInForm = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const [login,{isLoading}] = useLoginMutation()
+  const [login] = useLoginMutation()
 
   const {userInfo} = useSelector((state:RootState)=>state.auth)
 
@@ -36,8 +49,14 @@ export const SignInForm = () => {
         toast.success('signed in successfully.')
 
        }catch(err){
-        console.log(err)
-        toast.error(err?.data?.message || err.error)
+        if (typeof err === 'object') {
+          console.log(err);
+          toast.error((err as CustomErrorForm)?.data?.message || (err as CustomErrorForm).error );
+        } else {
+          // Handle other types of errors
+          console.log(err);
+          toast.error(String(err));
+        }
        }
   }
   return (
@@ -98,8 +117,8 @@ export const SignInForm = () => {
 
 <GoogleLogin
 onSuccess={credentialResponse => {
-if(credentialResponse){
-const decoded = jwtDecode(credentialResponse.credential)
+if(credentialResponse.credential){
+const decoded:DecodedInterface = jwtDecode(credentialResponse.credential)
 console.log(decoded);
 
 
@@ -120,8 +139,14 @@ const loginWithGoogle = async()=>{
     toast.success('signed in successfully.')
 
    }catch(err){
-    console.log(err)
-    toast.error(err?.data?.message || err.error)
+    if (typeof err === 'object') {
+      console.log(err);
+      toast.error((err as CustomErrorForm)?.data?.message || (err as CustomErrorForm).error );
+    } else {
+      // Handle other types of errors
+      console.log(err);
+      toast.error(String(err));
+    }
    }
 
 

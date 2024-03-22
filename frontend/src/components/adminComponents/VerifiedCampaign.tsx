@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Campaign } from '../userComponents/Content'
 import { useNavigate } from 'react-router-dom'
 import { useGetVerifiedCampaignsMutation } from '../../redux/slices/adminApiSlice'

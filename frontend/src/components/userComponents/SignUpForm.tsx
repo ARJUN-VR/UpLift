@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { useNavigate } from "react-router-dom";
 import { useRegisterMutation } from "../../redux/slices/userApiSlice";
-import { setCredentials } from "../../redux/reducers/userReducers";
 import { toast } from "react-toastify";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
+import { CustomErrorForm, DecodedInterface } from "./SignInForm";
 
 export const SignUpForm = () => {
   const [name, setName] = useState<string>("");
@@ -16,7 +16,7 @@ export const SignUpForm = () => {
 
   const { userInfo } = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+
 
   const [register] = useRegisterMutation();
 
@@ -42,7 +42,14 @@ export const SignUpForm = () => {
       navigate("/login");
       toast.success("registration success.");
     } catch (err) {
-      toast.error(err?.data?.message || err.error);
+      if (typeof err === 'object') {
+        console.log(err);
+        toast.error((err as CustomErrorForm)?.data?.message || (err as CustomErrorForm).error );
+      } else {
+        // Handle other types of errors
+        console.log(err);
+        toast.error(String(err));
+      }
     }
   };
 
@@ -64,8 +71,8 @@ export const SignUpForm = () => {
           <GoogleOAuthProvider clientId="447056395807-iqisfi2d9o0jb7cs2lh8bg3k4e9o538r.apps.googleusercontent.com">
             <GoogleLogin
               onSuccess={(credentialResponse) => {
-                if (credentialResponse) {
-                  const decoded = jwtDecode(credentialResponse.credential);
+                if (credentialResponse.credential) {
+                  const decoded:DecodedInterface = jwtDecode(credentialResponse.credential);
 
                   const name = decoded.name;
                   const email = decoded.email;
@@ -84,7 +91,14 @@ export const SignUpForm = () => {
                       navigate("/login");
                       toast.success("registration success.");
                     } catch (err) {
-                      toast.error(err?.data?.message || err.error);
+                      if (typeof err === 'object') {
+                        console.log(err);
+                        toast.error((err as CustomErrorForm)?.data?.message || (err as CustomErrorForm).error );
+                      } else {
+                        // Handle other types of errors
+                        console.log(err);
+                        toast.error(String(err));
+                      }
                     }
                   };
 

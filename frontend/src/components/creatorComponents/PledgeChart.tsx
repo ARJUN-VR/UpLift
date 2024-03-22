@@ -1,8 +1,12 @@
 
-import { format } from 'date-fns'
-import {LineChart,Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend} from 'recharts'
+import {LineChart,Line, CartesianGrid, YAxis, Tooltip, Legend} from 'recharts'
+import { PaymentProp } from './CreatorDashboard'
 
-export const PledgeChart = ({data}) => {
+interface PaymentDataProp{
+  data:PaymentProp[]
+}
+
+export const PledgeChart = ({data}:PaymentDataProp) => {
 
 
 

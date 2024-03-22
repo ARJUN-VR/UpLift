@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { useGetChannelDataMutation } from "../../redux/slices/userApiSlice";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
@@ -13,9 +13,16 @@ interface channelData {
   title: string;
   image: string;
 }
+interface CallBack{
+  (id: string, title: string, image: string): void;
+}
+
+interface CallBackProp{
+  callback:CallBack
+}
 
 
-export const Channels = ({ callback }) => {
+export const Channels = ({ callback }:CallBackProp) => {
   const [channel, setChannel] = useState<channelData[]>([]);
 
   const [isChannels, setIsChannels] = useState<boolean>(true);
