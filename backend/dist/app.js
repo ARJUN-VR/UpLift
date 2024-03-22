@@ -28,18 +28,18 @@ exports.io = new socket_io_1.Server(server, {
         credentials: true // or false to disallow credentials
     }
 });
-// const enviornment = "production"
-// if (enviornment === 'production') { 
-//     const __dirname = path.resolve();
-//     app.use(express.static(path.join(parentDir, '/Client/dist')));
-//     app.get('*', (req, res) =>
-//       res.sendFile(path.resolve(parentDir, 'Client', 'dist', 'index.html'))
-//     );
-//   } else {
-//     app.get('/', (req, res) => {
-//       res.send('API is running....');
-//     });
-//   }
+const enviornment = "production"
+if (enviornment === 'production') { 
+    const __dirname = path.resolve();
+    app.use(express.static(path.join(parentDir, '/Client/dist')));
+    app.get('*', (req, res) =>
+      res.sendFile(path.resolve(parentDir, 'Client', 'dist', 'index.html'))
+    );
+  } else {
+    app.get('/', (req, res) => {
+      res.send('API is running....');
+    });
+  }
 (0, chat_1.chatConnect)();
 (0, signaling_1.signaling)();
 (0, connection_1.connectDb)();
