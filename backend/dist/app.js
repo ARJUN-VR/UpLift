@@ -15,9 +15,9 @@ const errorHandler_1 = __importDefault(require("./frameworks/webserver/middlewar
 const socket_io_1 = require("socket.io");
 const chat_1 = require("./application/services/chat");
 const signaling_1 = require("./application/services/signaling");
-// import path from "path"
-// const currentWorkingDir = path.resolve();
-// const parentDir = path.dirname(currentWorkingDir)
+import path from "path"
+const currentWorkingDir = path.resolve();
+const parentDir = path.dirname(currentWorkingDir)
 const app = (0, express_1.default)();
 const server = http_1.default.createServer(app);
 exports.io = new socket_io_1.Server(server, {
