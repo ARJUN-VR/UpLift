@@ -13,6 +13,8 @@ import { signaling } from "./application/services/signaling";
 import path from "path"
 const currentWorkingDir = path.resolve();
 const parentDir = path.dirname(currentWorkingDir)
+console.log('currentworkingdir:',currentWorkingDir)
+console.log('parendDir:',parentDir)
 
 const app: Application = express();
 
