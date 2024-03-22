@@ -29,10 +29,13 @@ export const io = new Server(server, {
   });
 
 
+  console.log('inside the ts')
+
+
   
-expressConfig(app);
-routes(app);
-app.use(handleError)
+    expressConfig(app);
+    routes(app);
+    app.use(handleError)
 
   const enviornment = "production"
 
