@@ -27,21 +27,21 @@ export const io = new Server(server, {
   });
 
 
-  const enviornment = "production"
+  // const enviornment = "production"
 
-  if (enviornment === 'production') { 
-      path.resolve();
-      app.use(express.static(path.join(parentDir, '/frontend/dist')));
+  // if (enviornment === 'production') { 
+  //     path.resolve();
+  //     app.use(express.static(path.join(parentDir, '/frontend/dist')));
     
-      app.get('*', (req, res) =>
-        res.sendFile(path.resolve(parentDir, 'frontend', 'dist', 'index.html'))
-      );
+  //     app.get('*', (req, res) =>
+  //       res.sendFile(path.resolve(parentDir, 'frontend', 'dist', 'index.html'))
+  //     );
    
-    } else {
-      app.get('/', (req, res) => {
-        res.send('API is running....');
-      });
-    }
+  //   } else {
+  //     app.get('/', (req, res) => {
+  //       res.send('API is running....');
+  //     });
+  //   }
 
 chatConnect()
 signaling()
