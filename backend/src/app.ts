@@ -27,10 +27,14 @@ export const io = new Server(server, {
   });
 
 
+  
+expressConfig(app);
+routes(app);
+app.use(handleError)
+
   const enviornment = "production"
 
   if (enviornment === 'production') { 
-      path.resolve();
       app.use(express.static(path.join(parentDir, '/frontend/dist')));
     
       app.get('*', (req, res) =>
@@ -52,9 +56,6 @@ cloudinary
 
 
 
-expressConfig(app);
-routes(app);
-app.use(handleError)
 
 
 
