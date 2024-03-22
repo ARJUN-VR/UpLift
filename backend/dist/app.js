@@ -15,9 +15,9 @@ const errorHandler_1 = __importDefault(require("./frameworks/webserver/middlewar
 const socket_io_1 = require("socket.io");
 const chat_1 = require("./application/services/chat");
 const signaling_1 = require("./application/services/signaling");
-import path from "path"
-const currentWorkingDir = path.resolve();
-const parentDir = path.dirname(currentWorkingDir)
+const path_1 = __importDefault(require("path"));
+const currentWorkingDir = path_1.default.resolve();
+const parentDir = path_1.default.dirname(currentWorkingDir);
 const app = (0, express_1.default)();
 const server = http_1.default.createServer(app);
 exports.io = new socket_io_1.Server(server, {
@@ -28,18 +28,17 @@ exports.io = new socket_io_1.Server(server, {
         credentials: true // or false to disallow credentials
     }
 });
-const enviornment = "production"
-if (enviornment === 'production') { 
-    const __dirname = path.resolve();
-    app.use(express.static(path.join(parentDir, '/Client/dist')));
-    app.get('*', (req, res) =>
-      res.sendFile(path.resolve(parentDir, 'Client', 'dist', 'index.html'))
-    );
-  } else {
+const enviornment = "production";
+if (enviornment === 'production') {
+    path_1.default.resolve();
+    app.use(express_1.default.static(path_1.default.join(parentDir, '/frontend/dist')));
+    app.get('*', (req, res) => res.sendFile(path_1.default.resolve(parentDir, 'frontend', 'dist', 'index.html')));
+}
+else {
     app.get('/', (req, res) => {
-      res.send('API is running....');
+        res.send('API is running....');
     });
-  }
+}
 (0, chat_1.chatConnect)();
 (0, signaling_1.signaling)();
 (0, connection_1.connectDb)();

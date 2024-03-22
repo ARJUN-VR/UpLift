@@ -22,6 +22,7 @@ const campaignController = (dbInterface, dbImplements) => {
     //access public
     const listCampaigns = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const basicDetails = yield (0, campaignUsecases_1.campaignUsecase)(dbRepositoryCampaign).listCampaigns();
+        console.log('basicDetails:', basicDetails);
         res.status(200).json({ basicDetails });
     }));
     //desc campaign basic details
