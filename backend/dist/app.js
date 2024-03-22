@@ -18,6 +18,8 @@ const signaling_1 = require("./application/services/signaling");
 const path_1 = __importDefault(require("path"));
 const currentWorkingDir = path_1.default.resolve();
 const parentDir = path_1.default.dirname(currentWorkingDir);
+console.log('currentworkingdir:', currentWorkingDir);
+console.log('parendDir:', parentDir);
 const app = (0, express_1.default)();
 const server = http_1.default.createServer(app);
 exports.io = new socket_io_1.Server(server, {
@@ -28,9 +30,12 @@ exports.io = new socket_io_1.Server(server, {
         credentials: true // or false to disallow credentials
     }
 });
+console.log('inside the ts');
+(0, express_2.default)(app);
+(0, routes_1.routes)(app);
+app.use(errorHandler_1.default);
 const enviornment = "production";
 if (enviornment === 'production') {
-    path_1.default.resolve();
     app.use(express_1.default.static(path_1.default.join(parentDir, '/frontend/dist')));
     app.get('*', (req, res) => res.sendFile(path_1.default.resolve(parentDir, 'frontend', 'dist', 'index.html')));
 }
@@ -43,7 +48,4 @@ else {
 (0, signaling_1.signaling)();
 (0, connection_1.connectDb)();
 cloudinaryConfig_1.default;
-(0, express_2.default)(app);
-(0, routes_1.routes)(app);
-app.use(errorHandler_1.default);
 (0, server_1.serverConfig)(server).startServer();
