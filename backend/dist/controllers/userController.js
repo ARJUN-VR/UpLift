@@ -108,6 +108,7 @@ const userController = (dbInterface, dbImplements) => {
     }));
     const payment = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const { title, description, amount } = req.body;
+        console.log('server url:', config_1.configKeys.SERVER_URL);
         try {
             const session = yield stripe.checkout.sessions.create({
                 line_items: [

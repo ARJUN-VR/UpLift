@@ -119,6 +119,7 @@ export const userController = (
 
   const payment = asyncHandler(async (req: Request, res: Response) => {
     const {title,description,amount} = req.body;
+    console.log('server url:',configKeys.SERVER_URL)
 
     try {
       const session = await stripe.checkout.sessions.create({
