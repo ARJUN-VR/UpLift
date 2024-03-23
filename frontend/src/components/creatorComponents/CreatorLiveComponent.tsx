@@ -306,7 +306,7 @@ export const CreatorLiveComponent = () => {
     <div className="flex justify-center items-center h-full p-5">
     
      {localStream && (
-        <video ref={videoRef} autoPlay className="w-full h-full bg-blue-600">
+        <video ref={videoRef} autoPlay className="w-full h-full bg-black">
           Your browser does not support the video tag.
         </video>
       )}
