@@ -31,7 +31,6 @@ exports.io = new socket_io_1.Server(server, {
         credentials: true // or false to disallow credentials
     }
 });
-console.log('inside the ts');
 (0, express_2.default)(app);
 (0, routes_1.routes)(app);
 app.use(errorHandler_1.default);

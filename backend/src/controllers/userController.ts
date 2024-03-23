@@ -6,6 +6,7 @@ import { userCases } from "../application/usecases/userCases";
 import asyncHandler from "express-async-handler";
 import Stripe from "stripe";
 import { ChatInterface } from "../entities/Chat";
+import { configKeys } from "../frameworks/database/mongoDb/config";
 const stripe = new Stripe('sk_test_51OgAh7SBqBEeU2LVufG4q6TNE6MLKyoN2lcbm3Re8JjjF2sDSRzHMCSXLsBt2K6M1GJxthhi3qk8mLjVo01VmM3y00Nh0SkIcv', {
 });
 
@@ -139,8 +140,8 @@ export const userController = (
   
         billing_address_collection:"required",
         mode: "payment",
-        success_url: 'http://localhost:5500/success',
-        cancel_url: 'http://localhost:5500/campaign/:65b6ac268d3ba59ed8357deb',
+        success_url: `${configKeys.SERVER_URL}/success`,
+        cancel_url: `${configKeys.SERVER_URL}/campaign/:65b6ac268d3ba59ed8357deb`,
       });
       res.send({ url: session.url });
     } catch (error) {
