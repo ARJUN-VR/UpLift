@@ -60,6 +60,7 @@ export const CreatorLiveComponent = () => {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
         console.log('stream:',stream)
         if (videoRef.current) {
+          console.log('inref')
           videoRef.current.srcObject = stream;
         }
         setLocalStream(stream);
@@ -305,7 +306,7 @@ export const CreatorLiveComponent = () => {
     <div className="flex justify-center items-center h-full p-5">
     
      {localStream && (
-        <video ref={videoRef} autoPlay className="w-full h-full">
+        <video ref={videoRef} autoPlay className="w-full h-full bg-blue-600">
           Your browser does not support the video tag.
         </video>
       )}
