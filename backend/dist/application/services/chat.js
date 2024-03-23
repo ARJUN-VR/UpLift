@@ -30,6 +30,9 @@ const chatConnect = () => __awaiter(void 0, void 0, void 0, function* () {
                     console.log('works');
                     app_1.io.to(channel).emit('recieveMessage', { channel, userName, video });
                 }
+                else if (image) {
+                    app_1.io.to(channel).emit('recieveMessage', { channel, userName, image });
+                }
             });
             socket.on('typing', (data) => {
                 const { userName, campaignId: channel } = data;

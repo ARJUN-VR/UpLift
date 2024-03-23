@@ -22,10 +22,13 @@ export const chatConnect = async () => {
           
 
           io.to(channel).emit('recieveMessage',{channel,message,userName})
+
         }else if(video){
           console.log('works');
           
           io.to(channel).emit('recieveMessage',{channel,userName,video})
+        }else if(image){
+          io.to(channel).emit('recieveMessage',{channel,userName,image})
         }
 
       })

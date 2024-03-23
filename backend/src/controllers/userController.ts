@@ -141,8 +141,8 @@ export const userController = (
   
         billing_address_collection:"required",
         mode: "payment",
-        success_url: 'https://uplift.arjunvr.live/success',
-        cancel_url: 'https://uplift.arjunvr.live//campaign/:65b6ac268d3ba59ed8357deb',
+        success_url: `${configKeys.SERVER_URL}/success`,
+        cancel_url: `${configKeys.SERVER_URL}/campaign/:65b6ac268d3ba59ed8357deb`,
       });
       res.send({ url: session.url });
     } catch (error) {
