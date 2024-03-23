@@ -56,7 +56,9 @@ export const CreatorLiveComponent = () => {
   useEffect(() => {
     const getMedia = async () => {
       try {
+        console.log('inside the media')
         const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+        console.log('stream:',stream)
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
         }
