@@ -16,6 +16,7 @@ exports.userController = void 0;
 const userCases_1 = require("../application/usecases/userCases");
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const stripe_1 = __importDefault(require("stripe"));
+const config_1 = require("../frameworks/database/mongoDb/config");
 const stripe = new stripe_1.default('sk_test_51OgAh7SBqBEeU2LVufG4q6TNE6MLKyoN2lcbm3Re8JjjF2sDSRzHMCSXLsBt2K6M1GJxthhi3qk8mLjVo01VmM3y00Nh0SkIcv', {});
 const userController = (dbInterface, dbImplements) => {
     const dbRepositoryuser = dbInterface(dbImplements());
@@ -126,8 +127,8 @@ const userController = (dbInterface, dbImplements) => {
                 customer_email: 'user@gmail.com',
                 billing_address_collection: "required",
                 mode: "payment",
-                success_url: 'http://localhost:5500/success',
-                cancel_url: 'http://localhost:5500/campaign/:65b6ac268d3ba59ed8357deb',
+                success_url: `${config_1.configKeys.SERVER_URL}/success`,
+                cancel_url: `${config_1.configKeys.SERVER_URL}/campaign/:65b6ac268d3ba59ed8357deb`,
             });
             res.send({ url: session.url });
         }
