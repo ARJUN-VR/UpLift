@@ -128,8 +128,8 @@ const userController = (dbInterface, dbImplements) => {
                 customer_email: 'user@gmail.com',
                 billing_address_collection: "required",
                 mode: "payment",
-                success_url: `${config_1.configKeys.SERVER_URL}/success`,
-                cancel_url: `${config_1.configKeys.SERVER_URL}/campaign/:65b6ac268d3ba59ed8357deb`,
+                success_url: 'https://uplift.arjunvr.live/success',
+                cancel_url: 'https://uplift.arjunvr.live//campaign/:65b6ac268d3ba59ed8357deb',
             });
             res.send({ url: session.url });
         }
