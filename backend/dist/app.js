@@ -36,8 +36,8 @@ exports.io = new socket_io_1.Server(server, {
 app.use(errorHandler_1.default);
 const enviornment = "production";
 if (enviornment === 'production') {
-    app.use(express_1.default.static(path_1.default.join(productionParendDir, '/frontend/dist')));
-    app.get('*', (req, res) => res.sendFile(path_1.default.resolve(productionParendDir, 'frontend', 'dist', 'index.html')));
+    app.use(express_1.default.static(path_1.default.join(parentDir, '/frontend/dist')));
+    app.get('*', (req, res) => res.sendFile(path_1.default.resolve(parentDir, 'frontend', 'dist', 'index.html')));
 }
 else {
     app.get('/', (req, res) => {

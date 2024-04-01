@@ -11,23 +11,40 @@ export const campaignUsecase = (
   repository: ReturnType<CampaignDbInterface>
 ) => {
   const listCampaigns = async () => {
-    return await repository.listCampaigns();
+    try {
+      return await repository.listCampaigns();
+    } catch (error) {
+      console.error("Error listing campaigns:", error);
+     
+    }
   };
   
-
   const createBasics = async (basics: campaign_Basics) => {
-    const count:number | undefined = await repository.getNotificationCount()
-    let newCount=0
-    if(count){
-      newCount = count + 1
+    try {
+      const count: number | undefined = await repository.getNotificationCount();
+      let newCount = 0;
+  
+      if (count) {
+        newCount = count + 1;
+      }
+  
+      emitEventToClient(io, 'notification', newCount);
+      return await repository.createBasics(basics);
+    } catch (error) {
+      console.error("Error creating basics:", error);
+     
     }
-    emitEventToClient(io,'notification',newCount)
-    return await repository.createBasics(basics);
   };
-
+  
   const createAdvanced = async (advanced: campaign_advanced) => {
-    return await repository.createAdvanced(advanced);
+    try {
+      return await repository.createAdvanced(advanced);
+    } catch (error) {
+      console.error("Error creating advanced:", error);
+      
+    }
   };
+  
 
   const uploadImage = async (imgUrl: string) => {
     try {
@@ -47,51 +64,95 @@ export const campaignUsecase = (
     }
   };
 
-  const createReward = async(reward:RewardInterface)=>{
-    return await repository.createReward(reward)
-  }
-
-  const getCampaign = async(id:string)=>{
-    console.log(id,'usecase')
-    return await repository.getCampaign(id)
-  }
-
-
-  const getCategory = async(category:string)=>{
-    return await repository.getCategory(category)
-  }
-
-  const addComment = async(commentData:CommentInterface)=>{
-    return await repository.addComment(commentData)
-  }
-
-  const listComments = async(id:string)=>{
-    return await repository.listComments(id)
-  }
-
-  const getReward = async(id:string)=>{
-    return await repository.getReward(id)
-  }
-
-  const listCategory = async()=>{
-    return await repository.listCategory()
-  }
-
-  const getDashboardData = async(creatorEmail:string)=>{
-    return await repository.getDashboardData(creatorEmail)
-  }
-
-  const getPaymentData = async(campaignId:string)=>{
-    return await repository.getPaymentData(campaignId)
-  }
-
-  const search = async(query:string)=>{
-    return await repository.search(query)
-  }
-
-  const HandleLIve = async(campaignId:string)=>{
-    return await repository.HandleLIve(campaignId)
-  }
+  const createReward = async (reward: RewardInterface) => {
+    try {
+      return await repository.createReward(reward);
+    } catch (error) {
+      console.error("Error creating reward:", error);
+    }
+  };
+  
+  const getCampaign = async (id: string) => {
+    try {
+      console.log(id, 'usecase');
+      return await repository.getCampaign(id);
+    } catch (error) {
+      console.error("Error getting campaign:", error);
+    }
+  };
+  
+  const getCategory = async (category: string) => {
+    try {
+      return await repository.getCategory(category);
+    } catch (error) {
+      console.error("Error getting category:", error);
+    }
+  };
+  
+  const addComment = async (commentData: CommentInterface) => {
+    try {
+      return await repository.addComment(commentData);
+    } catch (error) {
+      console.error("Error adding comment:", error);
+    }
+  };
+  
+  const listComments = async (id: string) => {
+    try {
+      return await repository.listComments(id);
+    } catch (error) {
+      console.error("Error listing comments:", error);
+    }
+  };
+  
+  const getReward = async (id: string) => {
+    try {
+      return await repository.getReward(id);
+    } catch (error) {
+      console.error("Error getting reward:", error);
+    }
+  };
+  
+  const listCategory = async () => {
+    try {
+      return await repository.listCategory();
+    } catch (error) {
+      console.error("Error listing categories:", error);
+    }
+  };
+  
+  const getDashboardData = async (creatorEmail: string) => {
+    try {
+      return await repository.getDashboardData(creatorEmail);
+    } catch (error) {
+      console.error("Error getting dashboard data:", error);
+    }
+  };
+  
+  const getPaymentData = async (campaignId: string) => {
+    try {
+      return await repository.getPaymentData(campaignId);
+    } catch (error) {
+      console.error("Error getting payment data:", error);
+    }
+  };
+  
+  const search = async (query: string) => {
+    try {
+      return await repository.search(query);
+    } catch (error) {
+      console.error("Error searching:", error);
+    }
+  };
+  
+  const HandleLIve = async (campaignId: string) => {
+    try {
+      return await repository.HandleLIve(campaignId);
+    } catch (error) {
+      console.error("Error handling live campaign:", error);
+    }
+  };
+  
 
 
 

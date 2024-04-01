@@ -12,6 +12,7 @@ import { CategoryPage } from "../pages/userPages/CategoryPage"
 import { SuccessPage } from "../pages/userPages/SuccessPage"
 import { CommunityPage } from "../pages/userPages/CommunityPage"
 import { LiveStreampage } from "../pages/userPages/LiveStreampage"
+import { ErrorPage } from "../pages/userPages/ErrorPage"
 
 
 
@@ -33,6 +34,7 @@ export const UserRoutes = () => {
             <Route path = '/dashboard' element={<HomePage/>}/>
             <Route path="/liveHost" element={<LiveStreampage/>}/>
             <Route path="/live" element={<LiveStreampage/>}/>
+            <Route path="*" element={<ErrorPage/>}/>
 
 
             

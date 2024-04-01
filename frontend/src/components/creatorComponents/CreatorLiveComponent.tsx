@@ -50,7 +50,7 @@ export const CreatorLiveComponent = () => {
 
 
   let peerConnection:RTCPeerConnection|undefined;
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
   const remoteVideoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
@@ -59,9 +59,10 @@ export const CreatorLiveComponent = () => {
         console.log('inside the media')
         const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
         console.log('stream:',stream)
-        if (videoRef.current) {
-          console.log('inref')
-          videoRef.current.srcObject = stream;
+        if (videoRef.current ) {
+          (videoRef.current as HTMLVideoElement).srcObject = stream;
+          console.log('inside...')
+
         }
         setLocalStream(stream);
       } catch (error) {

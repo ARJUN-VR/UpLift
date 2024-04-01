@@ -18,19 +18,34 @@ const socketService_1 = require("../services/socketService");
 const app_1 = require("../../app");
 const campaignUsecase = (repository) => {
     const listCampaigns = () => __awaiter(void 0, void 0, void 0, function* () {
-        return yield repository.listCampaigns();
+        try {
+            return yield repository.listCampaigns();
+        }
+        catch (error) {
+            console.error("Error listing campaigns:", error);
+        }
     });
     const createBasics = (basics) => __awaiter(void 0, void 0, void 0, function* () {
-        const count = yield repository.getNotificationCount();
-        let newCount = 0;
-        if (count) {
-            newCount = count + 1;
+        try {
+            const count = yield repository.getNotificationCount();
+            let newCount = 0;
+            if (count) {
+                newCount = count + 1;
+            }
+            (0, socketService_1.emitEventToClient)(app_1.io, 'notification', newCount);
+            return yield repository.createBasics(basics);
         }
-        (0, socketService_1.emitEventToClient)(app_1.io, 'notification', newCount);
-        return yield repository.createBasics(basics);
+        catch (error) {
+            console.error("Error creating basics:", error);
+        }
     });
     const createAdvanced = (advanced) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield repository.createAdvanced(advanced);
+        try {
+            return yield repository.createAdvanced(advanced);
+        }
+        catch (error) {
+            console.error("Error creating advanced:", error);
+        }
     });
     const uploadImage = (imgUrl) => __awaiter(void 0, void 0, void 0, function* () {
         try {
@@ -51,38 +66,93 @@ const campaignUsecase = (repository) => {
         }
     });
     const createReward = (reward) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield repository.createReward(reward);
+        try {
+            return yield repository.createReward(reward);
+        }
+        catch (error) {
+            console.error("Error creating reward:", error);
+        }
     });
     const getCampaign = (id) => __awaiter(void 0, void 0, void 0, function* () {
-        console.log(id, 'usecase');
-        return yield repository.getCampaign(id);
+        try {
+            console.log(id, 'usecase');
+            return yield repository.getCampaign(id);
+        }
+        catch (error) {
+            console.error("Error getting campaign:", error);
+        }
     });
     const getCategory = (category) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield repository.getCategory(category);
+        try {
+            return yield repository.getCategory(category);
+        }
+        catch (error) {
+            console.error("Error getting category:", error);
+        }
     });
     const addComment = (commentData) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield repository.addComment(commentData);
+        try {
+            return yield repository.addComment(commentData);
+        }
+        catch (error) {
+            console.error("Error adding comment:", error);
+        }
     });
     const listComments = (id) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield repository.listComments(id);
+        try {
+            return yield repository.listComments(id);
+        }
+        catch (error) {
+            console.error("Error listing comments:", error);
+        }
     });
     const getReward = (id) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield repository.getReward(id);
+        try {
+            return yield repository.getReward(id);
+        }
+        catch (error) {
+            console.error("Error getting reward:", error);
+        }
     });
     const listCategory = () => __awaiter(void 0, void 0, void 0, function* () {
-        return yield repository.listCategory();
+        try {
+            return yield repository.listCategory();
+        }
+        catch (error) {
+            console.error("Error listing categories:", error);
+        }
     });
     const getDashboardData = (creatorEmail) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield repository.getDashboardData(creatorEmail);
+        try {
+            return yield repository.getDashboardData(creatorEmail);
+        }
+        catch (error) {
+            console.error("Error getting dashboard data:", error);
+        }
     });
     const getPaymentData = (campaignId) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield repository.getPaymentData(campaignId);
+        try {
+            return yield repository.getPaymentData(campaignId);
+        }
+        catch (error) {
+            console.error("Error getting payment data:", error);
+        }
     });
     const search = (query) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield repository.search(query);
+        try {
+            return yield repository.search(query);
+        }
+        catch (error) {
+            console.error("Error searching:", error);
+        }
     });
     const HandleLIve = (campaignId) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield repository.HandleLIve(campaignId);
+        try {
+            return yield repository.HandleLIve(campaignId);
+        }
+        catch (error) {
+            console.error("Error handling live campaign:", error);
+        }
     });
     return {
         listCampaigns,

@@ -1,9 +1,10 @@
 import { AdminDbRepository } from "../repository/adminDbrepository";
 import generateAdminToken from "../services/adminJwt";
+import { Request,Response } from "express";
 
 
 export const adminCases = (repository:ReturnType<AdminDbRepository>)=>{
-    const adminSignin = async(email:string,password:string,res:any)=>{
+    const adminSignin = async(email:string,password:string,res:Response)=>{
         const admin = await repository.findByEmail(email)
         if(!admin){
             return {success:false,error:'cannot find admin'}

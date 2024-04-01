@@ -18,68 +18,134 @@ const paymentSchema_1 = require("../model/paymentSchema");
 const userSchema_1 = require("../model/userSchema");
 const adminDbMethods = () => {
     const findByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield adminSchema_1.Admin.findOne({ email: email });
+        try {
+            return yield adminSchema_1.Admin.findOne({ email: email });
+        }
+        catch (error) {
+            console.error("Error finding admin by email:", error);
+            throw new Error("Error finding admin by email");
+        }
     });
     const getUsers = () => __awaiter(void 0, void 0, void 0, function* () {
-        return yield userSchema_1.User.find().select('-password');
+        try {
+            return yield userSchema_1.User.find().select('-password');
+        }
+        catch (error) {
+            console.error("Error getting users:", error);
+            throw new Error("Error getting users");
+        }
     });
     const blockUser = (email) => __awaiter(void 0, void 0, void 0, function* () {
-        const user = yield userSchema_1.User.findOne({ email: email });
-        if (!user) {
-            return { success: false };
+        try {
+            const user = yield userSchema_1.User.findOne({ email: email });
+            if (!user) {
+                return { success: false };
+            }
+            else {
+                user.isBlocked = !user.isBlocked;
+                return yield user.save();
+            }
         }
-        else {
-            user.isBlocked = !user.isBlocked;
-            return yield user.save();
+        catch (error) {
+            console.error("Error blocking user:", error);
+            throw new Error("Error blocking user");
         }
     });
     const findCampaignById = (id) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield basicSchema_1.Basics.find({ _id: id });
+        try {
+            return yield basicSchema_1.Basics.find({ _id: id });
+        }
+        catch (error) {
+            console.error("Error finding campaign by ID:", error);
+            throw new Error("Error finding campaign by ID");
+        }
     });
     const findAdvanced = (id) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield advancedSchema_1.Advanced.find({ basicId: id });
+        try {
+            return yield advancedSchema_1.Advanced.find({ basicId: id });
+        }
+        catch (error) {
+            console.error("Error finding advanced by ID:", error);
+            throw new Error("Error finding advanced by ID");
+        }
     });
     const verfyCampaign = (id) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield basicSchema_1.Basics.updateOne({ _id: id }, { $set: { isVerified: true } });
+        try {
+            return yield basicSchema_1.Basics.updateOne({ _id: id }, { $set: { isVerified: true } });
+        }
+        catch (error) {
+            console.error("Error verifying campaign:", error);
+            throw new Error("Error verifying campaign");
+        }
     });
     const listCampaignRequests = () => __awaiter(void 0, void 0, void 0, function* () {
-        return yield basicSchema_1.Basics.find({ isVerified: false });
+        try {
+            return yield basicSchema_1.Basics.find({ isVerified: false });
+        }
+        catch (error) {
+            console.error("Error listing campaign requests:", error);
+            throw new Error("Error listing campaign requests");
+        }
     });
     const listLiveCampaigns = () => __awaiter(void 0, void 0, void 0, function* () {
-        return yield basicSchema_1.Basics.find({ isVerified: true });
+        try {
+            return yield basicSchema_1.Basics.find({ isVerified: true });
+        }
+        catch (error) {
+            console.error("Error listing live campaigns:", error);
+            throw new Error("Error listing live campaigns");
+        }
     });
     const addCategory = (name) => __awaiter(void 0, void 0, void 0, function* () {
-        const isExist = yield categorySchema_1.Category.find({ name });
-        if (isExist) {
-            throw new Error('category already exist');
+        try {
+            const isExist = yield categorySchema_1.Category.find({ name });
+            if (isExist && isExist.length > 0) {
+                throw new Error('category already exist');
+            }
+            else {
+                return yield categorySchema_1.Category.create({ name });
+            }
         }
-        else {
-            return yield categorySchema_1.Category.create({ name });
+        catch (error) {
+            console.error("Error adding category:", error);
+            throw new Error("Error adding category");
         }
     });
     const listCategory = (name) => __awaiter(void 0, void 0, void 0, function* () {
-        yield basicSchema_1.Basics.updateMany({ category: name }, { $set: { isListed: true } }, { new: true });
-        const detail = yield categorySchema_1.Category.findOne({ name: name });
-        if (detail) {
-            detail.isBlocked = !detail.isBlocked;
-            yield detail.save();
+        try {
+            yield basicSchema_1.Basics.updateMany({ category: name }, { $set: { isListed: true } }, { new: true });
+            const detail = yield categorySchema_1.Category.findOne({ name: name });
+            if (detail) {
+                detail.isBlocked = !detail.isBlocked;
+                yield detail.save();
+            }
+            else {
+                return { success: false };
+            }
+            return basicSchema_1.Basics.find({ category: name });
         }
-        else {
-            return { success: false };
+        catch (error) {
+            console.error("Error listing category:", error);
+            throw new Error("Error listing category");
         }
-        return basicSchema_1.Basics.find({ category: name });
     });
     const unListCategory = (name) => __awaiter(void 0, void 0, void 0, function* () {
-        yield basicSchema_1.Basics.updateMany({ category: name }, { $set: { isListed: false } }, { new: true });
-        const detail = yield categorySchema_1.Category.findOne({ name: name });
-        if (detail) {
-            detail.isBlocked = !detail.isBlocked;
-            yield detail.save();
+        try {
+            yield basicSchema_1.Basics.updateMany({ category: name }, { $set: { isListed: false } }, { new: true });
+            const detail = yield categorySchema_1.Category.findOne({ name: name });
+            if (detail) {
+                detail.isBlocked = !detail.isBlocked;
+                yield detail.save();
+            }
+            else {
+                return { success: false };
+            }
+            return basicSchema_1.Basics.find({ category: name });
         }
-        else {
-            return { success: false };
+        catch (error) {
+            console.error("Error unlisting category:", error);
+            throw new Error("Error unlisting category");
         }
-        return basicSchema_1.Basics.find({ category: name });
     });
     const checkListStatus = (name) => __awaiter(void 0, void 0, void 0, function* () {
         try {
@@ -150,9 +216,7 @@ const adminDbMethods = () => {
                     }
                 }
             ]);
-            // Transforming data into array of arrays with a fixed value for the first column
             const result = data.map(item => ["Category: " + item._id, item.count]);
-            // Adding a fixed value for the first column in the first array
             result.unshift(["Category", "Count"]);
             return result;
         }

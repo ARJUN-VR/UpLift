@@ -35,6 +35,15 @@ export const CommentBox = ({ campaignid }: CommentProps) => {
       if (!userInfo) {
         return toast.info("sign in to add comment");
       }
+      if(!comment){
+        return toast.warn('please add comment')
+      }
+      const trimmedComment = comment.trim();
+
+      if (!trimmedComment) {
+        return toast.warn('A comment must contain text');
+      }
+  
 
       const userName = userInfo.result.user.name;
 

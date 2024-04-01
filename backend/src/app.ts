@@ -37,10 +37,10 @@ export const io = new Server(server, {
   const enviornment = "production"
 
   if (enviornment === 'production') { 
-      app.use(express.static(path.join(productionParendDir , '/frontend/dist')));
+      app.use(express.static(path.join(parentDir , '/frontend/dist')));
     
       app.get('*', (req, res) =>
-        res.sendFile(path.resolve(productionParendDir , 'frontend', 'dist', 'index.html'))
+        res.sendFile(path.resolve(parentDir , 'frontend', 'dist', 'index.html'))
       );
    
     } else {

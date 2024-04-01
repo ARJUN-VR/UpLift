@@ -19,51 +19,81 @@ const cloudinary_1 = __importDefault(require("cloudinary"));
 const userCases = (repository) => {
     const findByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () { return yield repository.findByEmail(email); });
     const addUser = (user) => __awaiter(void 0, void 0, void 0, function* () {
-        const newEmail = user.email;
-        const email = yield repository.findByEmail(newEmail);
-        if (email) {
-            return false;
+        try {
+            const newEmail = user.email;
+            const email = yield repository.findByEmail(newEmail);
+            if (email) {
+                return false;
+            }
+            else {
+                return yield repository.adduser(user);
+            }
         }
-        else {
-            return yield repository.adduser(user);
+        catch (error) {
+            console.error("Error adding user:", error);
+            throw new Error("Error adding user");
         }
     });
     const userSignIn = (email, password, res) => __awaiter(void 0, void 0, void 0, function* () {
-        const user = yield repository.findByEmail(email);
-        if (!user) {
-            return { success: false, error: "no user found" };
-        }
-        if ('isBlocked' in user && user.isBlocked) {
-            return { success: false, error: 'user blocked' };
-        }
-        if (user && typeof user.matchPassword === "function") {
-            if (yield user.matchPassword(password)) {
-                (0, generateJwt_1.default)(res, user);
-                return { success: true, user };
+        try {
+            const user = yield repository.findByEmail(email);
+            if (!user) {
+                return { success: false, error: "no user found" };
+            }
+            if ('isBlocked' in user && user.isBlocked) {
+                return { success: false, error: 'user blocked' };
+            }
+            if (user && typeof user.matchPassword === "function") {
+                if (yield user.matchPassword(password)) {
+                    (0, generateJwt_1.default)(res, user);
+                    return { success: true, user };
+                }
+                else {
+                    return { success: false, error: "Incorrect password" };
+                }
             }
             else {
-                return { success: false, error: "Incorrect password" };
+                return { success: false, error: "Unable to verify password" };
             }
         }
-        else {
-            return { success: false, error: "Unable to verify password" };
+        catch (error) {
+            console.error("Error signing in:", error);
+            throw new Error("Error signing in");
         }
     });
     const userSignout = (res) => {
-        res.cookie("accessToken", "", {
-            httpOnly: true,
-            expires: new Date(0),
-        });
-        res.cookie('refreshToken', '', {
-            httpOnly: true,
-            expires: new Date(0)
-        });
+        try {
+            res.cookie("accessToken", "", {
+                httpOnly: true,
+                expires: new Date(0),
+            });
+            res.cookie('refreshToken', '', {
+                httpOnly: true,
+                expires: new Date(0)
+            });
+        }
+        catch (error) {
+            console.error("Error signing out:", error);
+            throw new Error("Error signing out");
+        }
     };
     const updateProfile = (req) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield repository.saveUser(req);
+        try {
+            return yield repository.saveUser(req);
+        }
+        catch (error) {
+            console.error("Error updating profile:", error);
+            throw new Error("Error updating profile");
+        }
     });
     const forgotPassword = (email, password) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield repository.forgotPassword(email, password);
+        try {
+            return yield repository.forgotPassword(email, password);
+        }
+        catch (error) {
+            console.error("Error resetting password:", error);
+            throw new Error("Error resetting password");
+        }
     });
     const verifyUserAndSendOtp = (email) => __awaiter(void 0, void 0, void 0, function* () {
         try {
@@ -119,7 +149,13 @@ const userCases = (repository) => {
         }
     });
     const pledge = (campaignId, payment, userEmail) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield repository.pledge(campaignId, payment, userEmail);
+        try {
+            return yield repository.pledge(campaignId, payment, userEmail);
+        }
+        catch (error) {
+            console.error("Error pledging:", error);
+            throw new Error("Error pledging");
+        }
     });
     const getChannels = (userEmail) => __awaiter(void 0, void 0, void 0, function* () {
         var _a;
@@ -139,20 +175,32 @@ const userCases = (repository) => {
         }
     });
     const saveChat = (chat) => __awaiter(void 0, void 0, void 0, function* () {
-        if (chat.image) {
-            const imageRes = yield uploadImage(chat.image);
-            chat.image = imageRes === null || imageRes === void 0 ? void 0 : imageRes.secure_url;
+        try {
+            if (chat.image) {
+                const imageRes = yield uploadImage(chat.image);
+                chat.image = imageRes === null || imageRes === void 0 ? void 0 : imageRes.secure_url;
+            }
+            else if (chat.video) {
+                const videoRes = yield cloudinary_1.default.v2.uploader.upload(chat.video, {
+                    resource_type: "video",
+                });
+                chat.video = videoRes === null || videoRes === void 0 ? void 0 : videoRes.secure_url;
+            }
+            return yield repository.saveChat(chat);
         }
-        else if (chat.video) {
-            const videoRes = yield cloudinary_1.default.v2.uploader.upload(chat.video, {
-                resource_type: "video",
-            });
-            chat.video = videoRes === null || videoRes === void 0 ? void 0 : videoRes.secure_url;
+        catch (error) {
+            console.error("Error saving chat:", error);
+            throw new Error("Error saving chat");
         }
-        return yield repository.saveChat(chat);
     });
     const getChats = (campaignId) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield repository.getChats(campaignId);
+        try {
+            return yield repository.getChats(campaignId);
+        }
+        catch (error) {
+            console.error("Error fetching chats:", error);
+            throw new Error("Error fetching chats");
+        }
     });
     return {
         findByEmail,

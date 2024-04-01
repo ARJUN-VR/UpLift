@@ -7,72 +7,110 @@ import { Payment } from "../model/paymentSchema";
 import { ObjectId } from "mongodb";
 import { Chat } from "../model/chatSchema";
 import { ChatInterface } from "../../../../entities/Chat";
+import { Request,Response } from "express";
 
 
 export const userDbMethods = () => {
   const addUser = async (user: userInterface) => {
-    return await User.create(user);
+    try {
+      return await User.create(user);
+    } catch (error) {
+      console.error("Error adding user:", error);
+      throw new Error("Error adding user");
+    }
   };
-
+  
   const findByEmail = async (email: string) => {
-    const user = await User.findOne({ email: email });
-    return user;
+    try {
+      const user = await User.findOne({ email: email });
+      return user;
+    } catch (error) {
+      console.error("Error finding user by email:", error);
+      throw new Error("Error finding user by email");
+    }
   };
-
   
   const findById = async (id: string) => {
-    return await User.findOne({ _id: id });
-  };
-
-
-
-  const saveUser = async (req: any) => {
-    const user = await User.findById({ _id: req.user._id });
-    if (user) {
-      user.name = req.body.editName || user.name;
-      user.email = req.body.editEmail || user.email;
-      user.password = req.body.password || user.password;
-      user.image = req.body.image || user.image
-
-      return await user.save();
+    try {
+      return await User.findOne({ _id: id });
+    } catch (error) {
+      console.error("Error finding user by id:", error);
+      throw new Error("Error finding user by id");
     }
   };
+  
+
+
+
+  const saveUser = async (req: Request) => {
+    try {
+      const user = await User.findById({ _id: req.user._id });
+      if (user) {
+        user.name = req.body.editName || user.name;
+        user.email = req.body.editEmail || user.email;
+        user.password = req.body.password || user.password;
+        user.image = req.body.image || user.image;
+  
+        return await user.save();
+      }
+    } catch (error) {
+      console.error("Error saving user:", error);
+      throw new Error("Error saving user");
+    }
+  };
+  
 
   const forgotPassword = async (email: string, password: string) => {
-    const user: userInterface | null = await User.findOne({ email: email });
-    if (!user) {
-      return { success: false, error: "user not found" };
-    } else {
-      const userDoc = user as Document & userInterface;
-      console.log(password,'before')
-
-      userDoc.password = password;
-      console.log(userDoc.password,'after')
-      await userDoc.save();
-      return { success: true, message: "passowrd changed succesfully" };
+    try {
+      const user: userInterface | null = await User.findOne({ email: email });
+      if (!user) {
+        return { success: false, error: "user not found" };
+      } else {
+        const userDoc = user as Document & userInterface;
+        console.log(password, 'before');
+  
+        userDoc.password = password;
+        console.log(userDoc.password, 'after');
+        await userDoc.save();
+        return { success: true, message: "password changed successfully" };
+      }
+    } catch (error) {
+      console.error("Error changing password:", error);
+      throw new Error("Error changing password");
     }
   };
+  
 
-  const saveOTP =async(email:string,otp:number)=>{
-        const user = await User.findOne({email:email})
-        if(user){
-          const userEmail = user.email
-          console.log(userEmail)
-          const newOtp = new OTP({userEmail:userEmail,otp:otp})
-          await newOtp.save()
-          console.log(newOtp)
-        }
-
-  }
-
-  const findOtpUser = async(email:string)=>{
-    const user =  await OTP.findOne({userEmail:email})
-    if(user){
-      return user.otp
-    }else{
-      throw new Error('user not found')
+  const saveOTP = async (email: string, otp: number) => {
+    try {
+      const user = await User.findOne({ email: email });
+      if (user) {
+        const userEmail = user.email;
+        console.log(userEmail);
+        const newOtp = new OTP({ userEmail: userEmail, otp: otp });
+        await newOtp.save();
+        console.log(newOtp);
+      }
+    } catch (error) {
+      console.error("Error saving OTP:", error);
+      throw new Error("Error saving OTP");
     }
-  }
+  };
+  
+  const findOtpUser = async (email: string) => {
+    try {
+      const user = await OTP.findOne({ userEmail: email });
+      if (user) {
+        return user.otp;
+      } else {
+        throw new Error('user not found');
+      }
+    } catch (error) {
+      console.error("Error finding OTP user:", error);
+      throw new Error("Error finding OTP user");
+    }
+  };
+  
 
   const pledge = async(campaignId:string,payment:number,userEmail:string)=>{
     try {
@@ -116,14 +154,26 @@ export const userDbMethods = () => {
  }
 
  const saveChat = async(chat:ChatInterface)=>{
+  try{
 
-  return await Chat.create(chat)
+    return await Chat.create(chat)
+  }catch(error){
+    console.log(error)
+    throw new Error('cannot save chat')
+  }
+
 
  }
 
 
  const getChats = async(campaignId:string)=>{
-  return await Chat.find({campaignId})
+  try{
+
+    return await Chat.find({campaignId})
+  }catch(error){
+    console.log(error)
+    throw new Error('cannot get chats')
+  }
  }
 
 

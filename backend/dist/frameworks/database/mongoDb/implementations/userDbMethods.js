@@ -18,56 +18,98 @@ const mongodb_1 = require("mongodb");
 const chatSchema_1 = require("../model/chatSchema");
 const userDbMethods = () => {
     const addUser = (user) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield userSchema_1.User.create(user);
+        try {
+            return yield userSchema_1.User.create(user);
+        }
+        catch (error) {
+            console.error("Error adding user:", error);
+            throw new Error("Error adding user");
+        }
     });
     const findByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () {
-        const user = yield userSchema_1.User.findOne({ email: email });
-        return user;
+        try {
+            const user = yield userSchema_1.User.findOne({ email: email });
+            return user;
+        }
+        catch (error) {
+            console.error("Error finding user by email:", error);
+            throw new Error("Error finding user by email");
+        }
     });
     const findById = (id) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield userSchema_1.User.findOne({ _id: id });
+        try {
+            return yield userSchema_1.User.findOne({ _id: id });
+        }
+        catch (error) {
+            console.error("Error finding user by id:", error);
+            throw new Error("Error finding user by id");
+        }
     });
     const saveUser = (req) => __awaiter(void 0, void 0, void 0, function* () {
-        const user = yield userSchema_1.User.findById({ _id: req.user._id });
-        if (user) {
-            user.name = req.body.editName || user.name;
-            user.email = req.body.editEmail || user.email;
-            user.password = req.body.password || user.password;
-            user.image = req.body.image || user.image;
-            return yield user.save();
+        try {
+            const user = yield userSchema_1.User.findById({ _id: req.user._id });
+            if (user) {
+                user.name = req.body.editName || user.name;
+                user.email = req.body.editEmail || user.email;
+                user.password = req.body.password || user.password;
+                user.image = req.body.image || user.image;
+                return yield user.save();
+            }
+        }
+        catch (error) {
+            console.error("Error saving user:", error);
+            throw new Error("Error saving user");
         }
     });
     const forgotPassword = (email, password) => __awaiter(void 0, void 0, void 0, function* () {
-        const user = yield userSchema_1.User.findOne({ email: email });
-        if (!user) {
-            return { success: false, error: "user not found" };
+        try {
+            const user = yield userSchema_1.User.findOne({ email: email });
+            if (!user) {
+                return { success: false, error: "user not found" };
+            }
+            else {
+                const userDoc = user;
+                console.log(password, 'before');
+                userDoc.password = password;
+                console.log(userDoc.password, 'after');
+                yield userDoc.save();
+                return { success: true, message: "password changed successfully" };
+            }
         }
-        else {
-            const userDoc = user;
-            console.log(password, 'before');
-            userDoc.password = password;
-            console.log(userDoc.password, 'after');
-            yield userDoc.save();
-            return { success: true, message: "passowrd changed succesfully" };
+        catch (error) {
+            console.error("Error changing password:", error);
+            throw new Error("Error changing password");
         }
     });
     const saveOTP = (email, otp) => __awaiter(void 0, void 0, void 0, function* () {
-        const user = yield userSchema_1.User.findOne({ email: email });
-        if (user) {
-            const userEmail = user.email;
-            console.log(userEmail);
-            const newOtp = new otpSchema_1.OTP({ userEmail: userEmail, otp: otp });
-            yield newOtp.save();
-            console.log(newOtp);
+        try {
+            const user = yield userSchema_1.User.findOne({ email: email });
+            if (user) {
+                const userEmail = user.email;
+                console.log(userEmail);
+                const newOtp = new otpSchema_1.OTP({ userEmail: userEmail, otp: otp });
+                yield newOtp.save();
+                console.log(newOtp);
+            }
+        }
+        catch (error) {
+            console.error("Error saving OTP:", error);
+            throw new Error("Error saving OTP");
         }
     });
     const findOtpUser = (email) => __awaiter(void 0, void 0, void 0, function* () {
-        const user = yield otpSchema_1.OTP.findOne({ userEmail: email });
-        if (user) {
-            return user.otp;
+        try {
+            const user = yield otpSchema_1.OTP.findOne({ userEmail: email });
+            if (user) {
+                return user.otp;
+            }
+            else {
+                throw new Error('user not found');
+            }
         }
-        else {
-            throw new Error('user not found');
+        catch (error) {
+            console.error("Error finding OTP user:", error);
+            throw new Error("Error finding OTP user");
         }
     });
     const pledge = (campaignId, payment, userEmail) => __awaiter(void 0, void 0, void 0, function* () {
@@ -108,10 +150,22 @@ const userDbMethods = () => {
         }
     });
     const saveChat = (chat) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield chatSchema_1.Chat.create(chat);
+        try {
+            return yield chatSchema_1.Chat.create(chat);
+        }
+        catch (error) {
+            console.log(error);
+            throw new Error('cannot save chat');
+        }
     });
     const getChats = (campaignId) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield chatSchema_1.Chat.find({ campaignId });
+        try {
+            return yield chatSchema_1.Chat.find({ campaignId });
+        }
+        catch (error) {
+            console.log(error);
+            throw new Error('cannot get chats');
+        }
     });
     return {
         addUser,
