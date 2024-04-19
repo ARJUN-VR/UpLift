@@ -40,7 +40,7 @@ export const io = new Server(server, {
       app.use(express.static(path.join(parentDir , '/frontend/dist')));
     
       app.get('*', (req, res) =>
-        res.sendFile(path.resolve(parentDir , 'frontend', 'dist', 'index.html'))
+        res.sendFile(path.resolve(parentDir   , 'frontend', 'dist', 'index.html'))
       );
    
     } else {

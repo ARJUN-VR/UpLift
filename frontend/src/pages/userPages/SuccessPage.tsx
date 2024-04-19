@@ -2,27 +2,25 @@
 import { useNavigate } from 'react-router-dom';
 import Loader from '../../components/userComponents/Loader';
 import { usePledgeMutation } from '../../redux/slices/userApiSlice';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export const SuccessPage = () => {
   const id= localStorage.getItem('camapign')
   const amount = localStorage.getItem('amount')
   const [pledge,{isLoading}] = usePledgeMutation()
   const [email,setEmail] = useState<string>('')
+ 
 
   const navigate = useNavigate()
   const userData = localStorage.getItem('userInfo')
-  if(userData){
-    const parsedData = JSON.parse(userData) 
-    const userEmail = parsedData.result.user.email
-    setEmail(userEmail)
-
-  }
-
-
-
-
-
+  
+  useEffect(() => {
+    if (userData) {
+      const parsedData = JSON.parse(userData);
+      const userEmail = parsedData.result.user.email;
+      setEmail(userEmail);
+    }
+  }, [userData]);
   const updatePledge =async()=>{
 
     try {
@@ -34,10 +32,7 @@ export const SuccessPage = () => {
       console.log(error)
     }
 
-
-
   }
-
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-800 text-white">

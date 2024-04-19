@@ -31,7 +31,7 @@ export const UserRoutes = () => {
             <Route path="/campaign/:id" element={<SinglePageView/>}/>
             <Route path="/category/:cat" element={<CategoryPage/>}/>
             <Route path="/success" element={<SuccessPage/>}/>
-            <Route path = '/dashboard' element={<HomePage/>}/>
+            <Route path ='/dashboard' element={<HomePage/>}/>
             <Route path="/liveHost" element={<LiveStreampage/>}/>
             <Route path="/live" element={<LiveStreampage/>}/>
             <Route path="*" element={<ErrorPage/>}/>
