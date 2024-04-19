@@ -25,7 +25,7 @@ export const Payment = ({ close , name, desc,campaignId}:PaymentProp) => {
   const handlePayment = async () => {
     try {
 
-      const res = await fetch('http://localhost:8000/api/user/payment', {
+      const res = await fetch('https://uplift.arjunvr.live/api/user/payment', {
         method: "post",
         headers: {
           "Content-Type": "application/json", // Set the Content-Type header
