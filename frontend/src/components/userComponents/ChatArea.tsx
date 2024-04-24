@@ -65,14 +65,15 @@ export const ChatArea = ({ campaignId ,title,groupIcon}: CHATPROP) => {
     imageRef.current?.click();
   };
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
+  console.log(liveChannel)
 
   const [saveChat] = useSaveChatMutation();
   const [getChats, { isLoading }] = useGetChatMutation();
 
   const { userInfo } = useSelector((state: RootState) => state.auth);
 
-  const isCreator: boolean = userInfo.result.user.isCreator;
+  // const isCreator: boolean = userInfo.result.user.isCreator;
 
   const userName: string = userInfo.result.user.name;
 
@@ -183,11 +184,11 @@ export const ChatArea = ({ campaignId ,title,groupIcon}: CHATPROP) => {
     }
   };
 
-  const liveHandler = () => {
-    const channel = campaignId;
-    socket.emit("joinRequest", channel);
-    navigate("/liveHost");
-  };
+  // const liveHandler = () => {
+  //   const channel = campaignId;
+  //   socket.emit("joinRequest", channel);
+  //   navigate("/liveHost");
+  // };
 
   useEffect(() => {
     const handleInvite = (channel: string) => {
@@ -203,10 +204,10 @@ export const ChatArea = ({ campaignId ,title,groupIcon}: CHATPROP) => {
     };
   }, []);
 
-  const joinHandler = () => {
-    socket.emit("joined");
-    navigate("/liveHost");
-  };
+  // const joinHandler = () => {
+  //   socket.emit("joined");
+  //   navigate("/liveHost");
+  // };
 
   const emitTyping = async()=>{
     socket.emit('typing',{campaignId,userName})
