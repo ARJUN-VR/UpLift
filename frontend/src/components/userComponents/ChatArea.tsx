@@ -327,7 +327,7 @@ const handleKeyRelease = ()=>{
                 </span>
                 </div>
                 <div className="w-[20%] bg-gray-700 h-20 flex justify-center items-center" >
-                {isCreator && (
+                {/* {isCreator && (
 
                   <button
                     className=" bg-red-500 text-white font-semibold w-20 rounded-md h-10 "
@@ -336,8 +336,8 @@ const handleKeyRelease = ()=>{
                     Go live
                   </button>
                   
-                )}
-                {liveChannel == campaignId && (
+                )} */}
+                {/* {liveChannel == campaignId && (
                   <span
                     className="mr-20 h-10 text-red-400"
                     id="live"
@@ -345,7 +345,7 @@ const handleKeyRelease = ()=>{
                   >
                     creator on live
                   </span>
-                )}
+                )} */}
               </div>
 
               </div>
