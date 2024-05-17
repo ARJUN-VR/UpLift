@@ -118,7 +118,7 @@ export const userController = (
   });
 
   const payment = asyncHandler(async (req: Request, res: Response) => {
-    const {title,description,amount} = req.body;
+    const {title,description,amount,email} = req.body;
     console.log('server url:',configKeys.SERVER_URL)
 
     try {
@@ -137,7 +137,7 @@ export const userController = (
           },
         ],
         payment_method_types:["card"],
-        customer_email:'user@gmail.com',
+        customer_email:email,
   
         billing_address_collection:"required",
         mode: "payment",

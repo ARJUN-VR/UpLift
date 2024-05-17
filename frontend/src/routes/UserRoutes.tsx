@@ -36,9 +36,6 @@ export const UserRoutes = () => {
             <Route path="/live" element={<LiveStreampage/>}/>
             <Route path="*" element={<ErrorPage/>}/>
 
-
-            
-
             {/* Private Routes */}
 
             <Route path="" element={<UserPrivateRoutes/>}>

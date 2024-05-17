@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { RewardCard } from "./RewardCard";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 interface PaymentProp{
   close:()=>void;
@@ -18,7 +20,9 @@ export const Payment = ({ close , name, desc,campaignId}:PaymentProp) => {
     close();
   };
 
+  const { userInfo } = useSelector((state: RootState) => state.auth);
 
+  const email = userInfo.result.user.email;
 
 
   
@@ -28,13 +32,14 @@ export const Payment = ({ close , name, desc,campaignId}:PaymentProp) => {
       const res = await fetch('https://uplift.arjunvr.live/api/user/payment', {
         method: "post",
         headers: {
-          "Content-Type": "application/json", // Set the Content-Type header
+          "Content-Type": "application/json", 
         },
         body: JSON.stringify({
-          // Convert the request body to a JSON string
+          
           title:name,
           amount: amount,
-          description:desc
+          description:desc,
+          email:email
         }),
       });
 
