@@ -107,7 +107,7 @@ const userController = (dbInterface, dbImplements) => {
         res.status(200).json({ message: otpRes === null || otpRes === void 0 ? void 0 : otpRes.message });
     }));
     const payment = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        const { title, description, amount } = req.body;
+        const { title, description, amount, email } = req.body;
         console.log('server url:', config_1.configKeys.SERVER_URL);
         try {
             const session = yield stripe.checkout.sessions.create({
@@ -125,7 +125,7 @@ const userController = (dbInterface, dbImplements) => {
                     },
                 ],
                 payment_method_types: ["card"],
-                customer_email: 'user@gmail.com',
+                customer_email: email,
                 billing_address_collection: "required",
                 mode: "payment",
                 success_url: `${config_1.configKeys.SERVER_URL}/success`,

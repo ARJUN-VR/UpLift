@@ -21,6 +21,7 @@ const parentDir = path_1.default.dirname(currentWorkingDir);
 const productionParendDir = path_1.default.dirname(parentDir);
 console.log('currentworkingdir:', currentWorkingDir);
 console.log('parendDir:', parentDir);
+console.log('productiondir:', productionParendDir);
 const app = (0, express_1.default)();
 const server = http_1.default.createServer(app);
 exports.io = new socket_io_1.Server(server, {
@@ -36,8 +37,8 @@ exports.io = new socket_io_1.Server(server, {
 app.use(errorHandler_1.default);
 const enviornment = "production";
 if (enviornment === 'production') {
-    app.use(express_1.default.static(path_1.default.join(parentDir, '/frontend/dist')));
-    app.get('*', (req, res) => res.sendFile(path_1.default.resolve(parentDir, 'frontend', 'dist', 'index.html')));
+    app.use(express_1.default.static(path_1.default.join(productionParendDir, '/frontend/dist')));
+    app.get('*', (req, res) => res.sendFile(path_1.default.resolve(productionParendDir, 'frontend', 'dist', 'index.html')));
 }
 else {
     app.get('/', (req, res) => {
