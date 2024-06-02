@@ -16,6 +16,7 @@ const socket_io_1 = require("socket.io");
 const chat_1 = require("./application/services/chat");
 const signaling_1 = require("./application/services/signaling");
 const path_1 = __importDefault(require("path"));
+const config_1 = require("./frameworks/database/mongoDb/config");
 const currentWorkingDir = path_1.default.resolve();
 const parentDir = path_1.default.dirname(currentWorkingDir);
 const productionParendDir = path_1.default.dirname(parentDir);
@@ -35,15 +36,14 @@ exports.io = new socket_io_1.Server(server, {
 (0, express_2.default)(app);
 (0, routes_1.routes)(app);
 app.use(errorHandler_1.default);
-const enviornment = "production";
-if (enviornment === 'production') {
+console.log(config_1.configKeys.ENVIORNMENT);
+if (config_1.configKeys.ENVIORNMENT === 'Production') {
     app.use(express_1.default.static(path_1.default.join(productionParendDir, '/frontend/dist')));
     app.get('*', (req, res) => res.sendFile(path_1.default.resolve(productionParendDir, 'frontend', 'dist', 'index.html')));
 }
 else {
-    app.get('/', (req, res) => {
-        res.send('API is running....');
-    });
+    app.use(express_1.default.static(path_1.default.join(parentDir, '/frontend/dist')));
+    app.get('*', (req, res) => res.sendFile(path_1.default.resolve(parentDir, 'frontend', 'dist', 'index.html')));
 }
 (0, chat_1.chatConnect)();
 (0, signaling_1.signaling)();

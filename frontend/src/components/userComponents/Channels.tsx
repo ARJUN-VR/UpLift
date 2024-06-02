@@ -65,14 +65,11 @@ export const Channels = ({ callback }:CallBackProp) => {
   //   socket.emit("join", { email, id });
   // };
 
-  const joinRoom = async(campaignId:string)=>{
-    socket.emit('join',campaignId)
-  }
+
   return (
     <div className="text-white  w-[30%] ml-10 mt-10">
       <div className="mb-5">
         <span className="text-2xl font-semibold">CHANNELS</span>
-        <button onClick={()=>joinRoom(room)}>TO join</button>
       </div>
       {isChannels ? (
         <>
