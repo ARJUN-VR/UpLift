@@ -11,6 +11,7 @@ import { chatConnect } from "./application/services/chat";
 import { signaling } from "./application/services/signaling";
 
 import path from "path"
+import { configKeys } from "./frameworks/database/mongoDb/config";
 const currentWorkingDir = path.resolve();
 const parentDir = path.dirname(currentWorkingDir)
 const productionParendDir = path.dirname(parentDir)
@@ -35,19 +36,21 @@ export const io = new Server(server, {
     routes(app);
     app.use(handleError)
 
-  const enviornment = "production"
+console.log(configKeys.ENVIORNMENT)
 
-  if (enviornment === 'production') { 
-      app.use(express.static(path.join(productionParendDir , '/frontend/dist')));
+  if ( configKeys.ENVIORNMENT === 'Production') { 
+      app.use(express.static(path.join( productionParendDir , '/frontend/dist')));
     
       app.get('*', (req, res) =>
-        res.sendFile(path.resolve(productionParendDir   , 'frontend', 'dist', 'index.html'))
+        res.sendFile(path.resolve( productionParendDir , 'frontend', 'dist', 'index.html'))
       );
    
     } else {
-      app.get('/', (req, res) => {
-        res.send('API is running....');
-      });
+      app.use(express.static(path.join( parentDir , '/frontend/dist')));
+    
+      app.get('*', (req, res) =>
+        res.sendFile(path.resolve( parentDir , 'frontend', 'dist', 'index.html'))
+      );
     }
 
 chatConnect()

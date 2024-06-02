@@ -18,6 +18,7 @@ export const configKeys = {
   API_SECRET:process.env.API_SECRET,
   STRIPE_KEY:process.env.STRIPE_KEY,
   STRIPE_SECRET_KEY:process.env.STRIPE_SECRET_KEY,
-  SERVER_URL:process.env.SERVER_URL
+  SERVER_URL:process.env.SERVER_URL,
+  ENVIORNMENT:process.env.ENVIRONMENT
 
 };
