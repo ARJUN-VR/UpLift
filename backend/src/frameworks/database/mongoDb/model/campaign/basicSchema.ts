@@ -51,12 +51,12 @@ const basicSchama = new Schema({
     isListed:{
         type:Boolean,
         requried:false,
-        default:false
+        default:true
     },
     isLive:{
         type:Boolean,
         required:false,
-        default:false
+        default:true
     }
 },
 {timestamps:true}
