@@ -47,7 +47,6 @@ export const protect = (
               res.cookie("accessToken", accessToken, { maxAge: 5 * 60 * 1000 });
               next();
             }
-
           } catch (error) {
             console.log(error);
           }
@@ -71,7 +70,7 @@ export const protect = (
         } catch (error) {
           next(error);
         }
-      } else {  
+      } else {
         await renewToken();
       }
     }
